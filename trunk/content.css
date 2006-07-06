@@ -1,0 +1,16 @@
+@import "ewwrp.css";
+
+div.header { 
+  position:fixed;
+}
+
+div.leftcol { 
+  position:fixed;
+  width:250px;
+}
+
+div.copyright { 
+  font-weight: normal;
+  padding-left:10px;
+}
+
