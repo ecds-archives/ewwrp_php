@@ -16,7 +16,7 @@ div#logo img {
 div#logo a:hover img { 
   background-color:#FF9933; 
 }
-div.imgtext { 
+div.image div.info { 
   color: #990000;
 }
 div.tbar-left { 
