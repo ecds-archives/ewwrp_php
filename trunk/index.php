@@ -33,21 +33,27 @@ if ($title == '') {
 
 
 <div class="rightcol">
-<a
-href="http://womenwriters.library.emory.edu/genrefiction/cti-tgfwfw-owheart_d75e1">
-<img src="ewwrp_files/owheartfc.jpg" alt="Cover image of The Heart of
-Hyacinth" height="550" width="380"></a> 
-<!-- <img src="ewwrp_files/cover-02.jpg" alt="Cover image of The Heart of
-Hyacinth" height="550" width="380"></a>  -->
- 
- <div class="imageinfo imgtextbg"></div>
- <div class="imageinfo imgtext">
- 1903: <i>The Heart of Hyacinth</i> - Onota Watanna, NY: Harper &amp;
-	Brothers<br>
-(a selection from the Women's Genre Fiction Collection)
- </div>
 
+<?
+ // read in xml file of front page images & associated metadata
+$imgdoc = new DOMDocument();
+$imgdoc->load("$baseurl/frontpageimages.xml");
+$xpath = new domxpath($imgdoc);
+// filter on collection if there is one defined
+$imglist = $xpath->query("/images/div[@collection='genrefiction']");
+// generate random index # based on number of matching images
+$index = rand(0, ($imglist->length - 1));
 
+// create a new output domdoc, and use the random index to insert image div
+$odoc = new DOMDocument();
+$onode = $odoc->importNode($imglist->item($index), TRUE);
+$odoc->appendChild($onode);
+print $odoc->saveXML();
+
+?>
+
+<!-- white partially-opaque background for text about image -->
+<div class="imgtextbg"></div>
 
 <div class="copyright">
 <? include("funding.xml") ?>
