@@ -5,6 +5,18 @@
 
   <xsl:output method="xml"/>
 
+  <!-- search terms -->
+  <xsl:param name="field"/>
+  <xsl:param name="value"/>
+
+  <!-- information about current set of results  -->
+  <xsl:variable name="position"><xsl:value-of select="//@exist:start"/></xsl:variable>
+  <xsl:param name="max"/>
+  <xsl:variable name="total"><xsl:value-of select="//@exist:hits"/></xsl:variable>
+
+  <xsl:include href="utils.xsl"/>
+  <xsl:include href="common.xsl"/>
+
   <xsl:variable name="nl"><xsl:text> 
 </xsl:text></xsl:variable>
 
@@ -71,15 +83,14 @@
   </xsl:template>
 
   <xsl:template match="item">
-    <tr>
-      <td><xsl:value-of select="position()"/>.</td>
+    <tr>	<!-- calculate item's position in total result set -->
+      <td><xsl:value-of select="position() + $position - 1"/>.</td>
       <xsl:value-of select="$nl"/>
       <xsl:apply-templates mode="table"/>
     </tr>
     <xsl:value-of select="$nl"/>
   </xsl:template>
 
-  <!-- FIXME: multiple authors for a single text should still be in the same table cell -->
   <xsl:template match="item/*" mode="table">
     <xsl:if test="name() != 'id'">
       <td><xsl:apply-templates select="."/></td>
@@ -87,48 +98,145 @@
     </xsl:if>
   </xsl:template>
 
-<!-- browse list of unique authors
-  authoritative author name (title page name[, other title page name(s)]) --> 
-<xsl:template match="author">
-  <xsl:value-of select="@reg"/> <!-- canonical version of author name -->
-  (<xsl:value-of select="."/>) <!-- title page version(s) of author name -->
-  <!-- should link to search by author; make sure multiple versions of name works okay -->
+  <!-- display multiple authors for a single text in one table cell -->
+  <xsl:template match="item/author" mode="table">
+    <xsl:if test="count(preceding-sibling::author) = 0">
+      <td><xsl:apply-templates select="."/>
+      <xsl:apply-templates select="following-sibling::author" mode="addauth"/>
+      </td>
+      <xsl:value-of select="$nl"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- additional author in table display: add a line break and display normally -->
+  <xsl:template match="item/author" mode="addauth">
+    <br/><xsl:apply-templates select="."/>
+  </xsl:template>
+
+
+
+<!-- display multiple subjects for a single text in one table cell -->
+<xsl:template match="item/subject" mode="table">
+  <xsl:if test="count(preceding-sibling::subject) = 0">
+    <td>
+      <xsl:apply-templates select="."/>
+      <xsl:apply-templates select="following-sibling::subject" mode="addsubj"/>
+    </td>
+    <xsl:value-of select="$nl"/>
+  </xsl:if>
 </xsl:template>
+
+  <!-- additional author in table display: add a line break and display normally -->
+  <xsl:template match="item/subject" mode="addsubj">
+    <br/><xsl:apply-templates select="."/>
+  </xsl:template>
 
 
 <xsl:template match="title">
   <a>
-    <xsl:attribute name="href">content.php?doc=<xsl:value-of select="../id"/></xsl:attribute>
-    <xsl:apply-templates/>
+    <xsl:attribute name="href">toc.php?id=<xsl:value-of select="../id"/></xsl:attribute>
+    <b><xsl:apply-templates/></b>
   </a>
 </xsl:template>
 
-<!-- do nothing with id itself -->
-<xsl:template match="id"/>
+<!-- browse list of unique authors: reg is attached to author, may include multiple names
+  authoritative author name (title page name, other title page name(s)) --> 
+<xsl:template match="author">
+  <!-- canonical/regularized version of author name -->
+  <xsl:variable name="reg">   	<!-- reg is in either one of these two places -->
+    <xsl:value-of select="@reg"/>  
+    <xsl:value-of select="name/@reg"/>
+  </xsl:variable>
+  <a>
+    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space($reg)"/></xsl:attribute>
+    <xsl:value-of select="$reg"/>
+  </a>
+  <xsl:if test="$reg != name">	<!-- (only display if different) -->
+    [<xsl:apply-templates select="name"/>] <!-- title page version(s) of author name -->
+  </xsl:if>
+</xsl:template>
+
+<!-- possibly multiple names in authorlist mode -->
+<xsl:template match="author/name">
+  <a>
+    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(.)"/></xsl:attribute>
+    <xsl:apply-templates/>
+  </a>
+  <xsl:if test="position() != last()">
+    <xsl:text>, </xsl:text>
+  </xsl:if>
+</xsl:template>
+
+
+<!-- do nothing with id itself --> <xsl:template match="id"/>
 
 <xsl:template name="total-jumplist">
 
-  <xsl:variable name="total">
-    <xsl:value-of select="//@exist:hits"/>        
-  </xsl:variable>
 
   <!-- only display total & jump list if there are actually results -->
   <xsl:if test="$total > 0">
 
-    <!--    <xsl:variable name="chunksize"><xsl:value-of select="($end - $start + 1)"/></xsl:variable> -->
+    <xsl:variable name="url">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if></xsl:variable>
 
+    <div class="searchnav">
+      <!-- first & prev -->
+      <xsl:choose>
+        <xsl:when test="$position != 1">
+          <a>
+            <xsl:attribute name="href"><xsl:value-of 
+            select="concat($url, '&amp;position=1&amp;max=', $max)"/></xsl:attribute>
+            &lt;&lt;First
+          </a>          
+
+          <!-- FIXME: correct the math here: start position shouldn't go below 1 -->
+          <a>
+            <xsl:attribute name="href"><xsl:value-of 
+            select="concat($url, '&amp;position=', ($position - $max), '&amp;max=', $max)"/></xsl:attribute>
+            &lt;Previous
+          </a>          
+        </xsl:when>
+        <xsl:otherwise>
+          <a> </a>	<!-- first -->
+          <a> </a>	<!-- prev  -->
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <!-- next -->
+      <xsl:choose>
+        <xsl:when test="$max &lt; $total">
+          <a>
+            <xsl:attribute name="href"><xsl:value-of 
+            select="concat($url, '&amp;position=', ($position + $max), '&amp;max=', $max)"/></xsl:attribute>
+            Next&gt;
+          </a>          
+
+          <a>
+            <xsl:attribute name="href"><xsl:value-of 
+            select="concat($url, '&amp;position=', ($total - $max), '&amp;max=', $max)"/></xsl:attribute>
+	     Last&gt;&gt;
+          </a>          
+
+        </xsl:when>
+
+
+      </xsl:choose>
+
+    </div>
+
+
+  <xsl:variable name="chunksize"><xsl:value-of select="$max"/></xsl:variable>  
     <!-- only display jump list if there are more results than displayed here. -->
-    <!--    <xsl:if test="$total > $chunksize">
+    <xsl:if test="$total > $chunksize">
       <script language="Javascript" type="text/javascript" src="scripts/jumpnav.js"/>
       <script language="Javascript" type="text/javascript">
-        jumpnavform("search-metadata", 
+        jumpnavform("browse.php", 
         <xsl:value-of select="$chunksize"/>, 
         <xsl:value-of select="$total"/>, 
-        <xsl:value-of select="$start"/>, 
-        "srchfield", "<xsl:value-of select="$srchfield"/>", 
-        "content", "<xsl:value-of select="$content"/>");
+        <xsl:value-of select="$position"/>, 
+        "field", "<xsl:value-of select="$field"/>", 
+        "value", "<xsl:value-of select="$value"/>");
       </script>
-    </xsl:if> -->
+    </xsl:if> 
 
     <xsl:element name="p">
       <xsl:value-of select="$total"/> match<xsl:if test="$total != 1">es</xsl:if> found
