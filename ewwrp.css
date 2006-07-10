@@ -75,16 +75,18 @@ div.lcontent {
 div.content { 
   top:25px;
   padding-top:35px;
+  padding-left:1in;
   margin-left:275px;
   margin-right:25px;
 }
 
 /* branding - icons for emory & EWWRP */
 div.brand { padding-left: 20px; height:74px; }
-div.brand img#emory { margin-right:121px; }
+div.brand img#emory { margin-right:120px;}
 
 div#logo img { 
   background-color:#000000;
+  border:0px;
 }
 div#logo a:hover img { 
   background-color:#FF9933; 
@@ -137,21 +139,24 @@ div.rightcol {
   width:380px;
 }
 div.rightcol img { border:0px; }
-div.imageinfo { 
-  width:100%;
-  height: 35px;
-  position:absolute;
-  top:515px; 
-}
-div.imgtext { 
+
+div.image div.info { 
   color: #990000;
   font-family: Arial, Helvetica, sans-serif;
   font-weight:bold;
   font-size: 11px;
   z-index:3;
   margin-left: 10px;
+  width:100%;
+  height: 35px;
+  position:absolute;
+  top:515px; 
 }
 div.imgtextbg { 
+  width:100%;
+  height: 35px;
+  position:absolute;
+  top:515px; 
   background-color:white;
   opacity: .7;
   filter: alpha(opacity=70);
@@ -283,5 +288,66 @@ div.searchnav a:hover {
 }
 form#jumpnav { float:right; }
 
-
 th { text-align:left; }
+
+/* search results */
+table.search { width:100%; border-collapse: collapse;}
+table.search .hits { text-align:center; }
+table.search td { border-bottom: 1px solid #000000;}
+
+
+/* styling tranformed TEI content */
+
+/* types of lists */
+ul.simple li { list-style-type: none; }
+/* note - ordered/numbered lists use non-integer numbers, style 1.1; use no bullet style */
+ul.ordered li, ul.numbered li { list-style-type: none; }
+ul.bulleted, ul.bullets { } 
+ul.main {  } 
+ul.sub {  }
+
+span.title { font-style: italic; }
+span.bibl {  }
+span.label { font-weight: bold; padding-left: 3px; padding-right: 3px;}
+span.epigraph { margin-left: 1in; font-style: italic;}
+div.cit { margin-left: 1in; margin-bottom: 5px;}
+div.cit span.bibl { margin-left: 0.5in; }
+
+div.quote { margin-left:0.5in; }
+div.quote .pagebreak { margin-left: -1in; } /* so all page #s will line up */
+
+/* titlepage styling */
+div.titlepage { text-align: center; }
+p.main { font-size: 125%; }
+
+div.advert div.figure, div.adverts div.figure { margin: 10px;}
+
+
+/* styles taken from rend attributes */
+span.underline, span.under { text-decoration: underline; }
+span.bold { font-weight: bold; }
+span.italic { font-style: italic; }
+span.strikethrough { text-decoration: line-through; }
+span.super, span.supserscript { vertical-align: super; font-size: 75%;}
+span.subscript { vertical-align: sub; font-size: 75%; }
+span.editorial { color: #545454; font-size: 10px; font-weight: normal; /* same as body text, even inside a head */}
+span.overwritten {  }
+
+.pagebreak { margin-left: -0.5in; }
+span.pagebreak { float: left; clear: left;}
+hr.pagebreak { clear:left; }
+div.figure { text-align: center; }
+div.content img { padding: 2px; border: none; }
+a.pageimage img { margin-left: -0.75in; float: left; clear: left; border: none; max-width: 60px; } 
+/* max-width to constrain alt text if images are turned off */
+img.inline-left { float:left; margin: 0; }
+img.inline-right { float:right; margin:0;}
+
+p.pagebreak-toggle { text-align: right; }
+
+div.milestone { text-align: center; }
+hr.milestone { width: 50%; margin: auto;}	/* margin: auto = centered */
+span.dot, span.star { padding-left: 2em; padding-right: 2em; font-size: 125%;}
+
+ul.relative-toc { margin:0px;  }
+ul.relative-toc li { list-style-type: none; }
