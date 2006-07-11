@@ -227,15 +227,21 @@
   <xsl:variable name="chunksize"><xsl:value-of select="$max"/></xsl:variable>  
     <!-- only display jump list if there are more results than displayed here. -->
     <xsl:if test="$total > $chunksize">
-      <script language="Javascript" type="text/javascript" src="scripts/jumpnav.js"/>
-      <script language="Javascript" type="text/javascript">
-        jumpnavform("browse.php", 
-        <xsl:value-of select="$chunksize"/>, 
-        <xsl:value-of select="$total"/>, 
-        <xsl:value-of select="$position"/>, 
-        "field", "<xsl:value-of select="$field"/>", 
-        "value", "<xsl:value-of select="$value"/>");
-      </script>
+      <form id="jumpnav" name="jumpnav" action="browse.php">
+        <input name="field" type="hidden">
+          <xsl:attribute name="value"><xsl:value-of select="$field"/></xsl:attribute>
+        </input>
+        <input name="value" type="hidden">
+          <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
+        </input>
+
+        <input name="max" type="hidden">
+          <xsl:attribute name="value"><xsl:value-of select="$max"/></xsl:attribute>
+        </input>
+        <select name="position" onchange="submit();">
+          <xsl:call-template name="jumpnav-option"/>
+        </select>
+      </form>
     </xsl:if> 
 
     <xsl:element name="p">
@@ -244,5 +250,37 @@
   </xsl:if> 
 </xsl:template>
 
+<xsl:template name="jumpnav-option">
+  <!-- position, max, and total are global -->
+  <xsl:param name="curpos">1</xsl:param>	<!-- start at 1 -->
+  
+  <xsl:variable name="curmax">    
+    <xsl:call-template name="min">
+      <xsl:with-param name="num1">
+        <xsl:value-of select="$curpos + $max - 1"/>
+      </xsl:with-param>
+      <xsl:with-param name="num2">
+        <xsl:value-of select="$total"/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <option> 
+    <xsl:attribute name="value"><xsl:value-of select="$curpos"/></xsl:attribute>
+    <xsl:if test="$curpos = $position">
+      <xsl:attribute name="selected">selected</xsl:attribute>
+    </xsl:if>
+    <xsl:value-of select="$curpos"/> - <xsl:value-of select="$curmax"/>
+  </option>
+
+  <!-- if the end of this section is less than the total, recurse -->
+  <xsl:if test="$total > $curmax">
+    <xsl:call-template name="jumpnav-option">
+      <xsl:with-param name="curpos">
+        <xsl:value-of select="$curpos + $max"/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:if>
+</xsl:template>
 
 </xsl:stylesheet>
