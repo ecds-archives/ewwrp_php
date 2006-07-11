@@ -1,7 +1,7 @@
 <images>
 
 <div class="image" collection="genrefiction">
-  <a  href="content.php?id=owheart">
+  <a  href="toc.php?id=owheart">
    <img src="/rebecca/ewwrp/images/owheartfc.jpg" 
      alt="Cover image of The Heart of Hyacinth" height="550" width="380"/></a> 
 
@@ -12,7 +12,7 @@
 </div>
 
 <div class="image" collection="genrefiction">
-  <a  href="content.php?id=llunder">
+  <a  href="toc.php?id=llunder">
    <img src="/rebecca/ewwrp/images/llunderfc.jpg" 
      alt="Cover image of Under Fate's Wheel" height="550" width="380"/></a> 
 
@@ -23,7 +23,7 @@
 </div>
 
 <div class="image" collection="genrefiction">
-  <a  href="content.php?id=dfaith">
+  <a  href="toc.php?id=dfaith">
    <img src="/rebecca/ewwrp/images/dfaithfc.jpg" 
      alt="Cover image of Faith and Unfaith" height="550" width="380"/></a> 
 
@@ -34,13 +34,35 @@
 </div>
 
 <div class="image" collection="genrefiction">
-  <a  href="content.php?id=maconfe">
+  <a  href="toc.php?id=maconfe">
    <img src="/rebecca/ewwrp/images/maconfefc.jpg" 
      alt="Cover image of Confessions of a Wife" height="550" width="380"/></a> 
 
    <div class="info">
    1902: <i>Confessions of a Wife</i> - Mary Adams, NY: The Century Co.<br/>
    (a selection from the Women's Genre Fiction Collection)
+   </div>
+</div>
+
+<div class="image" collection="Native American">
+ <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
+   <img src="/rebecca/ewwrp/images/Angel1.jpg" 
+     alt="artwork by Angel De Cora" height="550" width="380"/></a>
+
+   <div class="info">
+      Artwork by Angel de Cora<br/>
+      (an author included in the Native American Collection)
+   </div>
+</div>
+
+<div class="image" collection="Native American">
+<a href="browse.php?field=author&amp;value=De+Cora,+Angel">
+   <img src="/rebecca/ewwrp/images/Angel5.jpg" 
+     alt="artwork by Angel De Cora" height="550" width="380"/></a>
+
+   <div class="info">
+      Artwork by Angel de Cora<br/>
+      (an author included in the Native American Collection)
    </div>
 </div>
 
