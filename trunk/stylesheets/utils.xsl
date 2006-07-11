@@ -7,6 +7,7 @@
     * replace-string    : replace all occurrences of one string with another in a specified string
     * javascript-escape : escape characters javascript regards as 'special'
     * string-after-last : return string after last occurrence of specified delimeter string
+    * min		: return the smaller of two numbers
  -->
 
   <xsl:output method="xml"/>
@@ -140,6 +141,22 @@
     </xsl:choose>
 
   </xsl:template>
+
+
+<!-- return the smaller of two numbers -->
+<xsl:template name="min">
+  <xsl:param name="num1"/>
+  <xsl:param name="num2"/>
+
+  <xsl:choose>
+    <xsl:when test="$num1 > $num2">
+      <xsl:value-of select="$num2"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$num1"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
 
 
 </xsl:stylesheet>
