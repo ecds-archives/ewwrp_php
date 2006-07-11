@@ -1,6 +1,6 @@
 <images>
 
-<div class="image" collection="genrefiction">
+<div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=owheart">
    <img src="/rebecca/ewwrp/images/owheartfc.jpg" 
      alt="Cover image of The Heart of Hyacinth" height="550" width="380"/></a> 
@@ -11,7 +11,7 @@
    </div>
 </div>
 
-<div class="image" collection="genrefiction">
+<div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=llunder">
    <img src="/rebecca/ewwrp/images/llunderfc.jpg" 
      alt="Cover image of Under Fate's Wheel" height="550" width="380"/></a> 
@@ -22,7 +22,7 @@
    </div>
 </div>
 
-<div class="image" collection="genrefiction">
+<div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=dfaith">
    <img src="/rebecca/ewwrp/images/dfaithfc.jpg" 
      alt="Cover image of Faith and Unfaith" height="550" width="380"/></a> 
@@ -33,7 +33,7 @@
    </div>
 </div>
 
-<div class="image" collection="genrefiction">
+<div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=maconfe">
    <img src="/rebecca/ewwrp/images/maconfefc.jpg" 
      alt="Cover image of Confessions of a Wife" height="550" width="380"/></a> 
