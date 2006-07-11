@@ -2,6 +2,7 @@
 
 global $title;
 global $collname;
+global $collection;
 $baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 $page = "index";
 
@@ -40,7 +41,8 @@ $imgdoc = new DOMDocument();
 $imgdoc->load("$baseurl/frontpageimages.xml");
 $xpath = new domxpath($imgdoc);
 // filter on collection if there is one defined
-$imglist = $xpath->query("/images/div[@collection='genrefiction']");
+if ($collection) $filter = "[@collection='$collection']";
+$imglist = $xpath->query("/images/div$filter");
 // generate random index # based on number of matching images
 $index = rand(0, ($imglist->length - 1));
 
