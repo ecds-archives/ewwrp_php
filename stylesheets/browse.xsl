@@ -5,9 +5,12 @@
 
   <xsl:output method="xml"/>
 
+  <xsl:param name="mode">browse</xsl:param>	 <!-- browse or search -->
+
   <!-- search terms -->
   <xsl:param name="field"/>
   <xsl:param name="value"/>
+  <xsl:param name="keyword"/>
 
   <!-- information about current set of results  -->
   <xsl:variable name="position"><xsl:value-of select="//@exist:start"/></xsl:variable>
@@ -61,8 +64,9 @@
       <table class="browse">
         <thead style="font-size:small;">
         <tr>
+          <xsl:if test="//item/hits"><th class="hits">hits</th></xsl:if>
           <th class="num">#</th>
-          <xsl:if test="//item/title"><th >title</th></xsl:if>
+          <xsl:if test="//item/title"><th>title</th></xsl:if>
           <xsl:if test="//item/author"><th>author</th></xsl:if>
           <xsl:if test="//item/date"><th>date</th></xsl:if>
           <xsl:if test="//item/ethnicity"><th>ethnicity</th></xsl:if>
@@ -84,9 +88,10 @@
 
   <xsl:template match="item">
     <tr>	<!-- calculate item's position in total result set -->
+    <xsl:apply-templates select="hits" mode="table"/>
       <td><xsl:value-of select="position() + $position - 1"/>.</td>
       <xsl:value-of select="$nl"/>
-      <xsl:apply-templates mode="table"/>
+      <xsl:apply-templates select="*[not(self::hits)]" mode="table"/>
     </tr>
     <xsl:value-of select="$nl"/>
   </xsl:template>
@@ -96,6 +101,11 @@
       <td><xsl:apply-templates select="."/></td>
       <xsl:value-of select="$nl"/>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="item/hits" mode="table">
+    <td class="hits"><a><xsl:apply-templates select="."/></a></td>
+    <xsl:value-of select="$nl"/>
   </xsl:template>
 
   <!-- display multiple authors for a single text in one table cell -->
@@ -176,7 +186,13 @@
   <!-- only display total & jump list if there are actually results -->
   <xsl:if test="$total > 0">
 
-    <xsl:variable name="url">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if></xsl:variable>
+    <xsl:variable name="url">
+      <xsl:choose>
+        <xsl:when test="$mode = 'browse'">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if>
+      </xsl:when>
+      <xsl:when test="$mode = 'search'">search.php?keyword=<xsl:value-of select="$keyword"/></xsl:when>
+    </xsl:choose>
+  </xsl:variable>
 
     <div class="searchnav">
       <!-- first & prev -->
@@ -227,14 +243,23 @@
   <xsl:variable name="chunksize"><xsl:value-of select="$max"/></xsl:variable>  
     <!-- only display jump list if there are more results than displayed here. -->
     <xsl:if test="$total > $chunksize">
-      <form id="jumpnav" name="jumpnav" action="browse.php">
-        <input name="field" type="hidden">
-          <xsl:attribute name="value"><xsl:value-of select="$field"/></xsl:attribute>
-        </input>
-        <input name="value" type="hidden">
-          <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
-        </input>
-
+      <form id="jumpnav" name="jumpnav">
+        <xsl:attribute name="action"><xsl:value-of select="$mode"/>.php</xsl:attribute>
+        <xsl:choose>
+          <xsl:when test="$mode = 'browse'">
+            <input name="field" type="hidden">
+              <xsl:attribute name="value"><xsl:value-of select="$field"/></xsl:attribute>
+            </input>
+            <input name="value" type="hidden">
+              <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
+            </input>
+          </xsl:when>
+          <xsl:when test="$mode = 'search'">
+            <input name="keyword" type="hidden">
+              <xsl:attribute name="value"><xsl:value-of select="$keyword"/></xsl:attribute>
+            </input>
+          </xsl:when>
+        </xsl:choose>
         <input name="max" type="hidden">
           <xsl:attribute name="value"><xsl:value-of select="$max"/></xsl:attribute>
         </input>
@@ -250,6 +275,9 @@
   </xsl:if> 
 </xsl:template>
 
+
+<!-- recursive function to generates option values for jumpnav form 
+     based on position, max, and total -->
 <xsl:template name="jumpnav-option">
   <!-- position, max, and total are global -->
   <xsl:param name="curpos">1</xsl:param>	<!-- start at 1 -->
@@ -267,6 +295,7 @@
 
   <option> 
     <xsl:attribute name="value"><xsl:value-of select="$curpos"/></xsl:attribute>
+    <!-- if this option is the content currently being displayed, mark as selected -->
     <xsl:if test="$curpos = $position">
       <xsl:attribute name="selected">selected</xsl:attribute>
     </xsl:if>
