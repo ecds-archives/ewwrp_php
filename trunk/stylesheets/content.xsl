@@ -7,6 +7,7 @@
 
 
 <xsl:param name="mode"/>
+<xsl:param name="url"/>
 <xsl:param name="running-header">off</xsl:param> 
   <!-- on/off : show or hide running header in page breaks -->
 
@@ -23,17 +24,114 @@
 
   <xsl:template match="/">
     <xsl:apply-templates select="//teiHeader"/>
-    <div class="searchnav"><xsl:text> </xsl:text></div>
-      
-    <xsl:apply-templates select="//content"/>
+
+    <xsl:apply-templates select="//toc"/>
+
+    <xsl:apply-templates select="//nav"/>
+
+    <xsl:call-template name="running-header-toggle"/>
+    <div class="xmlcontent">
+      <xsl:apply-templates select="//content"/>
+    </div>
+
+    <!-- also supply navigation after content, if it is of any length -->
+    <xsl:if test="count(//content//p) > 2">
+      <xsl:apply-templates select="//nav"/>      
+    </xsl:if>
+
   </xsl:template>
 
   <xsl:template match="relative-toc">
-    <ul class="relative-toc">
-      <xsl:apply-templates select="item[@name='TEI.2']"/>
-    </ul>
+    <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
+      <ul class="relative-toc">
+        <xsl:apply-templates select="item[@name='TEI.2']"/>
+      </ul>
+    </xsl:if>
   </xsl:template>
 
+
+  <xsl:template match="toc">
+    <xsl:if test="count(toc-item) > 0">	<!-- don't generate an empty list -->
+    <h2>Table of Contents</h2>
+      <ul>
+        <xsl:apply-templates select="toc-item"/>
+      </ul>
+    </xsl:if>
+
+  </xsl:template>
+
+  <xsl:template match="nav">
+    <table class="searchnav">
+      <tr>
+        <td><xsl:apply-templates select="first"/></td>
+        <xsl:value-of select="$newline"/>
+        <td><xsl:apply-templates select="prev"/></td>
+        <xsl:value-of select="$newline"/>
+        <td><xsl:apply-templates select="next"/></td>
+        <xsl:value-of select="$newline"/>
+        <td><xsl:apply-templates select="last"/></td>
+        <xsl:value-of select="$newline"/>
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="nav/first|nav/prev|nav/next|nav/last">
+    <!-- don't display first/last if they are the same as next/prev -->
+    <xsl:if test="not(name() = 'first' and @id = ../prev/@id) and
+                  not(name() = 'last' and @id = ../next/@id)">
+    <a>
+      <xsl:attribute name="rel"><xsl:value-of select="name()"/></xsl:attribute>
+      <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+
+      <!-- arrows to help user understand relation -->
+      <xsl:choose>
+        <xsl:when test="name() = 'first'">&lt;&lt; </xsl:when>
+        <xsl:when test="name() = 'prev'">&lt; </xsl:when>
+      </xsl:choose>
+
+      <!-- for divs use the type attribute, but not for title pages -->
+      <xsl:choose>
+        <xsl:when test="@name = 'titlePage'">
+          title page 
+          <xsl:if test="@type">
+            (<xsl:value-of select="@type"/>)
+          </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="@type"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text> </xsl:text> 
+      <xsl:value-of select="@n"/>
+
+      <!-- arrows to help user understand relation -->
+      <xsl:choose>
+        <xsl:when test="name() = 'next'"> &gt;</xsl:when>
+        <xsl:when test="name() = 'last'"> &gt;&gt;</xsl:when>
+      </xsl:choose>
+
+    </a>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="running-header-toggle">
+    <xsl:if test="//pb">
+      <!-- toggle page-break & running header display style 
+           (only display option if there are page breaks in the text)  -->
+      <p class="pagebreak-toggle">
+        <xsl:choose>
+          <xsl:when test="$running-header = 'off'">
+            <a><xsl:attribute name="href"><xsl:value-of select="$url"/>&amp;running-header=on</xsl:attribute>
+            Display page layout</a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a><xsl:attribute name="href"><xsl:value-of select="$url"/>&amp;running-header=off</xsl:attribute>
+            Hide page layout</a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </p>
+    </xsl:if>
+  </xsl:template>
 
 
 <!-- Ordered list causes problems with non-integer labels (e.g., 4.1)
@@ -217,6 +315,52 @@
 
 <xsl:template match="figure/@rend">
   <xsl:attribute name="class"><xsl:value-of select="."/></xsl:attribute>
+</xsl:template>
+
+<!-- title page tags -->
+<xsl:template match="titlePage">
+  <xsl:element name="div">
+    <xsl:attribute name="class">titlepage</xsl:attribute>
+    <!-- pick up the appropriate page break to display page image -->
+    <xsl:choose>
+      <xsl:when test="@type='illustrated'">
+        <!-- if displaying illustrated title page, only display illustrated page image -->
+        <xsl:apply-templates select="//content/pb[@pages='Illustrated Title Page']" 
+          mode="override"/>
+      </xsl:when>
+      <xsl:when test="@type='half'">
+        <!-- if displaying half title page, only display half page image -->
+        <xsl:apply-templates select="//content/pb[@pages='Half-Title Page']" 
+          mode="override"/>
+      </xsl:when>
+      <xsl:otherwise>	<!-- default: full titlePage -->
+        <xsl:apply-templates select="//content/pb[@pages='Title Page']" mode="override"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+
+<!-- put each title part on its own line; keep type for styling -->
+<xsl:template match="titlePart">
+  <xsl:element name="p">
+    <xsl:attribute name="class">titlepart <xsl:value-of select="@type"/></xsl:attribute>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+<xsl:template match="byline|docImprint|docDate|docEdition">
+  <xsl:element name="p">
+    <xsl:attribute name="class"><xsl:value-of select="name()"/></xsl:attribute>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+
+<!-- line break after every pubPlace and publisher -->
+<!-- note: sourceDesc publisher in teiHeader has a different template - links to browse search -->
+<xsl:template match="pubPlace|publisher[not(ancestor::sourceDesc)]">
+  <xsl:apply-templates/> <br/>
 </xsl:template>
 
 
