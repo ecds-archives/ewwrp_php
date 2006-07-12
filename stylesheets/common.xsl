@@ -22,7 +22,7 @@
     </xsl:when>
     <xsl:otherwise>
       <a>
-        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="../id"/></xsl:attribute>
+        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/></xsl:attribute>
         <b><xsl:apply-templates/></b>
       </a>
     </xsl:otherwise>
@@ -64,13 +64,11 @@
     <!--  </a> -->
 </xsl:template>
 
-
-
 <!-- table of contents, relative table of contents at item view level -->
 
-  <xsl:key name="item-by-parentid" match="item[parent/@id != '']" use="parent/@id"/>
+<xsl:key name="item-by-parentid" match="item[parent/@id != '']" use="parent/@id"/>
 
-  <xsl:template match="relative-toc/item|TEI.2/item">
+  <xsl:template match="relative-toc/item|TEI.2/item|toc-item">
     <xsl:variable name="label">
       <xsl:choose>
         <xsl:when test="@name = 'front'">front matter</xsl:when>
@@ -99,7 +97,7 @@
     <li>
       <xsl:choose>
         <!-- if this is the currently displayed node, don't make it a link -->
-        <xsl:when test="@id = //content/div/@id">
+        <xsl:when test="@id = //content/*/@id">	<!-- could be div or titlePage -->
           <xsl:value-of select="$label"/>
         </xsl:when>
         <xsl:otherwise>
@@ -110,11 +108,14 @@
         </xsl:otherwise>
       </xsl:choose>
 
-    <!-- if there are nodes under this one, display them now -->
-    <xsl:if test="key('item-by-parentid', @id)">
-      <ul>
-        <xsl:apply-templates select="key('item-by-parentid', @id)"/>
-      </ul>
+     <!-- in full TOC, only show one level in the back & front matter -->
+    <xsl:if test="$mode != 'toc' or (parent != 'back' and parent != 'front')">
+      <!-- if there are nodes under this one, display them now -->
+      <xsl:if test="key('item-by-parentid', @id)">
+        <ul>
+          <xsl:apply-templates select="key('item-by-parentid', @id)"/>
+        </ul>
+      </xsl:if>
     </xsl:if>
 
     </li>
