@@ -34,17 +34,26 @@ if ($collection) {
 $query = "for \$a in /TEI.2${rsfilter}[. &= '$kw']
 let \$t := \$a//titleStmt/title
 let \$doc := substring-before(util:document-name(\$a), '.xml')
+let \$auth := \$a//titleStmt/author
+let \$date := root(\$a)//sourceDesc/bibl/date
 let \$matchcount := text:match-count(\$a)
 order by \$matchcount descending
-return <TEI.2>{\$a/@id}<doc>{\$doc}</doc>{\$t}<hits>{\$matchcount}</hits></TEI.2>";
+return <item>{\$a/@id}
+  <hits>{\$matchcount}</hits>
+  {\$t}
+  <id>{\$doc}</id>
+  {\$auth}
+  {\$date}
+</item>";
 
-$xsl = "$baseurl/stylesheets/search.xsl";
+$xsl = "$baseurl/stylesheets/browse.xsl";
 //$xsl_params = array('field' => $field, 'value' => $value, 'max' => $max);
+$xsl_params = array('mode' => "search", 'keyword' => $kw, 'max' => $max);
 
 ?>
 <html>
  <head>
-<title><?= $title ?> : Search</title>
+<title><?= $title ?> : Search Results</title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 </head>
@@ -61,9 +70,9 @@ $xsl = "$baseurl/stylesheets/search.xsl";
 
 $db->xquery($query, $pos, $max);
 
-print "<p>Found $db->count texts that contain '$kw'</p>";
+print "<h1>Texts that contain '$kw'</h1>";
 
-$db->xslTransform($xsl);
+$db->xslTransform($xsl, $xsl_params);
 $db->printResult();
 
 ?>
