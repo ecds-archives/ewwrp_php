@@ -31,7 +31,7 @@ hr.menu {
   color: #003399;
 }
 
-div.searchnav{
+div.searchnav, table.searchnav {
   background:#003399; 
 }
 
