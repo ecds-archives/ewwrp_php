@@ -33,6 +33,8 @@ return <TEI.2>
 
 $xsl = "$baseurl/stylesheets/toc.xsl";
 
+$xdb->xquery($query);
+
 
 ?>
 
@@ -42,6 +44,12 @@ $xsl = "$baseurl/stylesheets/toc.xsl";
     <title><?= $title ?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
+<?
+$xdb->xslBind("$baseurl/stylesheets/teiheader-dc.xsl");
+$xdb->xslBind("$baseurl/stylesheets/dc-htmldc.xsl");
+$xdb->transform();
+$xdb->printResult();
+?>
 </head>
 <body>
 
@@ -53,7 +61,6 @@ $xsl = "$baseurl/stylesheets/toc.xsl";
 <div class="title"><a href="index.php"><?= $title ?></a></div>
 
 <?
-$xdb->xquery($query);
 $xdb->xslTransform($xsl);
 $xdb->printResult();
 ?>
