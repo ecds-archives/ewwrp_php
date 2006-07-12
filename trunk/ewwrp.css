@@ -75,9 +75,12 @@ div.lcontent {
 div.content { 
   top:25px;
   padding-top:35px;
-  padding-left:1in;
   margin-left:275px;
   margin-right:25px;
+}
+
+div.xmlcontent { 
+ margin-left:1in;
 }
 
 /* branding - icons for emory & EWWRP */
@@ -123,6 +126,24 @@ form.menu { margin:0px;}
 .input{background:white;border-width:2px;border-style:inset;border-color:black;position:relative;left:20px;}
 .label{text-align:right;}
 form.menu input[type="image"] { vertical-align:middle; }
+
+form.menu input#search {
+  width:55px;
+  height:20px;
+  background: url(images/button.jpg) no-repeat;
+  outline:0px;
+  border:0px;
+  font-size:11px;
+  line-height:12px;
+  vertical-align:middle; 
+}
+form.menu input#search:hover {
+  background: url(images/button-on.jpg) no-repeat;
+}
+
+form.menu a:hover input#search {
+  background: url(images/button-on.jpg) no-repeat;
+}
 
 div.advsearch { 
   font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -275,7 +296,7 @@ div.searchnav{
 }
 /* for first/next/last links spacing to be consistent,
    all links should always be present with no link text if there is no url */
-div.searchnav a{
+div.searchnav a, table.searchnav a {
   color:#ffffff; 
   line-height:20px;
   padding-left:20px;
@@ -283,18 +304,30 @@ div.searchnav a{
   text-align:center;
 /*  border:1px solid yellow;*/
 }
-div.searchnav a:hover {
+div.searchnav a:hover, table.searchnav a:hover {
   color: #FF9933;
 }
+
+table.searchnav { 
+  background:#990000; 
+  margin-bottom:10px; 
+  height:20px;
+  text-align:center;
+  width:100%;
+}
+table.searchnav td { 
+  width:25%; 
+}
+
 form#jumpnav { float:right; }
 
 th { text-align:left; }
 
 /* search results */
 table.search { width:100%; border-collapse: collapse;}
-table.search .hits { text-align:center; }
 table.search td { border-bottom: 1px solid #000000;}
-
+td.hits, th.hits { text-align:center; padding-right:5px;}
+table.browse { width:100%;}
 
 /* styling tranformed TEI content */
 
