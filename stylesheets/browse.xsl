@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exist="http://exist.sourceforge.net/NS/exist"
-  version="1.0">
+  version="1.0" exclude-result-prefixes="exist">
 
-  <xsl:output method="xml"/>
+  <xsl:output method="xml" omit-xml-declaration="yes"/>
 
   <xsl:param name="mode">browse</xsl:param>	 <!-- browse or search -->
 
@@ -89,7 +89,7 @@
   <xsl:template match="item">
     <tr>	<!-- calculate item's position in total result set -->
     <xsl:apply-templates select="hits" mode="table"/>
-      <td><xsl:value-of select="position() + $position - 1"/>.</td>
+      <td class="num"><xsl:value-of select="position() + $position - 1"/>.</td>
       <xsl:value-of select="$nl"/>
       <xsl:apply-templates select="*[not(self::hits)]" mode="table"/>
     </tr>
@@ -194,50 +194,67 @@
     </xsl:choose>
   </xsl:variable>
 
-    <div class="searchnav">
-      <!-- first & prev -->
+    <table class="searchnav">
+      <!-- always build a table with four cells so spacing will be consistent -->
+      <tr>
       <xsl:choose>
         <xsl:when test="$position != 1">
+          <td>
           <a>
             <xsl:attribute name="href"><xsl:value-of 
             select="concat($url, '&amp;position=1&amp;max=', $max)"/></xsl:attribute>
             &lt;&lt;First
-          </a>          
+          </a>
+        </td>          
 
-          <!-- FIXME: correct the math here: start position shouldn't go below 1 -->
+        <!-- start position shouldn't go below 1 -->
+        <xsl:variable name="newpos">
+          <xsl:call-template name="max">
+            <xsl:with-param name="num1"><xsl:value-of select="($position - $max)"/></xsl:with-param>
+            <xsl:with-param name="num2"><xsl:value-of select="1"/></xsl:with-param>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <td>
           <a>
             <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=', ($position - $max), '&amp;max=', $max)"/></xsl:attribute>
+            select="concat($url, '&amp;position=', $newpos, '&amp;max=', $max)"/></xsl:attribute>
             &lt;Previous
           </a>          
+        </td>
         </xsl:when>
         <xsl:otherwise>
-          <a> </a>	<!-- first -->
-          <a> </a>	<!-- prev  -->
+          <td></td>	<!-- first -->
+          <td></td>	<!-- prev  -->
         </xsl:otherwise>
       </xsl:choose>
 
       <!-- next -->
       <xsl:choose>
-        <xsl:when test="$max &lt; $total">
-          <a>
+        <xsl:when test="($position + $max - 1) &lt; $total">
+          <td>
+            <a>
             <xsl:attribute name="href"><xsl:value-of 
             select="concat($url, '&amp;position=', ($position + $max), '&amp;max=', $max)"/></xsl:attribute>
             Next&gt;
           </a>          
+        </td>
 
+        <td>
           <a>
             <xsl:attribute name="href"><xsl:value-of 
             select="concat($url, '&amp;position=', ($total - $max), '&amp;max=', $max)"/></xsl:attribute>
 	     Last&gt;&gt;
           </a>          
-
+        </td>
         </xsl:when>
-
-
+        <xsl:otherwise>
+          <td></td>	<!-- next -->
+          <td></td>	<!-- last -->
+        </xsl:otherwise>
       </xsl:choose>
-
-    </div>
+    </tr>
+    </table>
 
 
   <xsl:variable name="chunksize"><xsl:value-of select="$max"/></xsl:variable>  
