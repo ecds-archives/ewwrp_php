@@ -10,8 +10,6 @@
     * min		: return the smaller of two numbers
  -->
 
-  <xsl:output method="xml"/>
-
   <!-- template to convert normal spaces to  non-breaking spaces -->
   <xsl:template name="space-to-nbsp">
     <xsl:param name="str"/>
@@ -154,6 +152,20 @@
     </xsl:when>
     <xsl:otherwise>
       <xsl:value-of select="$num1"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- return the larger of two numbers -->
+<xsl:template name="max">
+  <xsl:param name="num1"/>
+  <xsl:param name="num2"/>
+  <xsl:choose>
+    <xsl:when test="number($num1) > number($num2)">
+      <xsl:value-of select="$num1"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$num2"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
