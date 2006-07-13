@@ -1,0 +1,44 @@
+@import "../ewwrp.css";
+
+/* links */
+a {
+  color:#009966; 
+}
+div.header { 
+  background-color: #009966;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#009966;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #009966;
+}
+div.tbar-left { 
+  background-color:#7FCD99;
+}
+div.content div.title { 
+  background-color:#7FCD99;
+}
+
+hr.menu { 
+  background-color: #009966;
+  color: #009966;
+}
+
+div.searchnav, table.searchnav {
+  background:#009966; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+
+
+ 
