@@ -161,6 +161,11 @@ div.rightcol {
 }
 div.rightcol img { border:0px; }
 
+div.image { 
+  width:380px;
+  height:550px;
+}
+
 div.image div.info { 
   color: #990000;
   font-family: Arial, Helvetica, sans-serif;
@@ -193,13 +198,22 @@ div.titlebar {
 }
 /* text in the title bar */
 div.tbar-text { 
-  font-size:32px; 
+  font-size:30px; 
   font-family:Meta Bold Roman;
-  font-weight: bold;
+/*  font-weight: bold;*/
   letter-spacing: -1px;
   line-height: 50px;
-  padding-left:20px;
   z-index:2;
+}
+div.titleleft { 
+  width:375px;
+  text-align:right;
+/*border:1px solid yellow;*/
+}
+div.titleright { 
+  left:380px;
+  text-align:left;
+  padding-left:5px;
 }
 
 /* background color on left side */
@@ -272,7 +286,7 @@ a#genrefiction    { color: #990000; }
 a#earlymodern     { color: #990066; }
 a#worldwar1       { color: #330099; }
 a#nativeamerican  { color: #003399; }
-a#africanamerican { color: #009966; }
+a#abolition	  { color: #009966; }
 a#advocacy        { color: #339900; }
 
 div.copyright { 
@@ -314,6 +328,7 @@ table.searchnav {
   height:20px;
   text-align:center;
   width:100%;
+  clear:both;
 }
 table.searchnav td { 
   width:25%; 
@@ -323,11 +338,12 @@ form#jumpnav { float:right; }
 
 th { text-align:left; }
 
-/* search results */
+/* search/browse results */
 table.search { width:100%; border-collapse: collapse;}
 table.search td { border-bottom: 1px solid #000000;}
 td.hits, th.hits { text-align:center; padding-right:5px;}
 table.browse { width:100%;}
+.num { width:10px; text-align:right;}
 
 /* styling tranformed TEI content */
 
@@ -384,3 +400,5 @@ span.dot, span.star { padding-left: 2em; padding-right: 2em; font-size: 125%;}
 
 ul.relative-toc { margin:0px;  }
 ul.relative-toc li { list-style-type: none; }
+
+span.match { font-weight:bold; background-color:#990000; color:#FFFFFF; }
