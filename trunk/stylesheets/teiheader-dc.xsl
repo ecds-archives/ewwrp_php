@@ -10,7 +10,7 @@
 
   <xsl:template match="/">
     <dc>
-      <xsl:apply-templates select="//bibl"/>
+      <!-- <xsl:apply-templates select="//bibl"/> -->
       <xsl:apply-templates select="//teiHeader"/>
     <dc:type>Text</dc:type>
     <dc:format>text/xml</dc:format>
@@ -40,7 +40,6 @@
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
-
 
 
   <xsl:template match="publisher[not(parent::imprint)]">
@@ -81,17 +80,14 @@
 
   <xsl:template match="sourceDesc/bibl">
     <xsl:element name="dc:source">
-      <!-- process all elements, in this order. -->
-      <xsl:apply-templates select="author"/>
-      <xsl:apply-templates select="title"/>
-      <xsl:apply-templates select="editor"/>
-      <xsl:apply-templates select="pubPlace"/>
-      <xsl:apply-templates select="publisher"/>
-      <xsl:apply-templates select="date"/>
-      <!-- in case source is in plain text, without tags -->
-      <xsl:apply-templates select="text()"/>
+      <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
+
+  <!-- apply templates normally inside the bibl -->
+  <xsl:template match="bibl/author|bibl/title|bibl/pubPlace|bibl/publisher|bibl/date">
+    <xsl:apply-templates/>
+  </xsl:template> 
 
   <!-- formatting for bibl elements, to generate a nice citation. -->
   <!--  <xsl:template match="bibl/author"><xsl:apply-templates/>. </xsl:template>
@@ -133,6 +129,17 @@
   <!-- ignore other rs types for now -->
   <xsl:template match="profileDesc/creation/rs[@type!='geography']"/>
 
+
+  <!-- subject headings -->
+  <xsl:template match="keywords/list/item">
+    <xsl:element name="dc:subject">
+      <xsl:if test="ancestor::keywords/@scheme">
+        <xsl:attribute name="scheme"><xsl:value-of select="ancestor::keywords/@scheme"/></xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
   <!-- ignore these: encoding specific information -->
   <xsl:template match="encodingDesc/tagsDecl"/>
   <xsl:template match="encodingDesc/refsDecl"/>
@@ -141,7 +148,19 @@
 
   <!-- normalize space for all text nodes -->
   <xsl:template match="text()">
+    <!-- normalization will lose beginning & ending spaces, so add them back if they are present -->
+    <xsl:if test="starts-with(., ' ')">
+      <xsl:text> </xsl:text>
+    </xsl:if>
     <xsl:value-of select="normalize-space(.)"/>
+
+    <xsl:variable name="len">
+      <xsl:value-of select="string-length(.)"/>
+    </xsl:variable>
+    <xsl:if test="substring(., $len, $len+1) = ' '">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+
   </xsl:template>
 
 
