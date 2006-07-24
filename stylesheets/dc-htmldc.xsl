@@ -5,6 +5,10 @@
 
   <xsl:output method="xml" omit-xml-declaration="yes"/>
 
+
+  <xsl:variable name="lcletters">abcdefghijklmnopqrstuvwxyz</xsl:variable>
+  <xsl:variable name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
+
   <xsl:template match="/">
     <xsl:element name="link">
       <xsl:attribute name="rel">schema.DC</xsl:attribute>
@@ -26,6 +30,12 @@
       <xsl:attribute name="name">
         <xsl:value-of select="concat('DC.', local-name())"/>
       </xsl:attribute>
+      <xsl:if test="@scheme">
+        <xsl:attribute name="scheme">
+          <!-- convert scheme to upper case, if it is not already -->
+          <xsl:value-of select="translate(@scheme, $lcletters, $ucletters)"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:choose>
         <xsl:when test="local-name() = 'format'">
           <xsl:attribute name="scheme">DCTERMS.IMT</xsl:attribute>
