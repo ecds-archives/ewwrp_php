@@ -45,7 +45,7 @@
     Note: use | to delimit node names, so partial node names will not match. 
 -->
 <!-- <xsl:param name="next-note-list">|caption|head|</xsl:param> -->
-<xsl:param name="next-note-list"></xsl:param>
+<xsl:param name="next-note-list">|caption|head|</xsl:param>
 
 
 <!-- use overLib.js to display footnotes as pop-ups (in addition to
@@ -77,7 +77,7 @@
   characters & mark-up will display in pop-up version of footnote) -->
   <xsl:element name="script">
     <xsl:attribute name="type">text/javascript</xsl:attribute>
-    <xsl:apply-templates select="//note" mode="javascript"/>
+    <xsl:apply-templates select="//note[not(parent::note)]" mode="javascript"/>
   </xsl:element>
 
   <!--  <xsl:element name="div">
@@ -109,15 +109,18 @@
      <xsl:attribute name="href"><xsl:value-of select="concat('#', @target)"/></xsl:attribute>
      <xsl:attribute name="class">footnote</xsl:attribute>
      <xsl:if test="$use-popups = 'true'">
-       <xsl:apply-templates select="key('note-by-id', ./@target)"/>
+      <xsl:apply-templates select="key('note-by-id', ./@target)" mode="ref"/>
      </xsl:if>
      <xsl:apply-templates/>
   </a>
   </xsl:if>
 </xsl:template>
 
+<!-- ignore notes in normal mode -->
+<xsl:template match="note"/>
 
-<xsl:template match="note">
+
+<xsl:template match="note" mode="ref">
   <xsl:param name="mode">normal</xsl:param>	<!-- also possible: next-note -->
   <!-- Check the previous sibling; if using next-note and
        next-note-list, use sibling name to determine if we should not
@@ -179,7 +182,7 @@
       <xsl:attribute name="class">footnote</xsl:attribute>
       <xsl:if test="$use-popups = 'true'">
         <xsl:attribute name="onMouseOver">
-          <xsl:text>overlib(</xsl:text><xsl:value-of select="@id"/><xsl:text>, </xsl:text><xsl:if test="$popup-captions = 'true'"><xsl:text>CAPTION, 'Footnote', '</xsl:text><xsl:value-of select="$number"/></xsl:if><xsl:text>', WIDTH, </xsl:text><xsl:value-of select="$popup-width"/><xsl:value-of select="$cssopts"/><xsl:value-of select="$STICKY"/><xsl:text>);</xsl:text> 
+          <xsl:text>overlib(</xsl:text><xsl:apply-templates select="@id" mode="jsid"/><xsl:text>, </xsl:text><xsl:if test="$popup-captions = 'true'"><xsl:text>CAPTION, 'Footnote', '</xsl:text><xsl:value-of select="$number"/></xsl:if><xsl:text>', WIDTH, </xsl:text><xsl:value-of select="$popup-width"/><xsl:value-of select="$cssopts"/><xsl:value-of select="$STICKY"/><xsl:text>);</xsl:text> 
         </xsl:attribute>
         <xsl:attribute name="onMouseOut">
           <xsl:text>nd();</xsl:text>
@@ -222,11 +225,11 @@
      processed -->
 <xsl:template name="endnotes">
 <!-- only display endnote div if there actually are notes -->
-  <xsl:if test="count(//note[@place!='inline']) > 0">
+  <xsl:if test="count(//note) > 0">
     <xsl:element name="div">
       <xsl:attribute name="class">endnote</xsl:attribute>
       <xsl:element name="h2">Notes</xsl:element>
-      <xsl:apply-templates select="//note[@place!='inline']" mode="end"/>
+      <xsl:apply-templates select="//note[not(parent::note)]" mode="end"/>
     </xsl:element>
 
    <!-- if we are using popups, give credit for using overLib -->
@@ -250,7 +253,11 @@
      link back to ref in the text 
      (do not handle inline notes here)
 -->
-<xsl:template match="note[@place!='inline']" mode="end">
+<xsl:template match="note" mode="end">
+  <div>
+    <xsl:if test="@resp">
+      <xsl:attribute name="class"><xsl:value-of select="@resp"/></xsl:attribute>
+    </xsl:if>
   <xsl:variable name="number">
     <xsl:choose>
       <!-- config parameter set to use n attribute for note number -->
@@ -337,9 +344,15 @@
     </table>
   </xsl:if>    
   </xsl:element> <!-- p -->
-
+</div>
 </xsl:template>
 
+<xsl:template match="note/note" mode="endnote">
+  <span>
+    <xsl:attribute name="class"><xsl:value-of select="@resp"/></xsl:attribute>
+    <xsl:apply-templates mode="endnote"/>
+  </span>
+</xsl:template>
 
 <xsl:template match="note/p" mode="endnote">
    <xsl:apply-templates/><br/>
@@ -360,10 +373,15 @@
 <!-- endnote mode: convert turn a ref inside a note into a link -->
 <xsl:template match="note/ref" mode="endnote">
   <xsl:element name="a">
-    <xsl:attribute name="href">cti-tgfwfw-<xsl:value-of select="@target"/></xsl:attribute>
+    <xsl:attribute name="href">content.php?level=div&amp;id=<xsl:value-of select="@target"/></xsl:attribute>
     <xsl:attribute name="target">_top</xsl:attribute>
     <xsl:apply-templates/>
   </xsl:element>
+</xsl:template>
+
+<!-- if a hi tag occurs at the note level (not inside a p or l), explicitly call the normal mode hi template -->
+<xsl:template match="note/hi" mode="endnote">
+  <xsl:apply-templates select="."/>
 </xsl:template>
 
 <!-- javascript modes: convert turn a ref inside a note into a link
@@ -387,7 +405,7 @@
 
   <!-- enclose text in a javascript variable -->
   <xsl:template match="note" mode="javascript">
-    var <xsl:value-of select="@id"/> = '<xsl:apply-templates mode="javascript"/>';
+    var <xsl:apply-templates select="@id" mode="jsid"/> = '<xsl:apply-templates mode="javascript"/>';
   </xsl:template>
 
   <!-- escape any single quotes so it doesn't mess up the javascript string -->
@@ -402,15 +420,49 @@
   </xsl:template>
 
 <!-- note: for some reason, was losing spacing before & after text -->
-<xsl:template match="hi" mode="javascript">
+<xsl:template match="hi[@r!='roman']" mode="javascript">
  <xsl:text> </xsl:text>
- <span>
-   <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
-   <xsl:apply-templates/>
- </span>
+ <xsl:element name="span">
+   <xsl:attribute name="class"><xsl:value-of select="@r"/></xsl:attribute>
+   <xsl:apply-templates mode="javascript"/>
+ </xsl:element>
   <xsl:text> </xsl:text>
 </xsl:template>
 
+
+<!-- convert id string to a valid javascript variable name
+	currently handles:  . - 
+-->
+<xsl:template match="@id" mode="jsid">
+
+  <!-- starting value of id string -->
+  <xsl:variable name="string"><xsl:value-of select="."/></xsl:variable>
+
+  <!-- replace . with _ -->
+  <xsl:variable name="period"><xsl:text>.</xsl:text></xsl:variable>
+  <xsl:variable name="underscore"><xsl:text>_</xsl:text></xsl:variable>
+  <xsl:variable name="step1">
+    <xsl:call-template name="replace-string"> 
+      <xsl:with-param name="string" select="$string"/>
+      <xsl:with-param name="from" select="$period"/>
+      <xsl:with-param name="to" select="$underscore"/>
+    </xsl:call-template>
+  </xsl:variable> 
+
+  <!-- replace - with _ -->
+  <xsl:variable name="dash"><xsl:text>-</xsl:text></xsl:variable>
+  <xsl:variable name="step2">
+    <xsl:call-template name="replace-string"> 
+      <xsl:with-param name="string" select="$step1"/>
+      <xsl:with-param name="from" select="$dash"/>
+      <xsl:with-param name="to" select="$underscore"/>
+    </xsl:call-template>
+  </xsl:variable> 
+
+  <!-- if more replacements are needed, add more step variables & output final step -->
+
+  <xsl:value-of select="$step2"/>
+</xsl:template>
 
 
 </xsl:stylesheet>
