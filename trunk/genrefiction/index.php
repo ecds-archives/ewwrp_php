@@ -1,6 +1,6 @@
 <?php
 
-$title = "Women's Genre Fiction Project";
+$title = "Women's Genre Fiction|Project";	// | determines where to center text
 $collname = "Genre Fiction Collection";
 $collection = "Genre Fiction";
 
