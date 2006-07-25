@@ -26,8 +26,8 @@ if ($title == '') {
 $query = "let \$a := //${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
-let \$content := (if (exists(\$a/div|\$a/titlePage)) then
-  <content>{(\$a/div|\$a/titlePage)[1]}</content>
+let \$content := (if (exists(\$a//div|\$a//titlePage)) then
+  <content>{((\$a/div[not(./div)],\$a//div[not(./div)])|\$a//titlePage)[1]}</content>
 else 
   <content>
   {\$a/preceding-sibling::pb[1]}{\$a}
@@ -39,25 +39,34 @@ return <TEI.2>
     {\$root//sourceDesc}
   </teiHeader>
   <relative-toc>
-    {for \$d in (\$a/ancestor::TEI.2|\$a/ancestor::front|\$a/ancestor::titlePage|\$a/ancestor::body|\$a/ancestor::back|\$a/ancestor::text|\$a/ancestor::group|\$a/ancestor::div|\$a|\$a/div[1])
+    {for \$d in (\$a/ancestor::TEI.2|\$a/ancestor::front|\$a/ancestor::titlePage|\$a/ancestor::body|\$a/ancestor::back|\$a/ancestor::text|\$a/ancestor::group|\$a/ancestor::div|\$a)
      return <item name='{name(\$d)}'>{\$d/@*}{\$d/head}
+	{\$d/front/titlePage/docTitle/titlePart[@type='main']}
         <parent>{\$d/../@id}{name(\$d/..)}</parent>
       </item>}
   </relative-toc>
-  <toc>{for \$i in \$a//(front|body|back|text|group|titlePage|div)[@id!='$id']
-      return <toc-item name='{name(\$i)}'>{\$i/@*}{\$i/head}
+  <toc>{for \$i in \$a//(front|body|back|text|group|titlePage|div)[@id!='$id' and not(exists(ancestor::q))]
+      return <item name='{name(\$i)}'>{\$i/@*}{\$i/head}
       <parent>{\$i/../@id}{name(\$i/..)}</parent>
-     </toc-item>}
+     </item>}
   </toc>
   <nav>
-    {for \$s in (\$a/preceding-sibling::div[last()]|\$a/preceding-sibling::titlePage[last()])[1]
- 	return <first name='{name(\$s)}'>{\$s/@*}</first>}
-    {for \$s in (\$a/preceding-sibling::div[1]|\$a/preceding-sibling::titlePage[1])[last()]
- 	return <prev name='{name(\$s)}'>{\$s/@*}</prev>}
-    {for \$s in (\$a/following-sibling::div[1]|\$a/following-sibling::titlePage[1])[1]
- 	return <next name='{name(\$s)}'>{\$s/@*}</next>}
-    {for \$s in (\$a/following-sibling::div[last()]|\$a/following-sibling::titlePage[last()])[1]
- 	return <last name='{name(\$s)}'>{\$s/@*}</last>}
+    {for \$s in (\$a/preceding-sibling::div[last()]|\$a/preceding-sibling::titlePage[last()]|\$a/preceding-sibling::text[last()])[1]
+ 	return <first name='{name(\$s)}'>{\$s/@*}
+	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
+	</first>}
+    {for \$s in (\$a/preceding-sibling::div[1]|\$a/preceding-sibling::titlePage[1]|\$a/preceding-sibling::text[1])[last()]
+ 	return <prev name='{name(\$s)}'>{\$s/@*}
+	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
+	</prev>}
+    {for \$s in (\$a/following-sibling::div[1]|\$a/following-sibling::titlePage[1]|\$a/following-sibling::text[1])[1]
+ 	return <next name='{name(\$s)}'>{\$s/@*}
+	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
+	</next>}
+    {for \$s in (\$a/following-sibling::div[last()]|\$a/following-sibling::titlePage[last()]|\$a/following-sibling::text[last()])[1]
+ 	return <last name='{name(\$s)}'>{\$s/@*}
+	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
+	</last>}
   </nav>
   {\$content}
 </TEI.2>
@@ -66,7 +75,8 @@ return <TEI.2>
 
 
 $xsl = "$baseurl/stylesheets/content.xsl";
-$xsl_params = array('url' => "content.php?level=$node&id=$id");
+$xsl_params = array("url" => "content.php?level=$node&id=$id",
+		    "node" => $node, "id" => $id);
 if($runninghdr) $xsl_params{"running-header"} = $runninghdr;
 
 
