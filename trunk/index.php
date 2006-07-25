@@ -7,9 +7,15 @@ $baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";
 $page = "index";
 
 if ($title == '') {
-  $title = "Emory Women Writers Resource Project";
+  $title = "Emory Women Writers|Resource Project";
   $collname = "EWWRP";
  }
+
+// | determines how to center title
+$t = explode('|', $title);
+//$t[1] = "Emory Women Writers";
+//$t[2] = "Resource Project";
+$title = str_replace("|", " ", $title);
 
 ?>
 <html>
@@ -25,9 +31,8 @@ if ($title == '') {
 
 <div class="titlebar tbar-left"></div>
 <div class="titlebar tbar-right"></div>
-<div class="titlebar tbar-text">
-<?= $title ?>
-</div>
+<div class="titlebar tbar-text titleleft"><?= $t[0] ?></div>
+<div class="titlebar tbar-text titleright"><?= $t[1] ?></div>
 
 
 <? include("nav.php") ?>
@@ -43,15 +48,18 @@ $xpath = new domxpath($imgdoc);
 // filter on collection if there is one defined
 if ($collection) $filter = "[@collection='$collection']";
 $imglist = $xpath->query("/images/div$filter");
-// generate random index # based on number of matching images
-$index = rand(0, ($imglist->length - 1));
-
-// create a new output domdoc, and use the random index to insert image div
-$odoc = new DOMDocument();
-$onode = $odoc->importNode($imglist->item($index), TRUE);
-$odoc->appendChild($onode);
-print $odoc->saveXML();
-
+if ($imglist->length) {
+  // generate random index # based on number of matching images
+  $index = rand(0, ($imglist->length - 1));
+  
+  // create a new output domdoc, and use the random index to insert image div
+  $odoc = new DOMDocument();
+  $onode = $odoc->importNode($imglist->item($index), TRUE);
+  $odoc->appendChild($onode);
+  print $odoc->saveXML();
+ } else {
+  print "<div class='image'>(no images yet for this collection)</div>";
+ }
 ?>
 
 <!-- white partially-opaque background for text about image -->
