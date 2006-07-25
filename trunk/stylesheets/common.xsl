@@ -67,9 +67,50 @@
 <!-- table of contents, relative table of contents at item view level -->
 
 <xsl:key name="item-by-parentid" match="item[parent/@id != '']" use="parent/@id"/>
+<xsl:key name="item-by-parentid-and-parent" match="item[parent/@id != '']" 
+  use="concat(parent/@id, ':', name(..))"/>
 
-  <xsl:template match="relative-toc/item|TEI.2/item|toc-item">
+<xsl:template match="relative-toc/item|TEI.2/item|item[@name='text' and parent='group']|toc/item">
     <xsl:variable name="label">
+      <xsl:call-template name="toc-label"/>
+    </xsl:variable>
+
+    <li>
+      <xsl:choose>
+        <!-- if this is the currently displayed node, don't make it a link -->
+        <xsl:when test="@id = //content/*/@id">	<!-- could be div or titlePage -->
+          <xsl:value-of select="$label"/>
+        </xsl:when>
+        <xsl:when test="@id = $id">
+          <!-- this is the current node (may be displaying first content-level item under this node) -->
+          <xsl:value-of select="$label"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <a>
+            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+            <xsl:value-of select="$label"/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+
+        <!-- in full TOC, only show one level in the back & front matter -->
+        <xsl:if test="$mode != 'toc' or (parent != 'back' and parent != 'front')">
+          <!-- if there are nodes under this one, display them now -->
+          <xsl:if test="key('item-by-parentid-and-parent', concat(@id, ':', name(..)))">
+            <ul>
+              <xsl:apply-templates select="key('item-by-parentid-and-parent', 
+                                           concat(@id, ':', name(..)))"/>
+            </ul>
+          </xsl:if>
+        </xsl:if>
+
+    </li>
+
+  </xsl:template>
+
+
+  <!-- generate nice display name for toc item -->
+  <xsl:template name="toc-label">
       <xsl:choose>
         <xsl:when test="@name = 'front'">front matter</xsl:when>
         <xsl:when test="@name = 'back'">back matter</xsl:when>
@@ -78,6 +119,10 @@
           <xsl:if test="@type">
             : <xsl:value-of select="@type"/>
         </xsl:if>
+      </xsl:when>
+      <xsl:when test="@name = 'text' and parent='group'">
+        <!-- texts under group (composite text) : display title from titlepage -->
+        <xsl:apply-templates select="titlePart"/>
       </xsl:when>
       <xsl:when test="@name = 'div'">
         <!-- only display type if it is not duplicated in the head (e.g., chapter) -->
@@ -92,38 +137,10 @@
       </xsl:if>
       </xsl:when>
     </xsl:choose>
-    </xsl:variable>
-
-    <li>
-      <xsl:choose>
-        <!-- if this is the currently displayed node, don't make it a link -->
-        <xsl:when test="@id = //content/*/@id">	<!-- could be div or titlePage -->
-          <xsl:value-of select="$label"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <a>
-            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
-            <xsl:value-of select="$label"/>
-          </a>
-        </xsl:otherwise>
-      </xsl:choose>
-
-     <!-- in full TOC, only show one level in the back & front matter -->
-    <xsl:if test="$mode != 'toc' or (parent != 'back' and parent != 'front')">
-      <!-- if there are nodes under this one, display them now -->
-      <xsl:if test="key('item-by-parentid', @id)">
-        <ul>
-          <xsl:apply-templates select="key('item-by-parentid', @id)"/>
-        </ul>
-      </xsl:if>
-    </xsl:if>
-
-    </li>
-
   </xsl:template>
 
   <!-- nodes that don't display, and whose children shouldn't be indented -->
-  <xsl:template match="item[@name='TEI.2' or @name='text' or @name='body' or @name='group']">
+  <xsl:template match="item[@name='TEI.2'or @name='body' or @name='group']|item[@name='text' and parent!='group']">
     <xsl:apply-templates select="key('item-by-parentid', @id)"/>
   </xsl:template>
 
