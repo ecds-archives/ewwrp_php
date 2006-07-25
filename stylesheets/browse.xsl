@@ -104,7 +104,12 @@
   </xsl:template>
 
   <xsl:template match="item/hits" mode="table">
-    <td class="hits"><a><xsl:apply-templates select="."/></a></td>
+    <td class="hits">
+      <a>
+        <xsl:attribute name="href">kwic.php?id=<xsl:value-of select="../id"/>&amp;keyword=<xsl:value-of select="$keyword"/></xsl:attribute>
+        <xsl:apply-templates select="."/>
+      </a>
+    </td>
     <xsl:value-of select="$nl"/>
   </xsl:template>
 
