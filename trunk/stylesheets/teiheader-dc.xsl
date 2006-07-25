@@ -5,9 +5,6 @@
 
   <xsl:output method="xml" omit-xml-declaration="yes"/>
 
-
-  <!-- for Lincoln sermons, info for each individual sermon is in the bibl, at the div1 level -->
-
   <xsl:template match="/">
     <dc>
       <!-- <xsl:apply-templates select="//bibl"/> -->
@@ -16,11 +13,6 @@
     <dc:format>text/xml</dc:format>
     </dc>
   </xsl:template>
-
-  <!-- title for individual sermons appears at div1 level; ignore title in titleStmt -->
-  <xsl:template match="titleStmt/title"/>
-  <!-- title also appears at individual sermon level; don't duplicate -->
-  <xsl:template match="titleStmt/author"/>
 
   <xsl:template match="title">
     <xsl:element name="dc:title">
@@ -31,7 +23,7 @@
 
   <xsl:template match="author">
     <xsl:element name="dc:creator">
-      <xsl:apply-templates/>
+      <xsl:apply-templates/> <xsl:if test="name/@reg != name"> [<xsl:value-of select="name/@reg"/>]</xsl:if>
     </xsl:element>
   </xsl:template>
 
@@ -49,7 +41,7 @@
   </xsl:template>
 
 
-  <!-- ignore source publisher & date for now; include in dc:source -->
+  <!-- ignore source publisher & date for now; included in dc:source -->
   <xsl:template match="imprint/publisher"/>
   <xsl:template match="bibl//date"/>
 
@@ -88,25 +80,6 @@
   <xsl:template match="bibl/author|bibl/title|bibl/pubPlace|bibl/publisher|bibl/date">
     <xsl:apply-templates/>
   </xsl:template> 
-
-  <!-- formatting for bibl elements, to generate a nice citation. -->
-  <!--  <xsl:template match="bibl/author"><xsl:apply-templates/>. </xsl:template>
-   <xsl:template match="bibl/title"><xsl:apply-templates/>. </xsl:template> 
-   <xsl:template match="bibl/editor">
-    <xsl:text>Ed. </xsl:text><xsl:apply-templates/><xsl:text>. </xsl:text> 
-  </xsl:template>
-  <xsl:template match="bibl/pubPlace">
-	<xsl:if test=". != ''">
-          <xsl:apply-templates/>:
-        </xsl:if>
-  </xsl:template>
-  <xsl:template match="bibl/publisher">
-    <xsl:if test=". != ''">
-      <xsl:apply-templates/>, 
-    </xsl:if>
-  </xsl:template>
-  <xsl:template match="bibl/date"><xsl:apply-templates/>.</xsl:template> -->
-
 
   <xsl:template match="encodingDesc/projectDesc">
     <xsl:element name="dc:description">
