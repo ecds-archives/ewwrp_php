@@ -7,7 +7,7 @@
 
   <xsl:output method="xml" omit-xml-declaration="yes"/>
 
-  <xsl:template match="context/p|context/l" mode="kwic">
+  <xsl:template match="context/*" mode="kwic">
     <p class="kwic">
       <xsl:choose>
         <xsl:when test="count(.//match) > 1">
@@ -70,6 +70,10 @@
        </xsl:otherwise>
     </xsl:choose>
 
+    <!-- without this, space between two matching words next to each other gets lost -->
+    <xsl:if test="name(following-sibling::*[1]) = 'match'">
+      <xsl:text> </xsl:text>
+    </xsl:if>
 
     <xsl:apply-templates select="following-sibling::w[1]" mode="kwic-next">
       <xsl:with-param name="count">
