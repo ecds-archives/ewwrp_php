@@ -8,6 +8,11 @@
 
 <xsl:param name="mode"/>
 <xsl:param name="url"/>
+
+<!-- node and id that were requested -->
+<xsl:param name="node"/>
+<xsl:param name="id"/>
+
 <xsl:param name="running-header">off</xsl:param> 
   <!-- on/off : show or hide running header in page breaks -->
 
@@ -20,9 +25,11 @@
 <xsl:variable name="newline"><xsl:text>
 </xsl:text></xsl:variable>
 
-  <xsl:output method="xml"/>
+  <xsl:output method="xml" omit-xml-declaration="yes"/>
 
   <xsl:template match="/">
+    <xsl:call-template name="footnote-init"/>
+
     <xsl:apply-templates select="//teiHeader"/>
 
     <xsl:apply-templates select="//toc"/>
@@ -32,6 +39,8 @@
     <xsl:call-template name="running-header-toggle"/>
     <div class="xmlcontent">
       <xsl:apply-templates select="//content"/>
+
+      <xsl:call-template name="endnotes"/>
     </div>
 
     <!-- also supply navigation after content, if it is of any length -->
@@ -51,10 +60,11 @@
 
 
   <xsl:template match="toc">
-    <xsl:if test="count(toc-item) > 0">	<!-- don't generate an empty list -->
+    <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
     <h2>Table of Contents</h2>
       <ul>
-        <xsl:apply-templates select="toc-item"/>
+        <!-- start with top-level items, which are children of the requested node -->
+        <xsl:apply-templates select="item[parent/@id = $id]"/>
       </ul>
     </xsl:if>
 
@@ -96,6 +106,9 @@
           <xsl:if test="@type">
             (<xsl:value-of select="@type"/>)
           </xsl:if>
+        </xsl:when>
+        <xsl:when test="@name = 'text'">
+          <xsl:value-of select="titlePart"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="@type"/>
