@@ -4,6 +4,12 @@
 a {
   color:#003399; 
 }
+/* highlight current collection */
+a#nativeamerican { 
+  background-color:#003399; 
+  color:#FFFFFF; 
+}
+
 div.header { 
   background-color: #003399;
 }
@@ -39,6 +45,6 @@ div.searchnav a:hover {
   color: #FF9933;
 }
 
-
-
- 
+span.match { 
+  background-color:#003399; 
+} 

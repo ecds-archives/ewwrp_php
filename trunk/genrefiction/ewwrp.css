@@ -4,6 +4,13 @@
 a {
   color:#990000; 
 }
+
+/* highlight current collection */
+a#genrefiction { 
+  background-color:#990000; 
+  color:#FFFFFF; 
+}
+
 div.header { 
   background-color: #990000;
 }
@@ -39,6 +46,7 @@ div.searchnav a:hover {
   color: #FF9933;
 }
 
-
-
+span.match { 
+  background-color:#003399; 
+} 
  
