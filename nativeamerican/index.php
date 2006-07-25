@@ -1,7 +1,7 @@
 <?php
 
 $collname = "Native American Collection";
-$title = $collname;
+$title = "Native American|Collection";	// | determines where to center text
 $collection = "Native American";
 
 // add parent directory to path
