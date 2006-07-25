@@ -27,6 +27,7 @@ return <TEI.2>
 {\$doc/teiHeader}
 {for \$a in \$doc//(front|body|back|text|group|titlePage|div)
   return <item name='{name(\$a)}'>{\$a/@*}{\$a/head}
+  {\$a/front/titlePage/docTitle/titlePart[@type='main']}
       <parent>{\$a/../@id}{name(\$a/..)}</parent>
       </item>}
 </TEI.2>";
@@ -35,13 +36,14 @@ $xsl = "$baseurl/stylesheets/toc.xsl";
 
 $xdb->xquery($query);
 
+$doctitle = $xdb->findnode("title");
 
 ?>
 
 
 <html>
  <head>
-    <title><?= $title ?></title>
+    <title><?= "$title : $doctitle" ?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 <?
