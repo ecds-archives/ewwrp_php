@@ -1,3 +1,5 @@
+@import "footnotes.css";
+
 body { 
   padding:0px; 
   margin:0px; 
@@ -69,7 +71,7 @@ div.leftcol-content {
 
 div.lcontent { 
   position:fixed;
-  width:250px; 
+  width:255px; 
 }
 
 div.content { 
