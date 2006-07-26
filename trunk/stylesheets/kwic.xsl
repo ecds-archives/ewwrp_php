@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:exist="http://exist.sourceforge.net/NS/exist"
   version="1.0">
 
   <xsl:output method="xml"/>
 
 
   <xsl:param name="mode">kwic</xsl:param>
+  <xsl:param name="url_suffix"/>
+
   <xsl:include href="common.xsl"/>
   <xsl:include href="kwic-words.xsl"/>
 
@@ -36,7 +37,7 @@
       </xsl:variable>
       <p>
         <a>
-          <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+          <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/>&amp;<xsl:value-of select="$url_suffix"/></xsl:attribute>
           <xsl:value-of select="$label"/>
         </a>
       </p>
@@ -67,8 +68,5 @@
     <p><xsl:apply-templates select="." mode="kwic"/></p>
   </xsl:template>
 
-  <xsl:template match="exist:match">
-    <span class="match"><xsl:apply-templates/></span>
-  </xsl:template>
 
 </xsl:stylesheet>

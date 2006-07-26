@@ -23,6 +23,12 @@ if ($title == '') {
   $collname = "EWWRP";
  }
 
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($collname != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
+
 
 // what should be displayed here?  tgfw shows top-level TOC
 
@@ -59,10 +65,13 @@ return <TEI.2>
 
 $xdb->xquery($xquery);
 $doctitle = $xdb->findnode("title");
+// truncate document title for html header
+$doctitle = str_replace(", an electronic edition", "", $doctitle);
+
 
 print "<html>
  <head>
-    <title>$title : $doctitle : Keyword in Context</title>
+    <title>$htmltitle : $doctitle : Keyword in Context</title>
     <link rel='stylesheet' type='text/css' href='ewwrp.css'>
     <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'>";
 
@@ -72,9 +81,10 @@ include("nav.php");
 print "<div class='content'>
 <div class='title'><a href='index.php'>$title</a></div>";
 
+$xsl_params = array("url_suffix" => "keyword=$keyword");
 
 $xdb->xslBind("$baseurl/stylesheets/kwic-towords.xsl");
-$xdb->xslBind("$baseurl/stylesheets/kwic.xsl");
+$xdb->xslBind("$baseurl/stylesheets/kwic.xsl", $xsl_params);
 
 $xdb->transform();
 $xdb->printResult();
