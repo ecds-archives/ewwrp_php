@@ -13,6 +13,7 @@ global $collection;
 $baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
 $docname = $_GET["id"];
+$keyword = $_GET["keyword"];
 // need a filter if we are in a collection?
 
 if ($title == '') {
@@ -33,17 +34,28 @@ return <TEI.2>
 </TEI.2>";
 
 $xsl = "$baseurl/stylesheets/toc.xsl";
-
+  $xsl_params = array();
+if ($keyword)
+ $xsl_params{"url_suffix"} = "keyword=$keyword";
 $xdb->xquery($query);
 
 $doctitle = $xdb->findnode("title");
+// truncate document title for html header
+$doctitle = str_replace(", an electronic edition", "", $doctitle);
+
+
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($collname != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
 
 ?>
 
 
 <html>
  <head>
-    <title><?= "$title : $doctitle" ?></title>
+    <title><?= "$htmltitle : $doctitle" ?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 <?
@@ -63,7 +75,7 @@ $xdb->printResult();
 <div class="title"><a href="index.php"><?= $title ?></a></div>
 
 <?
-$xdb->xslTransform($xsl);
+$xdb->xslTransform($xsl, $xsl_params);
 $xdb->printResult();
 ?>
 

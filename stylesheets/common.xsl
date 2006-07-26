@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                version="1.0">
+  xmlns:exist="http://exist.sourceforge.net/NS/exist"
+  exclude-result-prefixes="exist" version="1.0">
 
   <xsl:include href="utils.xsl"/>
+
+  <xsl:param name="url_suffix"/>
+  <xsl:variable name="myurlsuffix"><xsl:if test="$url_suffix != ''">&amp;<xsl:value-of select="$url_suffix"/></xsl:if></xsl:variable>
 
   <xsl:template match="teiHeader">
     <h1><xsl:apply-templates select="//titleStmt/title"/></h1>
@@ -22,7 +26,7 @@
     </xsl:when>
     <xsl:otherwise>
       <a>
-        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/></xsl:attribute>
+        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
         <b><xsl:apply-templates/></b>
       </a>
     </xsl:otherwise>
@@ -34,10 +38,15 @@
     <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(.)"/></xsl:attribute>
     <xsl:apply-templates/>
   </a>
+
+  <!-- if the regularized version of author name is different, display it -->
+  <xsl:if test="@reg != .">
   [<a>
     <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(@reg)"/></xsl:attribute>
     <xsl:value-of select="@reg"/>
   </a>]
+  </xsl:if>
+  
 </xsl:template>
 
 
@@ -87,7 +96,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a>
-            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
             <xsl:value-of select="$label"/>
           </a>
         </xsl:otherwise>
@@ -148,6 +157,11 @@
   <!-- convert line breaks into spaces when building TOC -->
   <xsl:template match="head/lb|head/milestone" mode="toc">
     <xsl:text> </xsl:text>
+  </xsl:template>
+
+
+  <xsl:template match="exist:match">
+    <span class="match"><xsl:apply-templates/></span>
   </xsl:template>
 
 
