@@ -9,7 +9,8 @@ $page = "index";
 if ($title == '') {
   $title = "Emory Women Writers|Resource Project";
   $collname = "EWWRP";
- }
+}
+
 
 // | determines how to center title
 $t = explode('|', $title);
@@ -17,10 +18,17 @@ $t = explode('|', $title);
 //$t[2] = "Resource Project";
 $title = str_replace("|", " ", $title);
 
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($collname != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
+
+
 ?>
 <html>
  <head>
-    <title><?= $title ?></title>
+    <title><?= $htmltitle ?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 </head>
