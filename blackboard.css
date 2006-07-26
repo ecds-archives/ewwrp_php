@@ -1,0 +1,17 @@
+@import "ewwrp.css";
+
+/* hide elements which are unnecessary for blackboard view */
+div.header, div.menu, div.leftcol, div.content div.title { 
+  display:none; 
+}
+div.content { margin-left:25px; }
+
+/* Identify source of the text.   FIXME: check wording */
+body:after { 
+  content: "This document provided via the Emory Women Writers Resource Project"; 
+  display: block; 
+  text-align: center; 
+  border-top: solid thick #000000; 
+}
+
+

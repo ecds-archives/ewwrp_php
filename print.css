@@ -1,19 +1,17 @@
 @import "ewwrp.css";
+@import "blackboard.css";
+
+/* print view is very similar to blackboard view, with a few more
+   things hidden & links colored black.
+*/
+
 
 /* hide elements which are unnecessary for print view */
-div.header, div.menu, div.leftcol, table.searchnav, div.content div.title, p.pagebreak-toggle, div.doclinks { 
+table.searchnav, p.pagebreak-toggle, div.doclinks { 
   display:none; 
 }
-div.content { margin-left:25px; }
 
 a { color:#000000; }
 
-/* Identify source of the text.   FIXME: check wording */
-body:after { 
-  content: "This document provided via the Emory Women Writers Resource Project"; 
-  display: block; 
-  text-align: center; 
-  border-top: solid thick #000000; 
-}
 
 
