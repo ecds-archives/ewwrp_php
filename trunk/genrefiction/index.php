@@ -1,12 +1,8 @@
 <?php
 
-$title = "Women's Genre Fiction|Project";	// | determines where to center text
-$collname = "Genre Fiction Collection";
-$collection = "Genre Fiction";
-
-// add parent directory to path
-set_include_path(get_include_path() . ":..");
-
+include("collection.php");
+// | determines where to center title
+$title = "Women's Genre Fiction|Project";
 include("../index.php");
 
 
