@@ -8,6 +8,7 @@
 
 <xsl:param name="mode"/>
 <xsl:param name="url"/>
+<xsl:param name="url_suffix"/>
 
 <!-- node and id that were requested -->
 <xsl:param name="node"/>
@@ -30,10 +31,15 @@
   <xsl:template match="/">
     <xsl:call-template name="footnote-init"/>
 
+    <!-- top-level information about this document content comes from -->
     <xsl:apply-templates select="//teiHeader"/>
-
+    <!-- table of contents for items under this node (if there are any) -->
     <xsl:apply-templates select="//toc"/>
 
+
+    <xsl:call-template name="printview"/>
+
+    <!-- navigation to sibling nodes (first/prev/next/last) -->
     <xsl:apply-templates select="//nav"/>
 
     <xsl:call-template name="running-header-toggle"/>
@@ -48,6 +54,17 @@
       <xsl:apply-templates select="//nav"/>      
     </xsl:if>
 
+  </xsl:template>
+
+  <!-- generate link to print view of current content -->
+  <xsl:template name="printview">
+    <div class="doclinks">
+      <a>
+        <xsl:attribute name="href"><xsl:value-of select="$url"/>&amp;view=print</xsl:attribute>
+        <xsl:attribute name="target">printview</xsl:attribute>	<!-- open in a new window -->
+        Print
+      </a>
+    </div>
   </xsl:template>
 
   <xsl:template match="relative-toc">
@@ -110,12 +127,22 @@
         <xsl:when test="@name = 'text'">
           <xsl:value-of select="titlePart"/>
         </xsl:when>
+        <xsl:when test="@name= 'pb'">
+          <xsl:if test="not(contains(@pages, 'page') or contains(@pages, 'Page') or contains(@pages, 'PAGE'))">
+            Page 
+          </xsl:if>
+          <xsl:value-of select="@pages"/>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="@type"/>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:text> </xsl:text> 
-      <xsl:value-of select="@n"/>
+
+      <!-- n attribute is redundant in pb case; use everywhere else -->
+      <xsl:if test="@name != 'pb'">
+        <xsl:text> </xsl:text> 
+        <xsl:value-of select="@n"/>
+      </xsl:if>
 
       <!-- arrows to help user understand relation -->
       <xsl:choose>
@@ -246,6 +273,19 @@
   <br/>
 </xsl:template>
 
+<!-- pb is main content item : display page image full size -->
+<xsl:template match="content/pb[@id = $id]">
+  <div class="figure">
+     <p><xsl:value-of select="@pages"/></p>
+
+    <xsl:element name="img">
+      <xsl:attribute name="src"><xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/></xsl:attribute>
+      <!-- only display colon & number if there is an n attribute -->
+      <xsl:attribute name="alt">page image<xsl:if test="@n != ''"> : <xsl:value-of select="@n"/></xsl:if></xsl:attribute>
+    </xsl:element>  <!-- img -->
+  </div>
+</xsl:template>
+
 <xsl:template match="pb" name="pb">
   <xsl:variable name="pagenum">
     <xsl:choose>
@@ -302,7 +342,7 @@
   <xsl:if test="@entity">
     <xsl:element name="a">		<!-- link to full size page image -->
       <xsl:attribute name="class">pageimage</xsl:attribute>
-      <xsl:attribute name="href"><xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/></xsl:attribute>
+      <xsl:attribute name="href">content.php?level=pb&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src"><xsl:value-of select="concat($thumbs-prefix, @entity, $figure-suffix)"/></xsl:attribute>
         <!-- only display colon & number if there is an n attribute -->
