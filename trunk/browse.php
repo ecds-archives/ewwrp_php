@@ -10,6 +10,18 @@ global $title;
 global $collname;
 global $collection;
 
+if ($title == '') {
+  $title = "Emory Women Writers Resource Project";
+  $collname = "EWWRP";
+ }
+
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($collname != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
+
+
 $baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
 $field = $_GET["field"];
@@ -25,10 +37,6 @@ $max = $_GET["max"];
 if ($pos == '') $pos = 1;
 if ($max == '') $max = 20;
 
-if ($title == '') {
-  $title = "Emory Women Writers Resource Project";
-  $collname = "EWWRP";
- }
 
 // filter format for profile information *only* if a collection is defined
 if ($collection) {
@@ -112,13 +120,6 @@ if ($value) {		// there is a value for search field is defined
 	let \$date := \$root//sourceDesc/bibl/date
 	$titlesort
 	return <item>{\$a}<id>{\$doc}</id>{\$auth}{\$date}</item>"; break;
-    $browse_qry = 'for $a in distinct-values(//titleStmt/author' . $ancfilter . '/name/@reg)
-	let $auth := //titleStmt/author/name[@reg=$a]
-	order by $a
-	return <item><author reg="{$a}">
-		{for $n in distinct-values($auth) return <name>{$n}</name>}
-	       </author></item>';
-    
   }
  } else {	// no value defined, field only (lists of authors, titles, publishers, subjects)
 
@@ -164,7 +165,7 @@ $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max);
 ?>
 <html>
  <head>
-<title><?= $title ?> : Browse <?= $field?></title>
+<title><?= $htmltitle ?> : Browse <?= $field?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 </head>

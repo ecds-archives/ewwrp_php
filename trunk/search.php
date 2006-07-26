@@ -26,6 +26,14 @@ if ($title == '') {
   $collname = "EWWRP";
  }
 
+
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($collname != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
+
+
 // filter if a collection is defined
 if ($collection) {
   $rsfilter = "[teiHeader/profileDesc/creation/rs[@type='collection' and .='$collection']]";
@@ -53,7 +61,7 @@ $xsl_params = array('mode' => "search", 'keyword' => $kw, 'max' => $max);
 ?>
 <html>
  <head>
-<title><?= $title ?> : Search Results</title>
+<title><?= $htmltitle ?> : Search Results</title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
 </head>
