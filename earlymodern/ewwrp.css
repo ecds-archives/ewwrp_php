@@ -1,0 +1,52 @@
+@import "../ewwrp.css";
+
+/* links */
+a {
+  color:#990066; 
+}
+
+/* highlight current collection */
+a#earlymodern { 
+  background-color:#990066; 
+  color:#FFFFFF; 
+}
+
+div.header { 
+  background-color: #990066;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#990066;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #990066;
+}
+div.tbar-left { 
+  background-color:#CD7F99;
+}
+div.content div.title { 
+  background-color:#CD7F99;
+}
+
+hr.menu { 
+  background-color: #990066;
+  color: #990066;
+}
+
+div.searchnav, table.searchnav {
+  background:#990066; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+span.match { 
+  background-color:#990066; 
+} 
+ 
