@@ -1,0 +1,52 @@
+@import "../ewwrp.css";
+
+/* links */
+a {
+  color:#330099; 
+}
+
+/* highlight current collection */
+a#worldwar1 { 
+  background-color:#330099; 
+  color:#FFFFFF; 
+}
+
+div.header { 
+  background-color: #330099;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#330099;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #330099;
+}
+div.tbar-left { 
+  background-color:#7F66CD;
+}
+div.content div.title { 
+  background-color:#7F66CD;
+}
+
+hr.menu { 
+  background-color: #330099;
+  color: #330099;
+}
+
+div.searchnav, table.searchnav {
+  background:#330099; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+span.match { 
+  background-color:#330099; 
+} 
+ 
