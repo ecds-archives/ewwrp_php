@@ -26,6 +26,8 @@ $baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";
 
 $field = $_GET["field"];
 $value = $_GET["value"];
+$letter = $_GET["letter"];
+if (!($field)) $field = "author";	// default list
 
 // publishers must be enclosed in "" to pass &; remove quotes & convert ampersand for xquery
 $value = preg_replace('/^\\\\"(.*)\\\\"$/', '$1', $value);
@@ -48,10 +50,10 @@ if ($collection) {
 // retrieve browse fields
 $profile_qry = 'let $p := //profileDesc/creation' . $filter . '
 return <profile>
-{ for $a in distinct-values($p/rs[@type="ethnicity"]) return <ethnicity>{$a}</ethnicity>}
-{for $a in distinct-values($p/rs[@type="genre"]) return <genre>{$a}</genre>}
-{for $a in distinct-values($p/rs[@type="geography"]) return <geography>{$a}</geography>}
-{for $a in distinct-values($p/date) return <period>{$a}</period>}
+{ for $a in distinct-values($p/rs[@type="ethnicity"]) order by $a return <ethnicity>{$a}</ethnicity>}
+{for $a in distinct-values($p/rs[@type="genre"]) order by $a return <genre>{$a}</genre>}
+{for $a in distinct-values($p/rs[@type="geography"]) order by $a return <geography>{$a}</geography>}
+{for $a in distinct-values($p/date) order by $a return <period>{$a}</period>}
 </profile>';
 
 // sort titles, ignoring leading The, A, An, and '
@@ -143,14 +145,21 @@ if ($value) {		// there is a value for search field is defined
 	return <item><subject>{$a}</subject></item>'; break;
   case "author":
   default:
+    if ($letter) $lfilter = "where starts-with(\$a, '$letter')";
     // list of distinct authors
     $browse_qry = 'for $a in distinct-values(//titleStmt/author' . $ancfilter . '/name/@reg)
 	let $auth := //titleStmt/author/name[@reg=$a]
-	order by $a
+	' . $lfilter . '
+	order by normalize-space($a) 
 	return <item><author reg="{$a}">
 		{for $n in distinct-values($auth) return <name>{$n}</name>}
 	       </author></item>';
-    
+    $alpha_qry = '<alphalist> {
+		  for $l in distinct-values(
+		  	for $a in //titleStmt/author' . $ancfilter . '/name/@reg
+		  	return substring($a,1,1) )
+		  order by $l
+		  return <letter>{$l}</letter> } </alphalist>';
   }
 
 }
@@ -182,6 +191,13 @@ $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max);
 $db->xquery($profile_qry);
 $db->xslTransform($xsl);
 $db->printResult();
+
+// browse by first letter (if relevant in current mode)
+if ($alpha_qry) {
+  $db->xquery($alpha_qry, 1, 25);
+  $db->xslTransform($xsl, $xsl_params);
+  $db->printResult();
+ }
 
 // do the queries separately so that exist will handle the counting & paging for us 
 $db->xquery($browse_qry, $pos, $max);

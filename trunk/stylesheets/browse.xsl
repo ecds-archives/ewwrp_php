@@ -26,6 +26,7 @@
 
   <xsl:template match="/">
     <xsl:apply-templates select="//profile"/>
+    <xsl:apply-templates select="//alphalist"/>
     <xsl:call-template name="itemlist"/>
   </xsl:template>
 
@@ -332,6 +333,27 @@
       </xsl:with-param>
     </xsl:call-template>
   </xsl:if>
+</xsl:template>
+
+
+<xsl:template match="alphalist">
+  <p>
+    Browse by first letter:
+    <a>
+      <xsl:attribute name="href">browse.php?field=<xsl:value-of select="$field"/></xsl:attribute>
+      ALL
+    </a>
+    <xsl:apply-templates/>
+  </p>
+</xsl:template>
+
+<xsl:template match="alphalist/letter">
+  <xsl:text> </xsl:text>
+  <a>
+    <xsl:attribute name="href">browse.php?field=<xsl:value-of select="$field"/>&amp;letter=<xsl:value-of select="."/></xsl:attribute>
+    <xsl:value-of select="."/>
+  </a>
+  <xsl:text> </xsl:text>
 </xsl:template>
 
 </xsl:stylesheet>
