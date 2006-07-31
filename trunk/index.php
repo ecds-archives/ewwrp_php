@@ -54,7 +54,7 @@ $imgdoc = new DOMDocument();
 $imgdoc->load("$baseurl/frontpageimages.xml");
 $xpath = new domxpath($imgdoc);
 // filter on collection if there is one defined
-if ($collection) $filter = "[@collection='$collection']";
+if ($collection) $filter = "[@collection=\"$collection\"]";
 $imglist = $xpath->query("/images/div$filter");
 if ($imglist->length) {
   // generate random index # based on number of matching images
