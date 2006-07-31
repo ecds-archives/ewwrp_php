@@ -65,12 +65,23 @@
   </a>
 </xsl:template>
 
-<!-- FIXME: add link to date search...  is this a search or a browse ? -->
+<!-- display date, link to a date search -->
 <xsl:template match="date">
-  <!--  <a>
-    <xsl:attribute name="href">browse.php?field=date&amp;<xsl:value-of select="."/></xsl:attribute> -->
+  <xsl:variable name="searchdate">
+    <xsl:choose>
+      <!-- uncertain dates are in this format: [186-?]; search for all 1860 matches -->
+      <xsl:when test="contains(., '?')">
+        <xsl:value-of select="substring-before(substring-after(., '['), '-')"/>*
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <a>
+    <xsl:attribute name="href">search.php?date=<xsl:value-of select="$searchdate"/></xsl:attribute>
     <xsl:apply-templates/>
-    <!--  </a> -->
+  </a>
 </xsl:template>
 
 <!-- table of contents, relative table of contents at item view level -->
