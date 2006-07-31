@@ -1,5 +1,7 @@
 @import "footnotes.css";
 
+/* possibilites for main site color: CD6600, AA3300? */
+
 body { 
   padding:0px; 
   margin:0px; 
@@ -16,7 +18,7 @@ h4{font-size:10px;}
 /* links */
 a {
   text-decoration: none; 
-  color:#990000;
+  color:#AA3300;
 }
 a:hover {
   color: #FF9933; 
@@ -29,7 +31,7 @@ div#subpage div.header {
 div.header { 
   width:100%; 
   height:20px;
-  background-color: #000000;
+  background-color: #AA3300;
   margin:0px;
   z-index: 1;
 }
@@ -169,7 +171,7 @@ div.image {
 }
 
 div.image div.info { 
-  color: #990000;
+  color: #AA3300;
   font-family: Arial, Helvetica, sans-serif;
   font-weight:bold;
   font-size: 11px;
@@ -285,11 +287,19 @@ div.collections a {
   font-weight:bold;
 }
 a#genrefiction    { color: #990000; }
+a#genrefiction:hover { background-color: #990000; color:#FFFFFF; }
 a#earlymodern     { color: #990066; }
+a#earlymodern:hover { background-color: #990066; color:#FFFFFF;}
+a#twentieth       { color: #660099; }
+a#twentieth:hover { background-color: #660099; color:#FFFFFF; }
 a#worldwar1       { color: #330099; }
+a#worldwar1:hover { background-color: #330099; color:#FFFFFF;}
 a#nativeamerican  { color: #003399; }
+a#nativeamerican:hover  { background-color: #003399; color:#FFFFFF; }
 a#abolition	  { color: #009966; }
+a#abolition:hover { background-color: #009966; color:#FFFFFF;}
 a#advocacy        { color: #339900; }
+a#advocacy:hover  { background-color: #339900; color:#FFFFFF;}
 
 div.copyright { 
   width:100%;
@@ -305,7 +315,7 @@ div.lcontent div.copyright {
 
 /* next/prev/etc. navigation */
 div.searchnav{
-  background:#990000; 
+  background:#AA3300; 
   margin-bottom:10px; 
   height:20px;
   text-align:center;
@@ -325,7 +335,7 @@ div.searchnav a:hover, table.searchnav a:hover {
 }
 
 table.searchnav { 
-  background:#990000; 
+  background:#AA3300; 
   margin-bottom:10px; 
   height:20px;
   text-align:center;
@@ -342,10 +352,11 @@ th { text-align:left; }
 
 /* search/browse results */
 table.search { width:100%; border-collapse: collapse;}
-table.search td { border-bottom: 1px solid #000000;}
+table.search td { border-bottom: 1px solid #AA3300;}
 td.hits, th.hits { text-align:center; padding-right:5px;}
 table.browse { width:100%;}
 .num { width:10px; text-align:right;}
+
 
 /* styling tranformed TEI content */
 
@@ -403,4 +414,17 @@ span.dot, span.star { padding-left: 2em; padding-right: 2em; font-size: 125%;}
 ul.relative-toc { margin:0px;  }
 ul.relative-toc li { list-style-type: none; }
 
-span.match { font-weight:bold; background-color:#990000; color:#FFFFFF; }
+span.match { font-weight:bold; background-color:#AA3300; color:#FFFFFF; }
+
+
+div.doclinks { text-align: right; }
+
+table.searchform { 
+ margin:0.5in;
+ border:0px;
+}
+table.searchform th { 
+  text-align:right; font-weight:normal;
+}
+table.searchform input { border:0px; outline:0px; }
+ul.searchopts { list-style-type:none; }
