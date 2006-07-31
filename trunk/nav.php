@@ -30,13 +30,13 @@
   </form>
     
 <div class="advsearch">
-(<a href="http://womenwriters.library.emory.edu/genrefiction/frames?contentsrc=search-metadata-adv">Advanced Search</a>)
+(<a href="advancedsearch.php">Advanced Search</a>)
 </div>
             
 
 <p id="m-essay">- <a href="http://womenwriters.library.emory.edu/genrefiction/frames?contentsrc=doc-tgfwfw-essays">Essays</a></p>
 
-<p id="m-about">- <a href="http://womenwriters.library.emory.edu/genrefiction/frames?contentsrc=doc-tgfwfw-about">About</a> the Project</p>
+<p id="m-about">- <a href="about.php">About</a> the Project</p>
 
 </div>
 
@@ -48,13 +48,13 @@
       <b>Emory Women Writers Resource Project Collections:</b>
 <ul>
  <li>- <a id="genrefiction" href="<?= $baseurl ?>genrefiction/">Genre Fiction</a></li>
- <li>- <a id="earlymodern" href="http://chaucer.library.emory.edu/wwrp/">Early Modern</a></li>
- <li>- <a id="worldwar1" href="http://chaucer.library.emory.edu/wwrp/">World War I Poetry</a></li>
+ <li>- <a id="earlymodern" href="<?= $baseurl ?>earlymodern/">Early Modern through the 18th Century</a></li>
+ <li>- <a id="twentieth" href="<?= $baseurl ?>twentiethcentury/">Early 20th Century Literature</a></li>
+ <li>- <a id="worldwar1" href="<?= $baseurl ?>worldwarI/">World War I Poetry</a></li>
  <li>- <a id="nativeamerican" 	href="<?= $baseurl ?>nativeamerican/">Native
 	American</a></li>
- <li>- <a id="abolition" href="<?= $baseurl ?>abolition">Abolition, Freedom, and Rights</a></li>
- <li>- <a id="advocacy"	href="http://chaucer.library.emory.edu/wwrp/">Women's
-	    Advocacy</a></li>
+ <li>- <a id="abolition" href="<?= $baseurl ?>abolition/">Abolition, Freedom, and Rights</a></li>
+ <li>- <a id="advocacy"	href="<?= $baseurl ?>advocacy/">Women's Advocacy</a></li>
 </ul>
 
 </div>
