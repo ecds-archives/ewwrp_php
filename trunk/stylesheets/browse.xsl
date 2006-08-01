@@ -34,8 +34,11 @@
   <xsl:template match="profile">
     <div class="browse">
       <h1>Select a browse category:</h1>
-      <ul>
+      <ul class="browse">
         <li><a href="browse.php?field=title">All Titles</a></li>
+        <xsl:if test="./form = 'Edited'">
+          <li><a href="browse.php?field=criticaledition">Critical Editions</a></li>
+        </xsl:if>
         <li>Ethnicity: <xsl:apply-templates select="ethnicity"/></li>
         <li>Genre: <xsl:apply-templates select="genre"/></li>
         <li>Geography: <xsl:apply-templates select="geography"/></li>
@@ -58,6 +61,7 @@
   </xsl:template>
 
 
+
   <xsl:template name="itemlist">
     <xsl:if test="count(//item) > 0">
 
@@ -78,6 +82,7 @@
           <xsl:if test="//item/publisher"><th>source publisher</th></xsl:if>
           <!--          <xsl:if test="//item/??"><th>collection</th></xsl:if> -->
 	<xsl:if test="//item/subject"><th>subject</th></xsl:if>
+        <xsl:if test="//item/editor"><th>editor</th></xsl:if>
       </tr>
     </thead>
     <tbody align="left" valign="top" style="font-size:small;">
@@ -104,6 +109,9 @@
       <xsl:value-of select="$nl"/>
     </xsl:if>
   </xsl:template>
+
+  <!-- don't display edited/unedited -->
+  <xsl:template match="item/form" mode="table"/>
 
   <xsl:template match="item/hits" mode="table">
     <td class="hits">
