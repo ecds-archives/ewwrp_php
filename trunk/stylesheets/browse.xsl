@@ -10,6 +10,7 @@
   <!-- search terms -->
   <xsl:param name="field"/>
   <xsl:param name="value"/>
+  <xsl:param name="letter"/>
   <xsl:param name="keyword"/>
 
   <!-- information about current set of results  -->
@@ -194,7 +195,7 @@
 
     <xsl:variable name="url">
       <xsl:choose>
-        <xsl:when test="$mode = 'browse'">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if>
+        <xsl:when test="$mode = 'browse'">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if><xsl:if test="$letter">&amp;letter=<xsl:value-of select="$letter"/></xsl:if>
       </xsl:when>
       <xsl:when test="$mode = 'search'">search.php?keyword=<xsl:value-of select="$keyword"/></xsl:when>
     </xsl:choose>
@@ -273,9 +274,16 @@
             <input name="field" type="hidden">
               <xsl:attribute name="value"><xsl:value-of select="$field"/></xsl:attribute>
             </input>
-            <input name="value" type="hidden">
-              <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
-            </input>
+            <xsl:if test="$value">
+              <input name="value" type="hidden">
+                <xsl:attribute name="value"><xsl:value-of select="$value"/></xsl:attribute>
+              </input>
+            </xsl:if>
+            <xsl:if test="$letter">
+              <input name="letter" type="hidden">
+                <xsl:attribute name="value"><xsl:value-of select="$letter"/></xsl:attribute>
+              </input>
+            </xsl:if>
           </xsl:when>
           <xsl:when test="$mode = 'search'">
             <input name="keyword" type="hidden">
@@ -337,7 +345,7 @@
 
 
 <xsl:template match="alphalist">
-  <p>
+  <p class="alphalist">
     Browse by first letter:
     <a>
       <xsl:attribute name="href">browse.php?field=<xsl:value-of select="$field"/></xsl:attribute>
