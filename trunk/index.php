@@ -37,10 +37,8 @@ else
 
 <? include("header.php") ?>
 
-<div class="titlebar tbar-left"></div>
-<div class="titlebar tbar-right"></div>
-<div class="titlebar tbar-text titleleft"><?= $t[0] ?></div>
-<div class="titlebar tbar-text titleright"><?= $t[1] ?></div>
+<div class="titlebar tbar-left"><p><?= $t[0] ?></p></div>
+<div class="titlebar tbar-right"><p><?= $t[1] ?></p></div>
 
 
 <? include("nav.php") ?>
@@ -69,9 +67,6 @@ if ($imglist->length) {
   print "<div class='image'>(no images yet for this collection)</div>";
  }
 ?>
-
-<!-- white partially-opaque background for text about image -->
-<div class="imgtextbg"></div>
 
 <div class="copyright">
 <? include("funding.xml") ?>
