@@ -14,6 +14,7 @@
     <p>by <xsl:apply-templates select="//titleStmt/author"/></p>
     <p>date: <xsl:apply-templates select="//sourceDesc/bibl/date"/><br/>
     source publisher: <xsl:apply-templates select="//sourceDesc/bibl/publisher"/>
+    <xsl:apply-templates select="//rs[@type='collection']"/>
     </p>
 
     <xsl:if test="$mode = 'toc'">
@@ -64,6 +65,26 @@
   </a>]
   </xsl:if>
   
+</xsl:template>
+
+<xsl:template match="rs[@type='collection']">
+  <!-- texts may belong to more than one collection -->
+  <xsl:choose>
+    <xsl:when test="position() = 1">
+      <br/>collection<xsl:if test="following-sibling::rs[@type='collection']">s</xsl:if>
+      	<xsl:text>: </xsl:text> 
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:text>, </xsl:text>      
+    </xsl:otherwise>
+  </xsl:choose>
+
+  <!-- FIXME: collection name should probably link to front page of collection; 
+	- how to generate link so it will work in any collection (relative to hostname?)
+ 	- will need to switch between collection name (as tagged) and url version of collection name
+	-->
+    <xsl:apply-templates/>
+
 </xsl:template>
 
 
