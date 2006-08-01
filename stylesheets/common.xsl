@@ -15,6 +15,23 @@
     <p>date: <xsl:apply-templates select="//sourceDesc/bibl/date"/><br/>
     source publisher: <xsl:apply-templates select="//sourceDesc/bibl/publisher"/>
     </p>
+
+    <xsl:if test="$mode = 'toc'">
+      <p>
+        <a>
+          <xsl:attribute name="href">teiheader.php?id=<xsl:value-of select="$id"/></xsl:attribute>
+          <xsl:attribute name="target">teiheader</xsl:attribute>
+          more information about this document
+        </a> (paragraph display)
+        <br/>
+        <a>
+          <xsl:attribute name="href">teiheader.php?id=<xsl:value-of select="$id"/>&amp;mode=table</xsl:attribute>
+          <xsl:attribute name="target">teiheader</xsl:attribute>
+          more information about this document
+        </a> (table display)
+      </p>
+    </xsl:if>
+
   </xsl:template>
 
 

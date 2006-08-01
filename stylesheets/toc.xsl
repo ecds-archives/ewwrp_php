@@ -7,7 +7,7 @@
 
   <xsl:param name="mode">toc</xsl:param>
   <xsl:param name="url_suffix"/>
-  <xsl:param name="id"/>	<!-- used in content view; needed for common -->
+  <xsl:param name="id"/>	
   <xsl:include href="common.xsl"/>
 
   <xsl:template match="/">
