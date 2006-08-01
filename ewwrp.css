@@ -1,7 +1,5 @@
 @import "footnotes.css";
 
-/* possibilites for main site color: CD6600, AA3300? */
-
 body { 
   padding:0px; 
   margin:0px; 
@@ -18,7 +16,7 @@ h4{font-size:10px;}
 /* links */
 a {
   text-decoration: none; 
-  color:#AA3300;
+  color:#336633;
 }
 a:hover {
   color: #FF9933; 
@@ -31,7 +29,7 @@ div#subpage div.header {
 div.header { 
   width:100%; 
   height:20px;
-  background-color: #AA3300;
+  background-color: #336633;
   margin:0px;
   z-index: 1;
 }
@@ -172,12 +170,13 @@ div.image {
 }
 /* text that overlies the front page images */
 div.image div.info { 
-  color: #AA3300;
+  color: #336633;
   font-family: Arial, Helvetica, sans-serif;
   font-weight:bold;
   font-size: 11px;
   z-index:3;
   width:100%;	
+  min-height:35px;
 /* position absolutely _within_ and align to the bottom of image div 
    (allows info div to expand according to the text within it) */
   position:absolute;	
@@ -215,7 +214,7 @@ div.titlebar p {
 div.tbar-left { 
   padding-right:5px;
   width:375px;
-  background-color:#808080;
+  background-color:#669966;
   text-align:right;
 }
 /* right side of titlebar with transparent white background */
@@ -239,7 +238,7 @@ div.content div.title {
   font-size:20px;
   font-weight:bold;
   letter-spacing: -1px;
-  background-color:#808080;
+  background-color:#669966;
   text-align:center;
 }
 div.title a { color:#000000; }
@@ -254,8 +253,8 @@ div.description {
 }
 
 hr.menu { 
-  background-color: #000000;	/* mozilla browsers */
-  color: #000000;		/* IE */	
+  background-color: #336633;	/* mozilla browsers */
+  color: #336633;		/* IE */	
   border:0px;
   height: 1px;
   width: 100%;
@@ -309,7 +308,7 @@ div.lcontent div.copyright {
 
 /* next/prev/etc. navigation */
 div.searchnav{
-  background:#AA3300; 
+  background:#336633; 
   margin-bottom:10px; 
   height:20px;
   text-align:center;
@@ -329,7 +328,7 @@ div.searchnav a:hover, table.searchnav a:hover {
 }
 
 table.searchnav { 
-  background:#AA3300; 
+  background:#336633; 
   margin-bottom:10px; 
   height:20px;
   text-align:center;
@@ -346,10 +345,11 @@ th { text-align:left; }
 
 /* search/browse results */
 table.search { width:100%; border-collapse: collapse;}
-table.search td { border-bottom: 1px solid #AA3300;}
+table.search td { border-bottom: 1px solid #336633;}
 td.hits, th.hits { text-align:center; padding-right:5px;}
 table.browse { width:100%;}
 .num { width:10px; text-align:right;}
+ul.browse { list-style-type:none; }
 /* links for browse by first letter */
 p.alphalist { font-size:115%; }
 p.alphalist a { padding-left:5px; }
@@ -410,7 +410,7 @@ span.dot, span.star { padding-left: 2em; padding-right: 2em; font-size: 125%;}
 ul.relative-toc { margin:0px;  }
 ul.relative-toc li { list-style-type: none; }
 
-span.match { font-weight:bold; background-color:#AA3300; color:#FFFFFF; }
+span.match { font-weight:bold; background-color:#336633; color:#FFFFFF; }
 
 
 div.doclinks { text-align: right; }
