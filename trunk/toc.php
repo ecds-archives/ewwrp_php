@@ -10,8 +10,6 @@ global $title;
 global $collname;
 global $collection;
 
-$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
-
 $docname = $_GET["id"];
 $keyword = $_GET["keyword"];
 // need a filter if we are in a collection?
@@ -34,7 +32,7 @@ return <TEI.2>
 </TEI.2>";
 
 $xsl = "$baseurl/stylesheets/toc.xsl";
-  $xsl_params = array();
+  $xsl_params = array("id" => $docname);
 if ($keyword)
  $xsl_params{"url_suffix"} = "keyword=$keyword";
 $xdb->xquery($query);
