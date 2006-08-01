@@ -6,8 +6,8 @@
      alt="Cover image of The Heart of Hyacinth" height="550" width="380"/></a> 
 
    <div class="info">
-   1903: <i>The Heart of Hyacinth</i> - Onota Watanna, NY: Harper &amp; Brothers<br/>
-   (a selection from the Women's Genre Fiction Collection)
+   <p>1903: <i>The Heart of Hyacinth</i> - Onota Watanna, NY: Harper &amp; Brothers<br/>
+   (a selection from the Women's Genre Fiction Collection)</p>
    </div>
 </div>
 
@@ -17,8 +17,8 @@
      alt="Cover image of Under Fate's Wheel" height="550" width="380"/></a> 
 
    <div class="info">
-   1900: <i>Under Fate's Wheel</i> - Lawrence L. Lynch, London: Ward, Lock<br/>
-   (a selection from the Women's Genre Fiction Collection)
+   <p>1900: <i>Under Fate's Wheel</i> - Lawrence L. Lynch, London: Ward, Lock<br/>
+   (a selection from the Women's Genre Fiction Collection)</p>
    </div>
 </div>
 
@@ -28,8 +28,8 @@
      alt="Cover image of Faith and Unfaith" height="550" width="380"/></a> 
 
    <div class="info">
-   1883: <i>Faith and Unfaith</i> - The Duchess, NY: John W. Lovell Co.<br/>
-   (a selection from the Women's Genre Fiction Collection)
+   <p>1883: <i>Faith and Unfaith</i> - The Duchess, NY: John W. Lovell Co.<br/>
+   (a selection from the Women's Genre Fiction Collection)</p>
    </div>
 </div>
 
@@ -39,31 +39,58 @@
      alt="Cover image of Confessions of a Wife" height="550" width="380"/></a> 
 
    <div class="info">
-   1902: <i>Confessions of a Wife</i> - Mary Adams, NY: The Century Co.<br/>
-   (a selection from the Women's Genre Fiction Collection)
+   <p>1902: <i>Confessions of a Wife</i> - Mary Adams, NY: The Century Co.<br/>
+   (a selection from the Women's Genre Fiction Collection)</p>
    </div>
 </div>
 
 <div class="image" collection="Native American">
  <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
    <img src="/rebecca/ewwrp/images/Angel1.jpg" 
-     alt="artwork by Angel De Cora" height="550" width="380"/></a>
+     alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
-      Artwork by Angel de Cora<br/>
-      (an author included in the Native American Collection)
+      <p>"This was a sign of gratitude" (illustration by Angel De Cora)<br/>
+      1901: <i>Old Indian Legends</i> - Zitkala-Sa, NY: Ginn and Co.<br/>
+      (work by Angel De Cora is included in the Native American Collection)</p>
    </div>
 </div>
 
 <div class="image" collection="Native American">
 <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
    <img src="/rebecca/ewwrp/images/Angel5.jpg" 
-     alt="artwork by Angel De Cora" height="550" width="380"/></a>
+     alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
-      Artwork by Angel de Cora<br/>
-      (an author included in the Native American Collection)
+      <p>"The Proud Chieftain Rose..." (illustration by Angel de Cora)<br/>
+      1901: <i>Old Indian Legends</i> - Zitkala-Sa, NY: Ginn and Co.<br/>
+      (work by Angel De Cora is included in the Native American Collection)</p>
    </div>
 </div>
+
+<div class="image" collection="Abolition, Freedom, and Rights">
+<a href="browse.php?field=author&amp;value=Harper,+Frances+Ellen+Watkins,+1825-1911">
+   <img src="/rebecca/ewwrp/images/Abolitionist2.jpg" 
+     alt="photo of Frances Ellen Watkins Harper" height="550" width="380"/></a>
+
+   <div class="info">
+      <p>Photograph of Frances Ellen Watkins Harper <br/>
+      Bailey-Thurman papers, Woodruff Library archives.<br/>
+      (an author included in the Abolition, Freedom, and Rights Collection)</p>
+   </div>
+</div>
+
+<div class="image" collection="Abolition, Freedom, and Rights">
+<a
+href="browse.php?field=author&amp;value=Child,+Lydia+Maria+Francis,+1802-1880">
+   <img src="/rebecca/ewwrp/images/Abolitionist1.jpg" 
+     alt="portrait of Lydia Maria Child" height="550" width="380"/></a>
+
+   <div class="info">
+      <p>Portrait of Lydia Maria Child<br/>
+      (an author included in the Abolition, Freedom, and Rights Collection)</p>
+   </div>
+</div>
+
 
 </images>
