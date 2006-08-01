@@ -54,6 +54,7 @@ return <profile>
 {for $a in distinct-values($p/rs[@type="genre"]) order by $a return <genre>{$a}</genre>}
 {for $a in distinct-values($p/rs[@type="geography"]) order by $a return <geography>{$a}</geography>}
 {for $a in distinct-values($p/date) order by $a return <period>{$a}</period>}
+{for $a in distinct-values($p/rs[@type="form"]) order by $a return <form>{$a}</form>}
 </profile>';
 
 // sort version of title; ignores leading The, A, An, and '
@@ -155,6 +156,18 @@ if ($value) {
 		  order by $l
 		  return <letter>{$l}</letter> } </alphalist>';
 	break;
+
+    case "criticaledition":
+    //list of critical edition titles (filtered on form=Edited)
+    $browse_qry = "for \$a in //titleStmt/title[ancestor::TEI.2//rs[@type='form' and .='Edited'
+	" . ($collection ? "and $rsfilter" : "") . "]]
+	let \$doc := substring-before(util:document-name(\$a), '.xml')
+  	let \$auth := \$a/../author
+	let \$ed := \$a/../respStmt/name
+	let \$date := root(\$a)//sourceDesc/bibl/date
+	$titlesort
+	return <item>{\$a}<id>{\$doc}</id>{\$auth}{\$date}<editor>{\$ed}</editor></item>"; break;
+
   case "publisher":
     // list of distinct source publishers
     $browse_qry = 'for $a in distinct-values(//sourceDesc/bibl/publisher' . $ancfilter . ')
