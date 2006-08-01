@@ -56,18 +56,31 @@ return <profile>
 {for $a in distinct-values($p/date) order by $a return <period>{$a}</period>}
 </profile>';
 
-// sort titles, ignoring leading The, A, An, and '
-$titlesort ='let $sort_title :=
+// sort version of title; ignores leading The, A, An, and '
+$sort_title ='let $sort_title :=
   (if (starts-with($a, "The ")) then substring-after($a, "The ")
    else if (starts-with($a, "THE ")) then substring-after($a, "THE ")
    else if (starts-with($a, "A ")) then substring-after($a, "A ")
    else if (starts-with($a, "An ")) then substring-after($a, "An ")
    else if (starts-with($a, "\'")) then substring-after($a, "\'")
-   else string($a))
-   order by $sort_title';
+   else string($a))';
+$titlesort = $sort_title . " order by \$sort_title";
 
-if ($value) {		// there is a value for search field is defined
+$sort_pub = 'let $sort_pub :=
+   (if (starts-with($a, "The ")) then substring-after($a, "The ")
+    else if (starts-with($a, "[")) then substring-after($a, "[")
+    else string($a))';
 
+// browse by letter : filter on first letter of search field
+if ($letter) {
+  $lfilter = "where starts-with(\$a, '$letter')";
+  $title_lfilter = "where starts-with(\$sort_title, '$letter')";
+  $pub_lfilter = "where starts-with(\$sort_pub, '$letter')";
+ }
+
+
+if ($value) {
+  // search for titles based on specified value in specified search field 
   switch($field) {
   case "genre":
   case "ethnicity":
@@ -130,22 +143,49 @@ if ($value) {		// there is a value for search field is defined
     // list of titles
     $browse_qry = "for \$a in //titleStmt/title$ancfilter
 	let \$doc := substring-before(util:document-name(\$a), '.xml')
-	$titlesort
-	return <item>{\$a}<id>{\$doc}</id></item>"; break;
+	$sort_title
+	$title_lfilter
+	order by \$sort_title
+	return <item>{\$a}<id>{\$doc}</id></item>";
+        $alpha_qry = '<alphalist> {
+		  for $l in distinct-values(
+		  	for $a in //titleStmt/title' . $ancfilter . '
+			' . $sort_title . '
+		  	return substring($sort_title,1,1) )
+		  order by $l
+		  return <letter>{$l}</letter> } </alphalist>';
+	break;
   case "publisher":
     // list of distinct source publishers
     $browse_qry = 'for $a in distinct-values(//sourceDesc/bibl/publisher' . $ancfilter . ')
-	let $sortpub := concat(substring-after($a, "The "), $a)
-	order by $sortpub
-	return <item><publisher>{$a}</publisher></item>'; break;
+	' . $sort_pub . '
+	' . $pub_lfilter . '
+	order by $sort_pub
+	return <item><publisher>{$a}</publisher></item>';
+        $alpha_qry = '<alphalist> {
+		  for $l in distinct-values(
+		  	for $a in distinct-values(//sourceDesc/bibl/publisher' . $ancfilter . ')
+			' . $sort_pub . '
+		  	return substring($sort_pub,1,1) )
+		  order by $l
+		  return <letter>{$l}</letter> } </alphalist>';
+    break;
   case "subject":
     //list of distinct subject headings
     $browse_qry = 'for $a in distinct-values(//keywords/list/item' . $ancfilter . ')
+	' . $lfilter . '
 	order by $a
-	return <item><subject>{$a}</subject></item>'; break;
+	return <item><subject>{$a}</subject></item>';
+    $alpha_qry = '<alphalist> {
+		  for $l in distinct-values(
+		  	for $a in distinct-values(//keywords/list/item' . $ancfilter . ')
+		  	return substring($a,1,1) )
+		  order by $l
+		  return <letter>{$l}</letter> } </alphalist>';
+    break;
+    
   case "author":
   default:
-    if ($letter) $lfilter = "where starts-with(\$a, '$letter')";
     // list of distinct authors
     $browse_qry = 'for $a in distinct-values(//titleStmt/author' . $ancfilter . '/name/@reg)
 	let $auth := //titleStmt/author/name[@reg=$a]
@@ -169,7 +209,7 @@ if ($value) {		// there is a value for search field is defined
 $query = "<result>{ $profile_qry } { $browse_qry } </result>";
 
 $xsl = "$baseurl/stylesheets/browse.xsl";
-$xsl_params = array('field' => $field, 'value' => $value, 'max' => $max);
+$xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter' => $letter);
 
 ?>
 <html>
