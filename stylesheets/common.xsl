@@ -9,46 +9,74 @@
   <xsl:variable name="myurlsuffix"><xsl:if test="$url_suffix != ''">&amp;<xsl:value-of select="$url_suffix"/></xsl:if></xsl:variable>
 
   <xsl:template match="teiHeader">
-    <h1><xsl:apply-templates select="//titleStmt/title"/></h1>
+    <xsl:apply-templates select="//titleStmt/title"/>
     <xsl:apply-templates select="//relative-toc"/>
-    <p>by <xsl:apply-templates select="//titleStmt/author"/></p>
-    <p>date: <xsl:apply-templates select="//sourceDesc/bibl/date"/><br/>
-    source publisher: <xsl:apply-templates select="//sourceDesc/bibl/publisher"/>
-    <xsl:apply-templates select="//rs[@type='collection']"/>
+    <xsl:apply-templates select="//titleStmt/author"/>
+    <p>
+      <xsl:apply-templates select="//sourceDesc"/>
+      <xsl:apply-templates select="//rs[@type='collection']"/>
     </p>
-
-    <xsl:if test="$mode = 'toc'">
-      <p>
-        <a>
-          <xsl:attribute name="href">teiheader.php?id=<xsl:value-of select="$id"/></xsl:attribute>
-          <xsl:attribute name="target">teiheader</xsl:attribute>
-          more information about this document
-        </a> (paragraph display)
-        <br/>
-        <a>
-          <xsl:attribute name="href">teiheader.php?id=<xsl:value-of select="$id"/>&amp;mode=table</xsl:attribute>
-          <xsl:attribute name="target">teiheader</xsl:attribute>
-          more information about this document
-        </a> (table display)
-      </p>
-    </xsl:if>
-
+    <xsl:call-template name="doclinks"/>
   </xsl:template>
 
 
-  <!-- FIXME: should link to TOC when not at TOC view -->
-  <xsl:template match="titleStmt/title">
-  <xsl:choose>
-    <xsl:when test="$mode = 'toc'">
-      <b><xsl:apply-templates/></b>
-    </xsl:when>
-    <xsl:otherwise>
+  <xsl:template match="sourceDesc">
+      date: <xsl:apply-templates select="bibl/date"/>
+      <br/>
+      source publisher: <xsl:apply-templates select="bibl/publisher"/>
+  </xsl:template>
+
+  <xsl:template name="doclinks">
+    <div class="doclinks">
+
+      <xsl:if test="$mode = 'toc'">
+        <p>
+          <a>
+            <xsl:attribute name="href">teiheader.php?id=<xsl:value-of select="$id"/></xsl:attribute>
+            <xsl:attribute name="target">teiheader</xsl:attribute>
+            more information about this document
+          </a>
+        </p>
+      </xsl:if>
+
+      <xsl:call-template name="printview"/>
+
+    </div>
+  </xsl:template>
+
+  <!-- generate link to print view of current content -->
+  <xsl:template name="printview">
+    <p>
       <a>
-        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
-        <b><xsl:apply-templates/></b>
+        <xsl:attribute name="href"><xsl:value-of select="$url"/>&amp;view=print</xsl:attribute>
+        <xsl:attribute name="target">printview</xsl:attribute>	<!-- open in a new window -->
+        Print
       </a>
-    </xsl:otherwise>
-  </xsl:choose>
+    </p>
+  </xsl:template>
+
+
+
+
+  <!-- title links back to TOC when not at TOC view -->
+  <xsl:template match="titleStmt/title">
+    <h1>
+      <xsl:choose>
+        <xsl:when test="$mode = 'toc'">
+          <xsl:apply-templates/>
+        </xsl:when>
+        <xsl:otherwise>
+          <a>
+            <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+            <b><xsl:apply-templates/></b>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+    </h1>
+</xsl:template>
+
+<xsl:template match="titleStmt/author">
+  <p>by <xsl:apply-templates/></p>
 </xsl:template>
 
 <xsl:template match="author/name">
