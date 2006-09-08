@@ -169,7 +169,7 @@
   <xsl:choose>
     <xsl:when test="$ref-mode = 'ref' and $use-popups = 'true'">
       <xsl:attribute name="onMouseOver">
-        <xsl:text>overlib(</xsl:text><xsl:value-of select="@id"/><xsl:text>, </xsl:text><xsl:if test="$popup-captions = 'true'"><xsl:text>CAPTION, 'Footnote </xsl:text><xsl:value-of select="$number"/></xsl:if><xsl:text>', WIDTH, </xsl:text><xsl:value-of select="$popup-width"/><xsl:value-of select="$cssopts"/><xsl:value-of select="$STICKY"/><xsl:text>);</xsl:text> 
+        <xsl:text>overlib(</xsl:text><xsl:apply-templates select="@id" mode="jsid"/><xsl:text>, </xsl:text><xsl:if test="$popup-captions = 'true'"><xsl:text>CAPTION, 'Footnote </xsl:text><xsl:value-of select="$number"/></xsl:if><xsl:text>', WIDTH, </xsl:text><xsl:value-of select="$popup-width"/><xsl:value-of select="$cssopts"/><xsl:value-of select="$STICKY"/><xsl:text>);</xsl:text> 
       </xsl:attribute>
       <xsl:attribute name="onMouseOut">
         <xsl:text>nd();</xsl:text>
@@ -325,13 +325,25 @@
   <xsl:element name="p">
     <xsl:attribute name="class">footnote</xsl:attribute>
     <span class="fn-pagen"><a><xsl:attribute name="href">#page<xsl:value-of select="$pagenum"/></xsl:attribute>
-	Page  <xsl:value-of select="$pagenum"/></a> - </span>
-    <xsl:element name="a">
-      <xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
-      <xsl:attribute name="href"><xsl:value-of select="concat('#','notelink-', @id)"/></xsl:attribute>
-      <xsl:attribute name="title">Return to text</xsl:attribute>
+	Page  <xsl:value-of select="$pagenum"/></a> 
+  </span>
+
+  <xsl:choose>
+    <!-- in some rare cases, there is no id: just a footnote with no specified place. -->
+    <xsl:when test="@id">
+      - 
+      <xsl:element name="a">
+        <xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
+        <xsl:attribute name="href"><xsl:value-of select="concat('#','notelink-', @id)"/></xsl:attribute>
+        <xsl:attribute name="title">Return to text</xsl:attribute>
         <xsl:value-of select="$number"/> 
-    </xsl:element>. <!-- a -->
+      </xsl:element>. <!-- a -->
+      
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:text>. </xsl:text>
+    </xsl:otherwise>
+  </xsl:choose>
  
   <xsl:apply-templates mode="endnote"/>
 
