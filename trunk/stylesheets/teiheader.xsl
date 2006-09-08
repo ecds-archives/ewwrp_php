@@ -4,19 +4,8 @@
 
   <xsl:output method="xml"/>
 
-  <xsl:param name="mode"/>		<!-- paragraph or table -->
-
   <xsl:template match="/">
-    <xsl:choose>
-      <xsl:when test="$mode = 'table'">
-        <table>
-          <xsl:apply-templates mode="table"/>
-        </table>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="//teiHeader" mode="para"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates select="//teiHeader"/>
   </xsl:template>
 
 
@@ -53,7 +42,7 @@
   </xsl:template>
 
   <!-- section-level items in paragraph display mode -->
-  <xsl:template mode="para" match="titleStmt|fileDesc|seriesStmt|sourceDesc|encodingDesc">
+  <xsl:template match="titleStmt|fileDesc|seriesStmt|sourceDesc|encodingDesc">
     <xsl:variable name="label">
       <xsl:call-template name="pretty-name"/>
     </xsl:variable>
@@ -61,14 +50,13 @@
     <div>
       <b><xsl:value-of select="$label"/></b>
       <ul>
-        <xsl:apply-templates mode="para"/>
+        <xsl:apply-templates/>
       </ul>
     </div>
   </xsl:template>
 
   <!-- content-level items in paragraph display mode -->
-  <xsl:template mode="para"
-    match="titleStmt/*|extent|publicationStmt|seriesStmt/title|respStmt|projectDesc|samplingDecl|editorialDecl|profileDesc|revisionDesc">
+  <xsl:template match="titleStmt/*|extent|publicationStmt|seriesStmt/title|respStmt|projectDesc|samplingDecl|editorialDecl|profileDesc|revisionDesc">
     <xsl:variable name="label">
       <xsl:call-template name="pretty-name"/>
     </xsl:variable>
@@ -101,61 +89,9 @@
     (<xsl:apply-templates/>)
   </xsl:template>
 
-  <xsl:template match="title" mode="para">
+  <xsl:template match="title">
     <i><xsl:apply-templates/></i>
   </xsl:template>
-
-  <!-- items to ignore -->
-  <xsl:template mode="para" match="taxonomy"/>
-
-  <!-- section-level items in table display mode -->
-  <xsl:template mode="table" match="fileDesc|titleStmt|seriesStmt|sourceDesc|encodingDesc">
-    <xsl:param name="level">0</xsl:param>
-
-    <xsl:variable name="label">
-      <xsl:call-template name="pretty-name"/>
-    </xsl:variable>
-
-    <tr>
-      <th colspan="2">
-        <xsl:attribute name="class">section level<xsl:value-of select="$level"/></xsl:attribute>
-        <xsl:value-of select="$label"/></th>
-    </tr>
-
-    <xsl:apply-templates mode="table">
-      <xsl:with-param name="level"><xsl:value-of select="($level + 1)"/></xsl:with-param>
-    </xsl:apply-templates>
-
-    <tr>
-      <td colspan="2" class="endsection"/>
-    </tr>
-  </xsl:template>
-
-  <!-- content-level items in table display mode -->
-  <xsl:template mode="table"
-    match="titleStmt/*|extent|publicationStmt|seriesStmt/title|respStmt|projectDesc|samplingDecl|editorialDecl|profileDesc|revisionDesc">
-    <xsl:param name="level">0</xsl:param>
-    <xsl:variable name="label">
-      <xsl:call-template name="pretty-name"/>
-    </xsl:variable>
-
-    <tr>
-      <th>
-        <xsl:attribute name="class">level<xsl:value-of select="$level"/></xsl:attribute>
-        <xsl:value-of select="$label"/></th> 
-      <td><xsl:apply-templates/></td>
-    </tr>
-
-  </xsl:template>
-
-  <xsl:template match="title" mode="table">
-    <i><xsl:apply-templates/></i>
-  </xsl:template>
-
-  <!-- items to ignore -->
-  <xsl:template mode="table" match="taxonomy"/>
-
-
 
   <xsl:template match="creation/rs">
     <li>
@@ -178,9 +114,10 @@
     </li>
   </xsl:template>
 
+  <!-- key to convert keyword scheme shorthand into full taxonomy name -->
   <xsl:key name="scheme-by-id" match="taxonomy/bibl/title" use="ancestor::taxonomy/@id"/>
 
-  <!-- don't display separately; only use to identify subject scheme -->
+  <!-- don't display taxonomy separately; only use to identify subject scheme -->
   <xsl:template match="taxonomy"/>
 
   <xsl:template match="keywords">
@@ -202,7 +139,6 @@
   <xsl:template match="revisionDesc//respStmt|revisionDesc//resp|revisionDesc//name">
     <xsl:apply-templates/>
   </xsl:template>
-
 
   <xsl:template match="creation[rs]">
     <ul>
