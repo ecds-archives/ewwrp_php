@@ -31,23 +31,50 @@
   <xsl:template match="/">
     <xsl:call-template name="footnote-init"/>
 
-    <!-- top-level information about this document content comes from -->
-    <xsl:apply-templates select="//teiHeader"/>
+    <xsl:choose>
+      <!-- special behavior for critical essays (no teiheader) -->
+      <xsl:when test="//div[@type='critical essay']">
+        <h1><xsl:apply-templates select="//div/head"/></h1>
+        <xsl:apply-templates select="//relative-toc"/>
+        <p>by <xsl:apply-templates select="//div/docAuthor"/></p>
+        <p>
+          <xsl:if test="//div/docDate">
+            date: <xsl:value-of select="//div/docDate"/>
+          </xsl:if>
+                  <!-- include a date on critical essays ? -->
+          <!-- include a publisher on critical essays ? -->
+          <xsl:apply-templates select="//rs[@type='collection']"/>
+        </p>
+        <xsl:call-template name="doclinks"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- top-level information about this document content comes from -->
+        <xsl:apply-templates select="//teiHeader"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+
+
     <!-- table of contents for items under this node (if there are any) -->
     <xsl:apply-templates select="//toc"/>
-
-
-    <xsl:call-template name="printview"/>
 
     <!-- navigation to sibling nodes (first/prev/next/last) -->
     <xsl:apply-templates select="//nav"/>
 
     <xsl:call-template name="running-header-toggle"/>
-    <div class="xmlcontent">
-      <xsl:apply-templates select="//content"/>
+
+    <xsl:choose>
+      <xsl:when test="//pb">
+        <div class="pagedxml">
+          <xsl:apply-templates select="//content"/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="//content"/>
+      </xsl:otherwise>
+    </xsl:choose>
 
       <xsl:call-template name="endnotes"/>
-    </div>
 
     <!-- also supply navigation after content, if it is of any length -->
     <xsl:if test="count(//content//p) > 2">
@@ -56,21 +83,12 @@
 
   </xsl:template>
 
-  <!-- generate link to print view of current content -->
-  <xsl:template name="printview">
-    <div class="doclinks">
-      <a>
-        <xsl:attribute name="href"><xsl:value-of select="$url"/>&amp;view=print</xsl:attribute>
-        <xsl:attribute name="target">printview</xsl:attribute>	<!-- open in a new window -->
-        Print
-      </a>
-    </div>
-  </xsl:template>
 
   <xsl:template match="relative-toc">
     <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
       <ul class="relative-toc">
         <xsl:apply-templates select="item[@name='TEI.2']"/>
+        <xsl:apply-templates select="item[@type='critical essay']"/>
       </ul>
     </xsl:if>
   </xsl:template>
@@ -482,6 +500,13 @@
     <xsl:attribute name="class">correction</xsl:attribute>
     <xsl:apply-templates select="text()"/>
    </xsl:element>
+</xsl:template>
+
+
+<!-- critical essay content display -->
+<xsl:template match="div[@type='critical essay']">
+  <!-- don't show essay date & collection information here (already displayed earlier) -->
+  <xsl:apply-templates select="*[not(self::rs) and not(self::docDate)]"/>
 </xsl:template>
 
 
