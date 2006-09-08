@@ -12,6 +12,7 @@ global $collection;
 
 $docname = $_GET["id"];
 $keyword = $_GET["keyword"];
+$view = $_GET["view"];		// print, blackboard, ??
 // need a filter if we are in a collection?
 
 if ($title == '') {
@@ -32,7 +33,8 @@ return <TEI.2>
 </TEI.2>";
 
 $xsl = "$baseurl/stylesheets/toc.xsl";
-  $xsl_params = array("id" => $docname);
+  $xsl_params = array("id" => $docname,
+		      "url" => "toc.php?id=$docname");
 if ($keyword)
  $xsl_params{"url_suffix"} = "keyword=$keyword";
 $xdb->xquery($query);
@@ -48,15 +50,20 @@ if ($collname != "EWWRP")
 else
    $htmltitle = $title;
 
-?>
-
-
-<html>
+print "<html>
  <head>
-    <title><?= "$htmltitle : $doctitle" ?></title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css">
-    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
-<?
+    <title>$htmltitle : $doctitle</title>";
+
+switch ($view) {
+ case "print": 
+ case "blackboard":
+   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'>";
+   break;
+ default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'>"; 
+ }
+print '
+    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">';
+
 $xdb->xslBind("$baseurl/stylesheets/teiheader-dc.xsl");
 $xdb->xslBind("$baseurl/stylesheets/dc-htmldc.xsl");
 $xdb->transform();
