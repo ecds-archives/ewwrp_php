@@ -83,6 +83,7 @@
           <!--          <xsl:if test="//item/??"><th>collection</th></xsl:if> -->
 	<xsl:if test="//item/subject"><th>subject</th></xsl:if>
         <xsl:if test="//item/editor"><th>editor</th></xsl:if>
+        <xsl:if test="//item/collection"><th>collection</th></xsl:if>
       </tr>
     </thead>
     <tbody align="left" valign="top" style="font-size:small;">
@@ -129,7 +130,7 @@
       <td><xsl:apply-templates select="."/>
       <xsl:apply-templates select="following-sibling::author" mode="addauth"/>
       </td>
-      <xsl:value-of select="$nl"/>
+      <xsl:value-of select="$nl"/>	<!-- newline (for html code readability) -->
     </xsl:if>
   </xsl:template>
 
@@ -138,6 +139,59 @@
     <br/><xsl:apply-templates select="."/>
   </xsl:template>
 
+  <!-- display multiple collections for a single text in one table cell -->
+  <xsl:template match="item/collection" mode="table">
+    <xsl:if test="count(preceding-sibling::collection) = 0">
+      <td>
+        <span>
+          <xsl:attribute name="class"><xsl:call-template name="collection-shorthand"/></xsl:attribute>
+          <xsl:apply-templates select="."/>
+        </span>
+      <xsl:apply-templates select="following-sibling::collection" mode="addcoll"/>
+      </td>
+      <xsl:value-of select="$nl"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- additional collection in table display: add a line break and display normally -->
+  <xsl:template match="item/collection" mode="addcoll">
+    <br/>
+    <span>
+      <xsl:attribute name="class"><xsl:call-template name="collection-shorthand"/></xsl:attribute>
+      <xsl:apply-templates select="."/>
+    </span>
+  </xsl:template>
+
+
+  <!-- convert collection name into shorthand name (for css coloring, site urls) -->
+  <xsl:template name="collection-shorthand">
+    <!-- escape apostrophe by storing in a variable-->
+    <xsl:variable name="advocacy">Women's Advocacy</xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test=". = 'Genre Fiction'">
+        genrefiction
+      </xsl:when>
+      <xsl:when test=". = 'Early Modern through the 18th Century'">
+        earylmodern
+      </xsl:when>
+      <xsl:when test=". = 'Early 20th Century Literature'">
+        twentieth
+      </xsl:when>
+      <xsl:when test=". = 'World War I'">
+        worldwar1
+      </xsl:when>
+      <xsl:when test=". = 'Native American'">
+        nativeamerican
+      </xsl:when>
+      <xsl:when test=". = 'Abolition, Freedom, and Rights'">
+        abolition
+      </xsl:when>
+      <xsl:when test=". = $advocacy">
+        advocacy
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
 
 <!-- display multiple subjects for a single text in one table cell -->
@@ -214,21 +268,27 @@
       <tr>
       <xsl:choose>
         <xsl:when test="$position != 1">
-          <td>
-          <a>
-            <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=1&amp;max=', $max)"/></xsl:attribute>
-            &lt;&lt;First
-          </a>
-        </td>          
 
-        <!-- start position shouldn't go below 1 -->
+          <!-- start position for previous chunk -->
         <xsl:variable name="newpos">
+          <!-- start position shouldn't go below 1 -->
           <xsl:call-template name="max">
             <xsl:with-param name="num1"><xsl:value-of select="($position - $max)"/></xsl:with-param>
             <xsl:with-param name="num2"><xsl:value-of select="1"/></xsl:with-param>
           </xsl:call-template>
         </xsl:variable>
+
+          <td>
+            <!-- don't display first if it is the same as previous -->
+            <xsl:if test="$newpos != 1">
+              <a>
+                <xsl:attribute name="href"><xsl:value-of 
+                select="concat($url, '&amp;position=1&amp;max=', $max)"/></xsl:attribute>
+                &lt;&lt; First
+              </a>
+            </xsl:if>
+        </td>          
+
 
         <td>
           <a>
@@ -245,22 +305,35 @@
       </xsl:choose>
 
       <!-- next -->
+
+      <xsl:variable name="next-start">
+        <xsl:value-of select="($position + $max)"/>
+      </xsl:variable>
+
+      <xsl:variable name="last-start">
+        <xsl:value-of select="($total - $max)"/>
+      </xsl:variable>
+
       <xsl:choose>
-        <xsl:when test="($position + $max - 1) &lt; $total">
+        <xsl:when test="($next-start - 1) &lt; $total">
           <td>
             <a>
             <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=', ($position + $max), '&amp;max=', $max)"/></xsl:attribute>
+            select="concat($url, '&amp;position=', $next-start, '&amp;max=', $max)"/></xsl:attribute>
             Next&gt;
           </a>          
         </td>
 
         <td>
-          <a>
-            <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=', ($total - $max), '&amp;max=', $max)"/></xsl:attribute>
-	     Last&gt;&gt;
-          </a>          
+          <!-- don't display last if it is the same as next -->
+          <xsl:if test="$next-start != $last-start">
+            <a>
+              <xsl:attribute name="href"><xsl:value-of 
+              select="concat($url, '&amp;position=', $last-start, '&amp;max=', $max)"/></xsl:attribute>
+              Last&gt;&gt;
+            </a>          
+          </xsl:if>
+          
         </td>
         </xsl:when>
         <xsl:otherwise>
@@ -275,7 +348,7 @@
   <xsl:variable name="chunksize"><xsl:value-of select="$max"/></xsl:variable>  
     <!-- only display jump list if there are more results than displayed here. -->
     <xsl:if test="$total > $chunksize">
-      <form id="jumpnav" name="jumpnav">
+      <form id="jumpnav">
         <xsl:attribute name="action"><xsl:value-of select="$mode"/>.php</xsl:attribute>
         <xsl:choose>
           <xsl:when test="$mode = 'browse'">
