@@ -32,7 +32,9 @@ div.header {
   background-color: #336633;
   margin:0px;
   z-index: 1;
+  padding-left:382px; 
 }
+/* header stays fixed at top of screen on content pages */
 div.hdr-content { 
   position:fixed;
 }
@@ -50,7 +52,7 @@ div.header a:hover {color:#FF9933;}
 /* first header link is indented, and has no vertical bar before it */
 div.header a#first { 
   border-left: none;   
-  padding-left:382px; 
+/*  padding-left:382px;  */
 }
 
 div.leftcol { 
@@ -72,32 +74,48 @@ div.leftcol-content {
 div.lcontent { 
   position:fixed;
   width:255px; 
+  z-index:1;
 }
 
 div.content { 
+  position:absolute;
   top:25px;
+  padding-left:275px;
   padding-top:35px;
-  margin-left:275px;
-  margin-right:25px;
+  padding-right:25px;
 }
 
-div.xmlcontent { 
+/* indent content with page #s & page images */
+div.pagedxml  { 
  margin-left:1in;
 }
 
 /* branding - icons for emory & EWWRP */
 div.brand { padding-left: 20px; height:74px; }
-div.brand img#emory { margin-right:120px;}
+
+/* ewwrp logo */
+div#logo { 
+  padding-left:165px; 	/* space between emory & ewwrp logos */
+}
 
 div#logo img { 
-  background-color:#000000;
+  background-color:#336633;
   border:0px;
 }
+
+div#iewwrp { 
+  position:relative;
+  background-color:#336633;
+  height:74px;
+  width:56px;
+  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/ewwrp.png');
+}
+
+
 div#logo a:hover img { 
   background-color:#FF9933; 
 }
 div#emorylogo { 
-  margin-right:121px; 
   float:left;
 }
 div#emorylogo img { 
@@ -174,46 +192,69 @@ div.image div.info {
   font-family: Arial, Helvetica, sans-serif;
   font-weight:bold;
   font-size: 11px;
-  z-index:3;
+  z-index:2;
   width:100%;	
   min-height:35px;
 /* position absolutely _within_ and align to the bottom of image div 
    (allows info div to expand according to the text within it) */
   position:absolute;	
-  bottom:0px;		
-  background-color:white; /* make the background a transparent white */
-  opacity: .7;
-  filter: alpha(opacity=70);
+  bottom:0px;	
+  left:0px;
 }
 div.info p { 		/* info text should be fully opaque */
   padding-left: 10px;
   margin:0px;
-  opacity: 1;
-  filter: alpha(opacity=100);
+  white-space:nowrap;
+/*  opacity: 1;
+  filter: alpha(opacity=100);*/
 }
 
-/* title bar across the middle of the page */
+/* make links in image info visible in some way */
+div.info a { 
+  text-decoration:underline;
+}
+
+/* partially transparent background behind image info text */
+div.imgtextbg { 
+  width:100%;
+  height: 35px;
+  position:absolute;
+  top:515px; 
+  background-color:white;
+  /* more opaque than title bar, so small & colored text will be readable */
+  opacity: 0.7;	
+  -moz-opacity: 0.7;
+  filter:alpha(opacity=70);
+  z-index:1;
+}
+
+/* title bar across the middle of the index page */
 div.titlebar { 
   position:absolute;
   top:280px;
   left:0px;
   height:50px;
-}
-/* text within the title bar */
-div.titlebar p { 
   margin:0px; 
   font-size:30px; 
   font-family:Meta Bold Roman;
   letter-spacing: -1px;
   line-height: 50px;
-  opacity: 1;
-  filter: alpha(opacity=100);
+  z-index:2;
+}
+div.titleleft { 
+  width:375px;
+  text-align:right;
+}
+div.titleright { 
+  left:380px;
+  text-align:left;
+  padding-left:5px;
 }
 
 /* left side of titlebar with background color */
 div.tbar-left { 
-  padding-right:5px;
-  width:375px;
+  padding:0px;
+  width:380px;
   background-color:#669966;
   text-align:right;
 }
@@ -223,23 +264,26 @@ div.tbar-right {
   width:380px;
   z-index:1;
   background-color:white;
-  opacity: .7;
-  filter: alpha(opacity=70);
+  opacity: 0.5;
+  -moz-opacity: 0.5;
+  filter:alpha(opacity=50);
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
   padding-left:5px;
 }
 
 /* title bar at top of content pages */
-div.content div.title { 
-  padding-top:10px;
-  padding-bottom:10px;
+div.content div.title a { 
+  padding:10px 25px 10px 25px;
   margin-left:50px;
-  width:375px;
+/*  width:375px;*/
+  white-space:nowrap;	/* keep title on one line, no matter the width */
   height:30px;
   font-size:20px;
   font-weight:bold;
   letter-spacing: -1px;
   background-color:#669966;
   text-align:center;
+  z-index:1;
 }
 div.title a { color:#000000; }
 div.title a:hover { color:#FF9933; }
@@ -247,8 +291,8 @@ div.title a:hover { color:#FF9933; }
 /* descriptive paragraph */
 div.description { 
   width:360px;
-  height: 185px;
-  margin-top:103px;
+/*  height: 185px;*/
+/*  margin-top:103px;*/
   margin-left:10px;
 }
 
@@ -262,10 +306,16 @@ hr.menu {
 }
 
 div.collections { 
-  margin-top:5px;
+  margin-top:0px;
   width:100%;
+  height: 185px;	/* make hr line up with image text on index page */
   margin-left:15px;
 }
+/* collection div on index page - extra space for center title bar */
+div.index {
+  margin-top:103px;
+}
+
 
 /* links to the sub-collections */
 div.collections ul { 
@@ -279,20 +329,22 @@ div.collections li {
 div.collections a { 
   font-weight:bold;
 }
-a#genrefiction    { color: #990000; }
-a#genrefiction:hover { background-color: #990000; color:#FFFFFF; }
-a#earlymodern     { color: #990066; }
-a#earlymodern:hover { background-color: #990066; color:#FFFFFF;}
-a#twentieth       { color: #660099; }
-a#twentieth:hover { background-color: #660099; color:#FFFFFF; }
-a#worldwar1       { color: #330099; }
-a#worldwar1:hover { background-color: #330099; color:#FFFFFF;}
-a#nativeamerican  { color: #003399; }
-a#nativeamerican:hover  { background-color: #003399; color:#FFFFFF; }
-a#abolition	  { color: #009966; }
-a#abolition:hover { background-color: #009966; color:#FFFFFF;}
-a#advocacy        { color: #339900; }
-a#advocacy:hover  { background-color: #339900; color:#FFFFFF;}
+a.ewwrp	 	  { color: #336633; }
+a.ewwrp:hover	  { background-color: #336633; color:#FFFFFF; }
+.genrefiction  { color: #990000; }
+a.genrefiction:hover { background-color: #990000; color:#FFFFFF; }
+.earlymodern  { color: #990066; }
+a.earlymodern:hover { background-color: #990066; color:#FFFFFF;}
+.twentieth       { color: #660099; }
+a.twentieth:hover { background-color: #660099; color:#FFFFFF; }
+.worldwar1       { color: #330099; }
+a.worldwar1:hover { background-color: #330099; color:#FFFFFF;}
+.nativeamerican  { color: #003399; }
+a.nativeamerican:hover  { background-color: #003399; color:#FFFFFF; }
+.abolition	  { color: #009966; }
+a.abolition:hover { background-color: #009966; color:#FFFFFF;}
+.advocacy        { color: #339900; }
+a.advocacy:hover  { background-color: #339900; color:#FFFFFF;}
 
 div.copyright { 
   width:100%;
@@ -307,7 +359,7 @@ div.lcontent div.copyright {
 }
 
 /* next/prev/etc. navigation */
-div.searchnav{
+div.searchnav {
   background:#336633; 
   margin-bottom:10px; 
   height:20px;
@@ -321,7 +373,6 @@ div.searchnav a, table.searchnav a {
   padding-left:20px;
   padding-right:20px;
   text-align:center;
-/*  border:1px solid yellow;*/
 }
 div.searchnav a:hover, table.searchnav a:hover {
   color: #FF9933;
@@ -403,7 +454,7 @@ img.inline-right { float:right; margin:0;}
 
 p.pagebreak-toggle { text-align: right; }
 
-div.milestone { text-align: center; }
+div.milestone { text-align: center; white-space:nowrap; }
 hr.milestone { width: 50%; margin: auto;}	/* margin: auto = centered */
 span.dot, span.star { padding-left: 2em; padding-right: 2em; font-size: 125%;}
 
@@ -414,13 +465,20 @@ span.match { font-weight:bold; background-color:#336633; color:#FFFFFF; }
 
 
 div.doclinks { text-align: right; }
+div.doclinks p { margin:0px; }
 
 table.searchform { 
- margin:0.5in;
+/* margin:0.5in;*/
  border:0px;
 }
 table.searchform th { 
-  text-align:right; font-weight:normal;
+  text-align:right; 
+  font-weight:normal;
+  vertical-align:top;
 }
 table.searchform input { border:0px; outline:0px; }
 ul.searchopts { list-style-type:none; }
+
+ul.essays li { 
+  margin-bottom:10px;
+ }

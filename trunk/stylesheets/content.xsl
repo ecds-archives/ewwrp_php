@@ -2,6 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
 
+  <xsl:output method="xml" omit-xml-declaration="yes"/>
+
 <xsl:include href="common.xsl"/>
 <xsl:include href="footnotes.xsl"/>
 
@@ -26,7 +28,6 @@
 <xsl:variable name="newline"><xsl:text>
 </xsl:text></xsl:variable>
 
-  <xsl:output method="xml" omit-xml-declaration="yes"/>
 
   <xsl:template match="/">
     <xsl:call-template name="footnote-init"/>
@@ -348,8 +349,10 @@
 
         <!-- create an anchor for linking to a particular page -->
         <xsl:if test="@n != ''">	 <!-- if n is not blank (a few title pages) -->
+        <a>
           <xsl:attribute name="name">page<xsl:value-of select="$pagenum"/></xsl:attribute>
           <xsl:value-of select="$pagenum"/>
+        </a>
         </xsl:if>
       </span>
          <xsl:text> </xsl:text>
@@ -440,7 +443,6 @@
     <xsl:attribute name="class">milestone</xsl:attribute>
     <xsl:choose>
       <xsl:when test="@rend = 'dots'">
-        <xsl:element name="nobr">	<!-- don't wrap line -->
           <!-- dots are tagged individually so spacing can be managed with css -->
           <span class="dot"> . </span>
           <span class="dot"> . </span>
@@ -449,10 +451,8 @@
           <span class="dot"> . </span>
           <span class="dot"> . </span>
           <span class="dot"> . </span>
-        </xsl:element>
       </xsl:when>
       <xsl:when test="@rend = 'stars'">
-        <xsl:element name="nobr">	<!-- don't wrap line -->
           <!-- stars are tagged individually so spacing can be managed with css -->
           <span class="star"> * </span>
           <span class="star"> * </span>
@@ -461,7 +461,6 @@
           <span class="star"> * </span>
           <span class="star"> * </span>
           <span class="star"> * </span>
-        </xsl:element>
       </xsl:when>
       <xsl:when test="@rend = 'line'">
         <xsl:element name="hr">
