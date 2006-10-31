@@ -7,16 +7,13 @@ $connectionArray{"debug"} = false;
 $xdb = new xmlDbConnection($connectionArray);
 
 $docname = $_GET["id"];
-$mode = $_GET["mode"];		// paragraph or table
-if (!($mode)) $mode = "paragraph";
 
-$query = "document('db/$db/$docname.xml')/TEI.2/teiHeader";
+$query = "document('/db/$db/$docname.xml')/TEI.2/teiHeader";
 
 $xsl = "$baseurl/stylesheets/teiheader.xsl";
-$xsl_params = array("mode" => $mode);
 
 $xdb->xquery($query);
-$xdb->xslBind($xsl, $xsl_params);
+$xdb->xslBind($xsl);
 $xdb->transform();
 
 global $title;
@@ -43,9 +40,6 @@ print "<html>
     <link rel=\"shortcut icon\" href=\"ewwrp.ico\" type=\"image/x-icon\">
 </head>
 <body>
-
-<h1>Information about document $id</h1>
-<p>(this metadata is from the teiHeader)</p>
 ";
 
 
