@@ -1,5 +1,6 @@
 <?php
 include_once("config.php");
+include_once("common_functions.php");
 include_once("lib/xmlDbConnection.class.php");
 
 $connectionArray{"debug"} = false;
@@ -22,7 +23,7 @@ else
    $htmltitle = $title;
 
 
-$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
+//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
 $field = $_GET["field"];
 $value = $_GET["value"];
@@ -30,8 +31,9 @@ $letter = $_GET["letter"];
 if (!($field)) $field = "author";	// default list
 
 // publishers must be enclosed in "" to pass &; remove quotes & convert ampersand for xquery
-$value = preg_replace('/^\\\\"(.*)\\\\"$/', '$1', $value);
+$value = preg_replace('/^\"(.*)\"$/', '$1', stripslashes($value));	// remove slashes to simplify removing quotes
 $value = preg_replace('/&/', '&amp;', $value);
+$value = addslashes($value);	// add slashes back in so searches with ' will work
 
 $pos = $_GET["position"];
 $max = $_GET["max"];
@@ -228,13 +230,16 @@ $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter
 <html>
  <head>
 <title><?= $htmltitle ?> : Browse <?= $field?></title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css">
-    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="ewwrp.css"/>
+    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
 <body>
 
-<? include("header.php") ?>
-<? include("nav.php") ?>
+<?
+include("header.php");
+include("nav.php");
+validate_link();
+?>
 
 <div class="content">
 
