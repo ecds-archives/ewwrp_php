@@ -6,7 +6,7 @@ a {
 }
 
 /* highlight current collection */
-a#worldwar1 { 
+.worldwar1 { 
   background-color:#330099; 
   color:#FFFFFF; 
 }
@@ -29,13 +29,17 @@ div.image div.info {
 div.tbar-left { 
   background-color:#7F66CD;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#7F66CD;
 }
 
 hr.menu { 
   background-color: #330099;
   color: #330099;
+}
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #330099;
 }
 
 div.searchnav, table.searchnav {

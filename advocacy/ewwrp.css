@@ -7,7 +7,7 @@ a {
 }
 
 /* highlight current collection */
-a#advocacy { 
+.advocacy { 
   background-color:#339900; 
   color:#FFFFFF; 
 }
@@ -30,7 +30,7 @@ div.image div.info {
 div.tbar-left { 
   background-color:#99CD7F;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#99CD7F;
 }
 
@@ -38,6 +38,11 @@ hr.menu {
   background-color: #339900;
   color: #339900;
 }
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #339900;
+}
+
 
 div.searchnav, table.searchnav {
   background:#339900; 

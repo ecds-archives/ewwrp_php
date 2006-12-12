@@ -6,7 +6,7 @@ a {
 }
 
 /* highlight current collection */
-a#genrefiction { 
+.genrefiction { 
   background-color:#990000; 
   color:#FFFFFF; 
 }
@@ -29,13 +29,18 @@ div.image div.info {
 div.tbar-left { 
   background-color:#CD7F7F;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#CD7F7F;
 }
 
 hr.menu { 
   background-color: #990000;
   color: #990000;
+}
+
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #990000;
 }
 
 div.searchnav, table.searchnav {
@@ -47,6 +52,11 @@ div.searchnav a:hover {
 }
 
 span.match { 
-  background-color:#003399; 
+  background-color:#990000; 
 } 
  
+
+/* pop-up footnotes should match sub-site colors also */
+.footnotebg { 
+  background-color:  #990000; 
+}

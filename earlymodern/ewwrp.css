@@ -6,7 +6,7 @@ a {
 }
 
 /* highlight current collection */
-a#earlymodern { 
+.earlymodern { 
   background-color:#990066; 
   color:#FFFFFF; 
 }
@@ -29,7 +29,7 @@ div.image div.info {
 div.tbar-left { 
   background-color:#CD7F99;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#CD7F99;
 }
 
@@ -37,6 +37,12 @@ hr.menu {
   background-color: #990066;
   color: #990066;
 }
+
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #990066;
+}
+
 
 div.searchnav, table.searchnav {
   background:#990066; 
