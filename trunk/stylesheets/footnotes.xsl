@@ -4,7 +4,7 @@
 	xmlns:ino="http://namespaces.softwareag.com/tamino/response2" 
 	xmlns:xql="http://metalab.unc.edu/xql/">
 
-<xsl:include href="utils.xsl"/>
+<xsl:import href="utils.xsl"/>
 
 <!-- XSLT to handle footnotes.
      Handles both Chadwyck-Healey and TEI style footnotes.
@@ -45,7 +45,7 @@
     Note: use | to delimit node names, so partial node names will not match. 
 -->
 <!-- <xsl:param name="next-note-list">|caption|head|</xsl:param> -->
-<xsl:param name="next-note-list">|caption|head|</xsl:param>
+<xsl:param name="next-note-list">|caption|head|quote|q|</xsl:param>
 
 
 <!-- use overLib.js to display footnotes as pop-ups (in addition to
@@ -67,18 +67,20 @@
 <!-- do some initialization (needed for popups) -->
 <xsl:template name="footnote-init">
   <!-- include the overlib script -->
-  <xsl:element name="script">
+  <!--  <xsl:element name="script">
     <xsl:attribute name="type">text/javascript</xsl:attribute>
     <xsl:attribute name="src"><xsl:value-of select="$overlib-url"/></xsl:attribute>
     <xsl:comment>overLIB (c) Erik Bosrup</xsl:comment>
-  </xsl:element>
+  </xsl:element> -->
 
   <!-- store the footnote text in a javascript variable (so special
   characters & mark-up will display in pop-up version of footnote) -->
-  <xsl:element name="script">
-    <xsl:attribute name="type">text/javascript</xsl:attribute>
-    <xsl:apply-templates select="//note[not(parent::note)]" mode="javascript"/>
-  </xsl:element>
+  <xsl:if test="//note">
+    <xsl:element name="script">
+      <xsl:attribute name="type">text/javascript</xsl:attribute>
+      <xsl:apply-templates select="//note[not(parent::note)]" mode="javascript"/>
+    </xsl:element>
+  </xsl:if>
 
   <!--  <xsl:element name="div">
     <xsl:attribute name="id">overDiv</xsl:attribute>
@@ -91,11 +93,18 @@
      following notes but also line breaks (e.g., heads or captions),
      so the note will display on the same line. -->
 <xsl:template name="next-note">
-  <xsl:if test="following::*[1][name() = 'note']">
-    <xsl:apply-templates select="following::*[1][name() = 'note']">
-      <xsl:with-param name="mode">next-note</xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:if>
+  <xsl:choose>
+    <xsl:when test="following::*[1][name() = 'note']">
+      <xsl:apply-templates select="following::*[1][name() = 'note']">
+        <xsl:with-param name="mode">next-note</xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:when>
+    <xsl:when test="following::*[1][name() = 'ref']">
+      <xsl:apply-templates select="following::*[1][name() = 'ref']">
+        <xsl:with-param name="mode">next-note</xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:when>
+  </xsl:choose>
 </xsl:template>
 
 
@@ -103,7 +112,15 @@
 
 <!-- some texts are tagged with refs where the note should go, and some are not -->
 <xsl:template match="ref">
-  <xsl:if test="$ref-mode = 'ref'">
+  <xsl:param name="mode">normal</xsl:param>	<!-- also possible: next-note -->
+
+  <xsl:variable name="prev"><xsl:value-of select="name(preceding-sibling::*[1])"/></xsl:variable>
+
+  <!-- add | before and after - delimiters of node-names within next-note-list -->
+  <xsl:variable name="prev-match"><xsl:text>|</xsl:text><xsl:value-of select="$prev"/><xsl:text>|</xsl:text></xsl:variable>
+
+  <xsl:if test="$ref-mode = 'ref' and 
+                ($prev = '') or (not(contains($next-note-list, $prev-match))) or ($mode = 'next-note')">
     <a> 
      <xsl:attribute name="name"><xsl:value-of select="concat('notelink-', @target)"/></xsl:attribute>
      <xsl:attribute name="href"><xsl:value-of select="concat('#', @target)"/></xsl:attribute>
@@ -324,14 +341,21 @@
   
   <xsl:element name="p">
     <xsl:attribute name="class">footnote</xsl:attribute>
-    <span class="fn-pagen"><a><xsl:attribute name="href">#page<xsl:value-of select="$pagenum"/></xsl:attribute>
-	Page  <xsl:value-of select="$pagenum"/></a> 
-  </span>
+
+    <xsl:if test="$pagenum != '' and $pagenum != 'NaN'">	<!-- neither blank nor "Not a Number" -->
+      <span class="fn-pagen"><a><xsl:attribute name="href">#page<xsl:value-of select="$pagenum"/></xsl:attribute>
+    	  Page  <xsl:value-of select="$pagenum"/></a> 
+      </span>
+    </xsl:if>
+
+    <!-- only output the dash separator if both page number & id are used. -->
+    <xsl:if test="$pagenum != '' and $pagenum != 'NaN' and @id">
+      <xsl:text> - </xsl:text>
+    </xsl:if>
 
   <xsl:choose>
     <!-- in some rare cases, there is no id: just a footnote with no specified place. -->
     <xsl:when test="@id">
-      - 
       <xsl:element name="a">
         <xsl:attribute name="name"><xsl:value-of select="@id"/></xsl:attribute>
         <xsl:attribute name="href"><xsl:value-of select="concat('#','notelink-', @id)"/></xsl:attribute>
@@ -432,10 +456,10 @@
   </xsl:template>
 
 <!-- note: for some reason, was losing spacing before & after text -->
-<xsl:template match="hi[@r!='roman']" mode="javascript">
+<xsl:template match="hi" mode="javascript">
  <xsl:text> </xsl:text>
  <xsl:element name="span">
-   <xsl:attribute name="class"><xsl:value-of select="@r"/></xsl:attribute>
+   <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
    <xsl:apply-templates mode="javascript"/>
  </xsl:element>
   <xsl:text> </xsl:text>
