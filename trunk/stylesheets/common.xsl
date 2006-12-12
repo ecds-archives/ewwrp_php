@@ -4,6 +4,7 @@
   exclude-result-prefixes="exist" version="1.0">
 
   <xsl:include href="utils.xsl"/>
+  <xsl:include href="tei-table.xsl"/>
 
   <xsl:param name="url_suffix"/>
   <xsl:variable name="myurlsuffix"><xsl:if test="$url_suffix != ''">&amp;<xsl:value-of select="$url_suffix"/></xsl:if></xsl:variable>
@@ -54,8 +55,6 @@
       </a>
     </p>
   </xsl:template>
-
-
 
 
   <!-- title links back to TOC when not at TOC view -->
@@ -117,6 +116,9 @@
 
 
 <xsl:template match="subject|publisher">
+  <xsl:if test="preceding-sibling::publisher">
+    <xsl:text>; </xsl:text>
+  </xsl:if>
   <!-- convert special characters to url format -->
   <xsl:variable name="urlval">
     <xsl:call-template name="replace-string">
@@ -132,7 +134,7 @@
 </xsl:template>
 
 <!-- display date, link to a date search -->
-<xsl:template match="date">
+<xsl:template match="bibl/date">
   <xsl:variable name="searchdate">
     <xsl:choose>
       <!-- uncertain dates are in this format: [186-?]; search for all 1860 matches -->
@@ -231,10 +233,67 @@
   </xsl:template>
 
 
+  <!-- formatting for well-tagged critical bibliography -->
+  <xsl:template match="div[@type='bibliography']/bibl|div[@type='Section']/bibl">
+    <xsl:element name="p">
+      <xsl:attribute name="class">bibliography</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- article title -->
+  <xsl:template match="title[@level='a']">
+    <xsl:choose>
+      <xsl:when test="following-sibling::title[@level='m']">
+        <xsl:text>"</xsl:text><xsl:apply-templates/><xsl:text>"</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <i><xsl:apply-templates/></i>
+      </xsl:otherwise>
+    </xsl:choose>
+    <!-- in either case, add a space after -->
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+  <!-- monograph title -->
+  <xsl:template match="title[@level='m']">
+    <i><xsl:apply-templates/></i> 
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+
+  <xsl:template match="div[@type='bibliography' or @type='Bibliography']//author">
+    <xsl:apply-templates/>
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="div[@type='bibliography' or @type='Bibliography']//date">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="div[@type='bibliography' or @type='Bibliography']//publisher">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="div[@type='bibliography' or @type='Bibliography']//pubPlace">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="div[@type='bibliography' or @type='Bibliography']//edition">
+    <xsl:apply-templates/><xsl:text> </xsl:text>
+  </xsl:template>
+
+
+  <!-- |div[@type='bibliography']//publisher|div[@type='bibliography']//pubPlace -->
+
+
   <!-- convert line breaks into spaces when building TOC -->
   <xsl:template match="head/lb|head/milestone" mode="toc">
     <xsl:text> </xsl:text>
   </xsl:template>
+
+  <!-- don't display footnotes or footnote marks in TOC -->
+  <xsl:template match="head/note|head/ref" mode="toc"/>
 
 
   <xsl:template match="exist:match">
