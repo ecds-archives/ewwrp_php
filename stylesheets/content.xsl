@@ -20,8 +20,19 @@
   <!-- on/off : show or hide running header in page breaks -->
 
 <!-- paths for images -->
-<xsl:variable name="imgserver">http://bohr.library.emory.edu/ewwrp/images/tgfw/</xsl:variable>
-<xsl:variable name="figure-prefix"><xsl:value-of select="$imgserver"/></xsl:variable>
+<xsl:variable name="imgserver">http://bohr.library.emory.edu/ewwrp/images/</xsl:variable>
+<xsl:variable name="genrefiction">tgfw/</xsl:variable>
+<xsl:variable name="figure-prefix">
+<xsl:choose>
+  <xsl:when test="//rs[@type='collection'] = 'Genre Fiction'">
+    <xsl:value-of select="concat($imgserver,$genrefiction)"/>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:value-of select="$imgserver"/>
+  </xsl:otherwise>
+</xsl:choose>
+  
+</xsl:variable>
 <xsl:variable name="thumbs-prefix"><xsl:value-of select="$imgserver"/>thumbs/</xsl:variable>
 <xsl:variable name="figure-suffix">.jpg</xsl:variable>
 
@@ -59,6 +70,8 @@
     <!-- table of contents for items under this node (if there are any) -->
     <xsl:apply-templates select="//toc"/>
 
+    <xsl:call-template name="breadcrumb-toc"/>
+
     <!-- navigation to sibling nodes (first/prev/next/last) -->
     <xsl:apply-templates select="//nav"/>
 
@@ -83,6 +96,60 @@
     </xsl:if>
 
   </xsl:template>
+
+
+  <xsl:template name="breadcrumb-toc">
+    <p class='breadcrumb'>
+      <xsl:apply-templates select="//relative-toc/item[@name='TEI.2']" mode="breadcrumb"/>
+      <xsl:apply-templates select="//relative-toc/item[@type='critical essay']"  mode="breadcrumb"/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="item" mode="breadcrumb">
+    <xsl:param name="first">true</xsl:param>
+
+    <xsl:variable name="label">
+      <xsl:call-template name="toc-label"/>
+    </xsl:variable>
+
+    <!-- if label is empty, we still haven't hit the first (root) breadcrumb -->
+    <xsl:variable name="empty">
+      <xsl:choose>
+        <xsl:when test="$label = '' and $first = 'true'">true</xsl:when>        
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- if this is not the first label, output a breadcrumb separator -->
+    <xsl:if test="$label != '' and $first = 'false'">
+      <xsl:text> &gt; </xsl:text>
+    </xsl:if>
+
+    <xsl:choose>
+      <!-- if this is the currently displayed node, don't make it a link -->
+      <xsl:when test="@id = //content/*/@id">	<!-- could be div or titlePage -->
+      <xsl:value-of select="$label"/>
+    </xsl:when>
+    <xsl:when test="@id = $id">
+      <!-- this is the current node (may be displaying first content-level item under this node) -->
+      <xsl:value-of select="$label"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <a>
+        <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+        <xsl:value-of select="$label"/>
+      </a>
+    </xsl:otherwise>
+  </xsl:choose>
+
+  <xsl:apply-templates select="key('item-by-parentid-and-parent', 
+                               concat(@id, ':', name(..)))" mode="breadcrumb">
+    <xsl:with-param name="first"><xsl:value-of select="$empty"/></xsl:with-param>
+  </xsl:apply-templates>
+    
+  </xsl:template>
+
+
 
 
   <xsl:template match="relative-toc">
@@ -344,8 +411,17 @@
 	  <!-- non-breaking space -->
 	 <xsl:variable name="space">&#160;</xsl:variable>
          <xsl:text> </xsl:text>
+
+         <xsl:if test="parent::p">
+           <span class="pagemark"><xsl:text> | </xsl:text></span>
+         </xsl:if>
+
       <span>
         <xsl:attribute name="class">pagebreak</xsl:attribute>
+
+         <xsl:if test="parent::p">
+           <span class="pagemark"><xsl:text> | </xsl:text></span>
+         </xsl:if>
 
         <!-- create an anchor for linking to a particular page -->
         <xsl:if test="@n != ''">	 <!-- if n is not blank (a few title pages) -->
@@ -373,6 +449,20 @@
   </xsl:if>
 
 </xsl:template>
+
+<!-- handle catch words  -->
+<xsl:template match="seg[@type='catch']|ab[@type='catch']">
+  <xsl:choose>
+    <xsl:when test="$running-header = 'on'">
+      <p class="catch">
+        <xsl:apply-templates/>
+      </p>
+    </xsl:when>
+    <!-- when running header is turned off, don't display repeated word -->
+    <xsl:when test="$running-header = 'off'"/>
+  </xsl:choose>
+</xsl:template>
+
 
 <!-- figures -->
 <!-- <xsl:template match="figure[@rend='inline']"> -->
@@ -432,8 +522,9 @@
 </xsl:template>
 
 <!-- line break after every pubPlace and publisher -->
-<!-- note: sourceDesc publisher in teiHeader has a different template - links to browse search -->
-<xsl:template match="pubPlace|publisher[not(ancestor::sourceDesc)]">
+<!-- note: sourceDesc publisher in teiHeader has a different template - links to browse search
+     also exclude publishers in a bibliography (in critical editions)   -->
+<xsl:template match="pubPlace|publisher[not(ancestor::sourceDesc)][not(ancestor::div[@type='Bibliography' or @type='bibliography'])]">
   <xsl:apply-templates/> <br/>
 </xsl:template>
 
