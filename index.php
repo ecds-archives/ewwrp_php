@@ -1,9 +1,11 @@
 <?php
 
+include("config.php");
+
 global $title;
 global $collname;
 global $collection;
-$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
+//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 $page = "index";
 
 if ($title == '') {
@@ -37,8 +39,14 @@ else
 
 <? include("header.php") ?>
 
+<div class="titlebar tbar-left"></div>
+<div class="titlebar tbar-right"></div>
+<div class="titlebar tbar-text titleleft"><?= $t[0] ?></div>
+<div class="titlebar tbar-text titleright"><?= $t[1] ?></div>
+
+<!-- (simplified version)
 <div class="titlebar tbar-left"><p><?= $t[0] ?></p></div>
-<div class="titlebar tbar-right"><p><?= $t[1] ?></p></div>
+<div class="titlebar tbar-right"><p><?= $t[1] ?></p></div> -->
 
 
 <? include("nav.php") ?>
@@ -52,12 +60,15 @@ $imgdoc = new DOMDocument();
 $imgdoc->load("$baseurl/frontpageimages.xml");
 $xpath = new domxpath($imgdoc);
 // filter on collection if there is one defined
-if ($collection) $filter = "[@collection=\"$collection\"]";
+if ($collection) {
+  $collection = stripslashes($collection);
+  $filter = "[@collection=\"$collection\"]";
+ }
 $imglist = $xpath->query("/images/div$filter");
 if ($imglist->length) {
   // generate random index # based on number of matching images
   $index = rand(0, ($imglist->length - 1));
-  
+   
   // create a new output domdoc, and use the random index to insert image div
   $odoc = new DOMDocument();
   $onode = $odoc->importNode($imglist->item($index), TRUE);
@@ -68,10 +79,14 @@ if ($imglist->length) {
  }
 ?>
 
+<!-- white partially-opaque background for text about image -->
+<!-- <div class="imgtextbg"></div>  -->
+
+
 <div class="copyright">
 <? include("funding.xml") ?>
 <hr class="menu">
-    &copy;2005 Emory University | Contact: <a href="mailto:beckctr@emory.edu">The Beck Center</a>
+    &copy;2006 Emory University | Contact: <a href="mailto:beckctr@emory.edu">The Beck Center</a>
 </div>
 
 </div>		<!-- end right column -->
