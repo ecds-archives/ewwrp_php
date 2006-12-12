@@ -10,7 +10,7 @@ global $title;
 global $collname;
 global $collection;
 
-$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
+//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
 $id = $_GET["id"];
 $node = $_GET["level"];
@@ -29,7 +29,7 @@ $query = "let \$a := //${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
 let \$contentnode := (if (exists(\$a//div|\$a//titlePage)) then
-  ((\$a/div[not(./div)],\$a//div[not(./div)])|\$a//titlePage)[1]
+  ((\$a/div[1][not(./div)],\$a/div[1]/div[1],\$a//div[not(./div)]),\$a//titlePage)[1]
 else
   \$a)
 let \$contentnodehi := \$contentnode[. |= '$keyword']
@@ -50,6 +50,7 @@ return <TEI.2>
   <teiHeader>
     {\$root//teiHeader//titleStmt}
     {\$root//sourceDesc}
+    {\$root//rs[@type='collection']}
   </teiHeader>
   <relative-toc>
     {for \$d in (\$a/ancestor::TEI.2|\$a/ancestor::front|\$a/ancestor::titlePage|\$a/ancestor::body|\$a/ancestor::back|\$a/ancestor::text|\$a/ancestor::group|\$a/ancestor::div|\$a)
@@ -77,21 +78,28 @@ if ($node == "pb") {
   </nav>";
 
 } else {
+
+  /* NOTE: as of Nov. 2006, there is a bug in the exist xquery sibling
+   axes-- it fails to find a named following-sibling when there are
+   nested nodes with the same name (as with nested divs in TEI)
+   Using following-sibling::* and filtering on local-name for now.
+  */
+   
   $query .= "
   <nav>
-    {for \$s in (\$a/preceding-sibling::div[last()]|\$a/preceding-sibling::titlePage[last()]|\$a/preceding-sibling::text[last()])[1]
+    {for \$s in (\$a/preceding-sibling::*[local-name() = 'div'][last()]|\$a/preceding-sibling::titlePage[last()]|\$a/preceding-sibling::text[last()])[1]
  	return <first name='{name(\$s)}'>{\$s/@*}
 	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
 	</first>}
-    {for \$s in (\$a/preceding-sibling::div[1]|\$a/preceding-sibling::titlePage[1]|\$a/preceding-sibling::text[1])[last()]
+    {for \$s in (\$a/preceding-sibling::*[local-name() = 'div'][1]|\$a/preceding-sibling::titlePage[1]|\$a/preceding-sibling::text[1])[last()]
  	return <prev name='{name(\$s)}'>{\$s/@*}
 	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
 	</prev>}
-    {for \$s in (\$a/following-sibling::div[1]|\$a/following-sibling::titlePage[1]|\$a/following-sibling::text[1])[1]
+    {for \$s in (\$a/following-sibling::*[local-name() = 'div'][1]|\$a/following-sibling::div[1]|\$a/following-sibling::titlePage[1]|\$a/following-sibling::text[1])[1]
  	return <next name='{name(\$s)}'>{\$s/@*}
 	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
 	</next>}
-    {for \$s in (\$a/following-sibling::div[last()]|\$a/following-sibling::titlePage[last()]|\$a/following-sibling::text[last()])[1]
+    {for \$s in (\$a/following-sibling::*[local-name() = 'div'][last()]|\$a/following-sibling::titlePage[last()]|\$a/following-sibling::text[last()])[1]
  	return <last name='{name(\$s)}'>{\$s/@*}
 	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
 	</last>}
@@ -137,20 +145,23 @@ else
    $htmltitle = $title;
 
 
-print "<html>
+print "
+$doctype
+<html>
  <head>
     <title>$htmltitle : $doctitle : $content_title</title>
 ";
 switch ($view) {
  case "print": 
  case "blackboard":
-   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'>";
+   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'/>";
    break;
- default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'>"; 
+ default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'/>"; 
  }
 
 print "
-    <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'>
+    <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'/>
+    <script type='text/javascript' src='$baseurl/scripts/overlib.js'><!--overLIB (c) Erik Bosrup--></script>
 </head>
 <body>";
 
@@ -167,4 +178,5 @@ $db->printResult();
 
 </div>	
 
-</body></html>
+</body>
+</html>
