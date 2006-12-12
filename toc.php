@@ -1,5 +1,6 @@
 <?php
 include_once("config.php");
+include_once("common_functions.php");
 include_once("lib/xmlDbConnection.class.php");
 
 $connectionArray{"debug"} = false;
@@ -21,7 +22,7 @@ if ($title == '') {
  }
 
 
-$query = "let \$doc := document('db/$db/$docname.xml')/TEI.2
+$query = "let \$doc := document('/db/$db/$docname.xml')/TEI.2
 return <TEI.2>
 {\$doc/@id}
 {\$doc/teiHeader}
@@ -50,19 +51,21 @@ if ($collname != "EWWRP")
 else
    $htmltitle = $title;
 
-print "<html>
+print "
+$doctype  
+<html>
  <head>
     <title>$htmltitle : $doctitle</title>";
 
 switch ($view) {
  case "print": 
  case "blackboard":
-   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'>";
+   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'/>";
    break;
- default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'>"; 
+ default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'/>"; 
  }
 print '
-    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">';
+    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>';
 
 $xdb->xslBind("$baseurl/stylesheets/teiheader-dc.xsl");
 $xdb->xslBind("$baseurl/stylesheets/dc-htmldc.xsl");
@@ -72,8 +75,11 @@ $xdb->printResult();
 </head>
 <body>
 
-<? include("header.php") ?>
-<? include("nav.php") ?>
+<?
+include("header.php");
+include("nav.php");
+validate_link();
+?>
 
 <div class="content">
 
@@ -86,5 +92,8 @@ $xdb->printResult();
 
 
 </div>	
+
+
+
 
 </body></html>
