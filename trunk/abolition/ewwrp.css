@@ -6,7 +6,7 @@ a {
 }
 
 /* highlight current collection */
-a#abolition { 
+.abolition { 
   background-color:#009966; 
   color:#FFFFFF; 
 }
@@ -29,7 +29,7 @@ div.image div.info {
 div.tbar-left { 
   background-color:#7FCD99;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#7FCD99;
 }
 
@@ -37,6 +37,11 @@ hr.menu {
   background-color: #009966;
   color: #009966;
 }
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #009966;
+}
+
 
 div.searchnav, table.searchnav {
   background:#009966; 
@@ -50,3 +55,8 @@ span.match {
   background-color:#009966; 
 } 
  
+
+/* pop-up footnotes should match sub-site colors also */
+.footnotebg { 
+  background-color:  #009966; 
+}

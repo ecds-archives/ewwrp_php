@@ -5,7 +5,7 @@ a {
   color:#003399; 
 }
 /* highlight current collection */
-a#nativeamerican { 
+.nativeamerican { 
   background-color:#003399; 
   color:#FFFFFF; 
 }
@@ -28,7 +28,7 @@ div.image div.info {
 div.tbar-left { 
   background-color:#7F99CD;
 }
-div.content div.title { 
+div.content div.title a { 
   background-color:#7F99CD;
 }
 
@@ -36,6 +36,11 @@ hr.menu {
   background-color: #003399;
   color: #003399;
 }
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #003399;
+}
+
 
 div.searchnav, table.searchnav {
   background:#003399; 
