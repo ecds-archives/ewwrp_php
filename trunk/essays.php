@@ -24,7 +24,7 @@ else
 
 <html>
  <head>
-<title><?= $htmltitle ?> : Browse <?= $field?></title>
+<title><?= $htmltitle ?> : Essays <?= $field?></title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css"/>
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
@@ -40,6 +40,10 @@ else
 
 <? 
 
+if (isset($collection)) {
+  $filter = " where \$rs = '$collection' ";
+}
+
 //query for critical introductions & critical essays:
 //how to filter by collection?
 
@@ -47,7 +51,10 @@ else
 // return with first section id (for critical introductions) or essay id
 // return first docauthor & section heading (there are duplicates in the critical introductions)
 $query = 'for $d in (//div[@type="critical essay"], //div[@type="critical introduction"])
-let $rs := (root($d)/TEI.2/teiHeader//rs[@type="collection"], $d/rs[@type="collection"])
+let $rs := (if (exists($d/rs)) then
+	 $d/rs[@type="collection"]
+    else root($d)/TEI.2/teiHeader//rs[@type="collection"])' 
+  . $filter . ' 
 return <div> 
 {$d/@type} 
 {$d/@id} 
@@ -61,6 +68,15 @@ $xsl = "$baseurl/stylesheets/essays.xsl";
 $db->xquery($query);
 $db->xslTransform($xsl);
 $db->printResult();
+
+
+
+// handle the case where there are no essays for a specific collection
+// (which will be the case for many)
+if ($db->count == 0) {
+  print "<p>There are no essays for this collection.</p>
+	<p>View <a href='../essays.php'>all essays</a>.</p>";
+}
 
 
 
