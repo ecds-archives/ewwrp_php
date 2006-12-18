@@ -92,9 +92,9 @@ div.lcontent {
 div.content { 
   position:absolute;
   top:25px;
-  padding-left:275px;
-  padding-top:35px;
-  padding-right:25px;
+  margin-left:300px;
+  margin-top:35px;
+  margin-right:25px;
 /*  width:60%;*/	
 }
 
@@ -475,7 +475,8 @@ span.subscript { vertical-align: sub; font-size: 75%; }
 span.editorial { color: #545454; font-size: 10px; font-weight: normal; /* same as body text, even inside a head */}
 span.overwritten {  }
 
-.pagebreak { margin-left: -0.5in; margin-top:-1em; font-style:normal;}
+.pagebreak { margin-left: -0.5in;  font-style:normal;}
+.lineup { margin-top:-1em; }
 span.pagebreak { float: left; clear: left; width:0.5in;}
 hr.pagebreak { clear:left; }
 

@@ -78,7 +78,8 @@
     <xsl:call-template name="running-header-toggle"/>
 
     <xsl:choose>
-      <xsl:when test="//pb">
+      <xsl:when test="//pb[@n]">
+        <!-- indent main content if there are page numbers to display in the margin -->
         <div class="pagedxml">
           <xsl:apply-templates select="//content"/>
         </div>
@@ -99,6 +100,13 @@
 
 
   <xsl:template name="breadcrumb-toc">
+    <p>
+      <a>
+        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+        Table of Contents
+      </a>
+    </p>
+
     <p class='breadcrumb'>
       <xsl:apply-templates select="//relative-toc/item[@name='TEI.2']" mode="breadcrumb"/>
       <xsl:apply-templates select="//relative-toc/item[@type='critical essay']"  mode="breadcrumb"/>
@@ -405,21 +413,34 @@
         </xsl:call-template>
       </p>
     </xsl:when>
-    <xsl:when test="$running-header = 'off'">
+    <xsl:when test="$running-header = 'off' and $pagenum != ''">
+      <!-- note: don't display at all if there is no page number,
+      because the empty float messes up any following formatting. -->
+
+
       <!-- put a non-breaking space before floating pagebreak 
       (ensures separation between the two words, in case it was not encoded with a space.) -->
 	  <!-- non-breaking space -->
 	 <xsl:variable name="space">&#160;</xsl:variable>
          <xsl:text> </xsl:text>
 
-         <xsl:if test="parent::p">
+         <!-- Only display page mark if the page break occurs inside a paragraph.
+              Check for preceding or following text nodes is to
+              exclude paragraphs that only contain a page break. -->
+         <xsl:variable name="show_pagemark">
+           <xsl:if test="parent::p and preceding-sibling::text() or following-sibling::text()">
+             <xsl:text>true</xsl:text>
+           </xsl:if>
+         </xsl:variable>
+
+         <xsl:if test="$show_pagemark = 'true'">
            <span class="pagemark"><xsl:text> | </xsl:text></span>
          </xsl:if>
 
       <span>
-        <xsl:attribute name="class">pagebreak</xsl:attribute>
+        <xsl:attribute name="class">pagebreak <xsl:if test="$running-header = 'off'">lineup</xsl:if></xsl:attribute>
 
-         <xsl:if test="parent::p">
+         <xsl:if test="$show_pagemark = 'true'">
            <span class="pagemark"><xsl:text> | </xsl:text></span>
          </xsl:if>
 
