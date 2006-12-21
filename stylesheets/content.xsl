@@ -33,7 +33,7 @@
 </xsl:choose>
   
 </xsl:variable>
-<xsl:variable name="thumbs-prefix"><xsl:value-of select="$imgserver"/>thumbs/</xsl:variable>
+<xsl:variable name="thumbs-prefix"><xsl:value-of select="$figure-prefix"/>thumbs/</xsl:variable>
 <xsl:variable name="figure-suffix">.jpg</xsl:variable>
 
 <xsl:variable name="newline"><xsl:text>
@@ -117,7 +117,9 @@
     <xsl:param name="first">true</xsl:param>
 
     <xsl:variable name="label">
-      <xsl:call-template name="toc-label"/>
+      <xsl:call-template name="toc-label">
+        <xsl:with-param name="mode">breadcrumb</xsl:with-param>
+      </xsl:call-template>
     </xsl:variable>
 
     <!-- if label is empty, we still haven't hit the first (root) breadcrumb -->
@@ -172,7 +174,8 @@
 
   <xsl:template match="toc">
     <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
-    <h2>Table of Contents</h2>
+    <!-- label relative contents according to div type (section, book, chapter, etc.) -->
+    <h2><xsl:value-of select="@type"/> Contents</h2>
       <ul>
         <!-- start with top-level items, which are children of the requested node -->
         <xsl:apply-templates select="item[parent/@id = $id]"/>

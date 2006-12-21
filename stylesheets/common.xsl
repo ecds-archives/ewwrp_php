@@ -199,6 +199,7 @@
 
   <!-- generate nice display name for toc item -->
   <xsl:template name="toc-label">
+    <xsl:param name="mode"/>
       <xsl:choose>
         <xsl:when test="@name = 'front'">front matter</xsl:when>
         <xsl:when test="@name = 'back'">back matter</xsl:when>
@@ -221,7 +222,14 @@
           <xsl:if test="head"><xsl:text>: </xsl:text></xsl:if>
         </xsl:if>
         <xsl:if test="head != ''">	<!-- a couple of the outer, wrapping divs are blank -->
-        <xsl:apply-templates select="head" mode="toc"/> 
+          <xsl:choose>
+            <xsl:when test="$mode = 'breadcrumb'">
+              <xsl:apply-templates select="head" mode="short-toc"/> 
+            </xsl:when>        
+            <xsl:otherwise>
+              <xsl:apply-templates select="head" mode="toc"/> 
+            </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
       </xsl:when>
     </xsl:choose>
@@ -285,6 +293,18 @@
 
 
   <!-- |div[@type='bibliography']//publisher|div[@type='bibliography']//pubPlace -->
+
+
+  <xsl:template match="head" mode="short-toc">
+    <xsl:choose>
+      <xsl:when test="seg[@type='short-title']">
+        <xsl:apply-templates select="seg" mode="toc"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates mode="toc"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 
   <!-- convert line breaks into spaces when building TOC -->
