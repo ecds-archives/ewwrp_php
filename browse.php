@@ -90,7 +90,7 @@ if ($value) {
   case "geography":
     //list of titles filtered on genre, ethnicity, or geography
     $browse_qry = "for \$a in //titleStmt/title[ancestor::TEI.2//rs[@type='$field' and .='$value'
-	" . ($collection ? "and $rsfilter" : "") . "]]
+	" . ($collection ? "and ../rs[$rsfilter]" : "") . "]]
 	let \$doc := substring-before(util:document-name(\$a), '.xml')
   	let \$auth := \$a/../author
 	let \$date := root(\$a)//sourceDesc/bibl/date
@@ -162,7 +162,7 @@ if ($value) {
     case "criticaledition":
     //list of critical edition titles (filtered on form=Edited)
     $browse_qry = "for \$a in //titleStmt/title[ancestor::TEI.2//rs[@type='form' and .='Edited'
-	" . ($collection ? "and $rsfilter" : "") . "]]
+	]" . ($collection ? "[../rs[$rsfilter]]" : "") . "]
 	let \$doc := substring-before(util:document-name(\$a), '.xml')
   	let \$auth := \$a/../author
 	let \$ed := \$a/../respStmt/name
