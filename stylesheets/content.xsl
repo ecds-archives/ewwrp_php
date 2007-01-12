@@ -78,8 +78,9 @@
     <xsl:call-template name="running-header-toggle"/>
 
     <xsl:choose>
-      <xsl:when test="//pb[@n]">
-        <!-- indent main content if there are page numbers to display in the margin -->
+      <xsl:when test="//pb[@n] or //pb[@entity]">
+        <!-- indent main content if there are page numbers or page
+	     images to display in the margin -->
         <div class="pagedxml">
           <xsl:apply-templates select="//content"/>
         </div>
