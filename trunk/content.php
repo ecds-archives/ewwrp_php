@@ -29,7 +29,7 @@ $query = "let \$a := //${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
 let \$contentnode := (if (exists(\$a//div|\$a//titlePage)) then
-  ((\$a/div[1][not(./div)],\$a/div[1]/div[1],\$a//div[not(./div)]),\$a//titlePage)[1]
+  ((\$a/div[1][not(./div)]|\$a/div[1]/div[1]|\$a//div[not(./div)])|\$a//titlePage)[1]
 else
   \$a)
 let \$contentnodehi := \$contentnode[. |= '$keyword']
@@ -37,13 +37,13 @@ let \$content := (if (exists(\$contentnodehi)) then
  <content>{\$contentnodehi}</content>
 else
  <content>
-  {\$contentnode}
 ";
 // don't return preceding pb if main item is itself a pb
-// note: sibling pb is not showing up in some cases where it should 
-//$query .=   ($node != "pb") ? "{\$a/preceding-sibling::pb[1]}" : "";
-$query .= "
+// FIXME: this is a workaround for a bug in the sibling axis in eXist; should be fixed in future
+$query .=   ($node != "pb") ? "{\$a/preceding-sibling::*[1][name() = 'pb']}" : "";
 
+$query .= "
+  {\$contentnode}
   </content>)
 return <TEI.2>
   <doc>{\$doc}</doc>
@@ -59,7 +59,8 @@ return <TEI.2>
         <parent>{\$d/../@id}{name(\$d/..)}</parent>
       </item>}
   </relative-toc>
-  <toc>{for \$i in \$a//(front|body|back|text|group|titlePage|div)[@id!='$id' and not(exists(ancestor::q))]
+  <toc type='{\$a/@type}'>
+      {for \$i in \$a//(front|body|back|text|group|titlePage|div)[@id!='$id' and not(exists(ancestor::q))]
       return <item name='{name(\$i)}'>{\$i/@*}{\$i/head}
       <parent>{\$i/../@id}{name(\$i/..)}</parent>
      </item>}
