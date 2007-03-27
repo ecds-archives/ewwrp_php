@@ -210,6 +210,12 @@
     <xsl:apply-templates select="."/> 
   </xsl:template>-->
 
+  <!-- if not in kwic mode, just mark the match for highlighting -->
+  <xsl:template match="match">
+    <span class="match">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
 
 <!-- default template -->
 <xsl:template match="@*|node()">

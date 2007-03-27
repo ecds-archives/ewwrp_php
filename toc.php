@@ -22,16 +22,13 @@ if ($title == '') {
  }
 
 
-$query = "let \$doc := document('/db/$db/$docname.xml')/TEI.2
-return <TEI.2>
-{\$doc/@id}
-{\$doc/teiHeader}
-{for \$a in \$doc//(front|body|back|text|group|titlePage|div)
-  return <item name='{name(\$a)}'>{\$a/@*}{\$a/head}
-  {\$a/front/titlePage/docTitle/titlePart[@type='main']}
-      <parent>{\$a/../@id}{name(\$a/..)}</parent>
-      </item>}
-</TEI.2>";
+$query = $teixq . 'let $doc := document("/db/' . $db . '/' . $docname . '.xml")/TEI.2
+return  <TEI.2>
+  {$doc/@id}
+  {$doc/teiHeader}
+  <toc>{teixq:toc($doc)}</toc>
+  </TEI.2>
+';
 
 $xsl = "$baseurl/stylesheets/toc.xsl";
   $xsl_params = array("id" => $docname,

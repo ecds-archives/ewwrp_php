@@ -18,7 +18,7 @@
   <xsl:param name="max"/>
   <xsl:variable name="total"><xsl:value-of select="//@exist:hits"/></xsl:variable>
 
-  <xsl:include href="utils.xsl"/>
+  <!--  <xsl:include href="utils.xsl"/> -->
   <xsl:include href="common.xsl"/>
 
   <xsl:variable name="nl"><xsl:text> 
@@ -67,6 +67,10 @@
 
     <xsl:call-template name="total-jumplist"/>
     
+    <xsl:if test="//item/hits">
+      <p class="info">Click on the number of hits to see your search terms in context.</p>
+    </xsl:if>
+
       <table class="browse">
         <thead style="font-size:small;">
         <tr>

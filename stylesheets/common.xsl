@@ -154,11 +154,19 @@
 
 <!-- table of contents, relative table of contents at item view level -->
 
-<xsl:key name="item-by-parentid" match="item[parent/@id != '']" use="parent/@id"/>
-<xsl:key name="item-by-parentid-and-parent" match="item[parent/@id != '']" 
-  use="concat(parent/@id, ':', name(..))"/>
 
-<xsl:template match="relative-toc/item|TEI.2/item|item[@name='text' and parent='group']|toc/item">
+<!-- <xsl:template match="relative-toc/item|TEI.2/item|item[@name='text' and parent='group']|toc/item">  -->
+<xsl:template match="node[ancestor::toc] | node[ancestor::relative-toc] | node[ancestor::kwic]">  
+<xsl:choose>
+  <!-- nodes that don't display, and whose children shouldn't be indented -->
+  <xsl:when test="@name = 'TEI.2' or @name='body' or @name='group'"> 
+    <xsl:apply-templates select="node"/>
+  </xsl:when>
+  <xsl:when test="@name = 'text' and (parent::node/@name != 'group' or parent::toc)">
+    <xsl:apply-templates select="node"/>
+  </xsl:when>
+  <xsl:otherwise>
+
     <xsl:variable name="label">
       <xsl:call-template name="toc-label"/>
     </xsl:variable>
@@ -181,23 +189,31 @@
         </xsl:otherwise>
       </xsl:choose>
 
+
+      <xsl:if test="$mode = 'kwic'">  <!-- keyword in context -->
+        <xsl:apply-templates select="context"/>
+      </xsl:if>
+
         <!-- in full TOC, only show one level in the back & front matter -->
-        <xsl:if test="$mode != 'toc' or (parent != 'back' and parent != 'front')">
+        <xsl:if test="$mode != 'toc' or (parent::node/@name != 'back' and parent::node/@name != 'front')"> 
           <!-- if there are nodes under this one, display them now -->
-          <xsl:if test="key('item-by-parentid-and-parent', concat(@id, ':', name(..)))">
-            <ul>
-              <xsl:apply-templates select="key('item-by-parentid-and-parent', 
-                                           concat(@id, ':', name(..)))"/>
-            </ul>
+            <xsl:if test="count(./node) > 0">
+              <ul>
+                <xsl:apply-templates select="node"/>
+              </ul>
           </xsl:if>
-        </xsl:if>
+       </xsl:if>
 
     </li>
+
+    
+  </xsl:otherwise>
+</xsl:choose>
 
   </xsl:template>
 
 
-  <!-- generate nice display name for toc item -->
+  <!-- generate nice display name for toc node -->
   <xsl:template name="toc-label">
     <xsl:param name="mode"/>
       <xsl:choose>
@@ -209,7 +225,7 @@
             : <xsl:value-of select="@type"/>
         </xsl:if>
       </xsl:when>
-      <xsl:when test="@name = 'text' and parent='group'">
+      <xsl:when test="@name = 'text' and parent::node/@name='group'">
         <!-- texts under group (composite text) : display title from titlepage -->
         <xsl:apply-templates select="titlePart"/>
       </xsl:when>
@@ -234,12 +250,6 @@
       </xsl:when>
     </xsl:choose>
   </xsl:template>
-
-  <!-- nodes that don't display, and whose children shouldn't be indented -->
-  <xsl:template match="item[@name='TEI.2'or @name='body' or @name='group']|item[@name='text' and parent!='group']">
-    <xsl:apply-templates select="key('item-by-parentid', @id)"/>
-  </xsl:template>
-
 
   <!-- formatting for well-tagged critical bibliography -->
   <xsl:template match="div[@type='bibliography']/bibl|div[@type='Section']/bibl">

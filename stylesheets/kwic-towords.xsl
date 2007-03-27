@@ -27,6 +27,14 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- line of poetry -->
+  <xsl:template match="context/l">
+    <xsl:element name="l">
+      <xsl:attribute name="class">kwic</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
   <!-- keyword mark in exist -->
   <xsl:template match="exist:match">
     <match>

@@ -4,6 +4,7 @@
 
   <xsl:output method="xml"/>
 
+
   <xsl:template match="/">
     <table class="search">
       <tr><th>Title</th><th class="hits"># of matches</th></tr>
