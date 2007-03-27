@@ -7,6 +7,7 @@ global $collection;
 
 if ($title == '') {
   $title = "Emory Women Writers Resource Project";
+  $collection = $title;
   $collname = "EWWRP";
  }
 
@@ -32,7 +33,8 @@ print "<div class='content'>
 
 <div class='title'><a href='index.php'>$title</a></div>";
 
-print "<h1>Multi-field Search</h1>\n";
+print "<h1>Advanced Search</h1>\n";
+print "<p>Search across all texts in " . stripslashes($collection) . "</p>\n";
 
 include("searchform.php");
 ?>

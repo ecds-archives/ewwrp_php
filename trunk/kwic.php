@@ -10,10 +10,10 @@ global $title;
 global $collname;
 global $collection;
 
-$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
+//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
 $docname = $_GET["id"];
-$kewyord = $_GET["keyword"];
+$keyword = $_GET["keyword"];
 
 
 // need a filter if we are in a collection?
@@ -35,7 +35,7 @@ else
 // basically TOC query with context added
 // note: using |= instead of &= because we want context for any of the
 // keyword terms, whether they appear together or not
-$xquery = "let \$doc := document('db/$db/$docname.xml')/TEI.2
+$xquery = $teixq . "let \$doc := document('/db/$db/$docname.xml')/TEI.2
 return <TEI.2>
 {\$doc/@id}
 <doc>$docname</doc>
@@ -43,17 +43,7 @@ return <TEI.2>
   {\$doc//teiHeader//titleStmt}
   {\$doc//sourceDesc}
 </teiHeader>
-{for \$a in \$doc//(front|body|back|text|group|titlePage|div)[. |= '$keyword' or .//* |= '$keyword']
-  return <item name='{name(\$a)}'>{\$a/@*}{\$a/head}
-  {\$a/front/titlePage/docTitle/titlePart[@type='main']}
-      <parent>{\$a/../@id}{name(\$a/..)}</parent>
-       {if ((name(\$a) != 'text') and not(\$a/div)) then
-	  <context>{for \$c in \$a//*[. |= '$keyword']
-		      return if (name(\$c) = 'hi') then
-			\$c/..
-		      else \$c }</context>
-       else <context/>}
-      </item>}
+<kwic>{teixq:kwic-context(\$doc, '$keyword')}</kwic>
 </TEI.2>";
 
 

@@ -109,12 +109,12 @@
     </p>
 
     <p class='breadcrumb'>
-      <xsl:apply-templates select="//relative-toc/item[@name='TEI.2']" mode="breadcrumb"/>
-      <xsl:apply-templates select="//relative-toc/item[@type='critical essay']"  mode="breadcrumb"/>
+      <xsl:apply-templates select="//relative-toc/node[@name='TEI.2']" mode="breadcrumb"/>
+      <xsl:apply-templates select="//relative-toc/node[@type='critical essay']"  mode="breadcrumb"/>
     </p>
   </xsl:template>
 
-  <xsl:template match="item" mode="breadcrumb">
+  <xsl:template match="node" mode="breadcrumb">
     <xsl:param name="first">true</xsl:param>
 
     <xsl:variable name="label">
@@ -154,7 +154,7 @@
   </xsl:choose>
 
   <xsl:apply-templates select="key('item-by-parentid-and-parent', 
-                               concat(@id, ':', name(..)))" mode="breadcrumb">
+                               concat(@id, ':', name(..)))" mode="breadcrumb"> 
     <xsl:with-param name="first"><xsl:value-of select="$empty"/></xsl:with-param>
   </xsl:apply-templates>
     
@@ -164,22 +164,22 @@
 
 
   <xsl:template match="relative-toc">
-    <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
+    <xsl:if test="count(node) > 0">	<!-- don't generate an empty list -->
       <ul class="relative-toc">
-        <xsl:apply-templates select="item[@name='TEI.2']"/>
-        <xsl:apply-templates select="item[@type='critical essay']"/>
+        <xsl:apply-templates select="node[@name='TEI.2']"/>
+        <xsl:apply-templates select="node[@type='critical essay']"/>
       </ul>
     </xsl:if>
   </xsl:template>
 
 
   <xsl:template match="toc">
-    <xsl:if test="count(item) > 0">	<!-- don't generate an empty list -->
+    <xsl:if test="count(node) > 0">	<!-- don't generate an empty list -->
     <!-- label relative contents according to div type (section, book, chapter, etc.) -->
     <h2><xsl:value-of select="@type"/> Contents</h2>
       <ul>
         <!-- start with top-level items, which are children of the requested node -->
-        <xsl:apply-templates select="item[parent/@id = $id]"/>
+        <xsl:apply-templates select="node"/>
       </ul>
     </xsl:if>
 

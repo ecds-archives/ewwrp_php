@@ -4,10 +4,15 @@
 div.header, div.menu, div.leftcol, div.content div.title { 
   display:none; 
 }
-div.content { margin-left:25px; }
+div.content { 
+  margin-left:0.5in; 
+  padding:0px; 
+  width:90%;
+}
 
 /* Identify source of the text.   FIXME: check wording */
-body:after { 
+div.content:after { 
+  margin-top:0.5in;
   content: "This document provided via the Emory Women Writers Resource Project"; 
   display: block; 
   text-align: center; 

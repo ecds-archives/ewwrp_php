@@ -25,89 +25,31 @@ if ($title == '') {
  }
 
 
-$query = "let \$a := //${node}[@id='$id']
+$query = $teixq . "let \$a := //${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
-let \$contentnode := (if (exists(\$a//div|\$a//titlePage)) then
-  ((\$a/div[1][not(./div)]|\$a/div[1]/div[1]|\$a//div[not(./div)])|\$a//titlePage)[1]
-else
-  \$a)
-let \$contentnodehi := \$contentnode[. |= '$keyword']
-let \$content := (if (exists(\$contentnodehi)) then
- <content>{\$contentnodehi}</content>
-else
- <content>
-";
+let \$contentnode := teixq:contentnode(\$a, '$keyword') 
+let \$content :=  <content>";
+
+ // return the immediately preceding pb (for relevant page #s not inside the section)
 // don't return preceding pb if main item is itself a pb
 // FIXME: this is a workaround for a bug in the sibling axis in eXist; should be fixed in future
 $query .=   ($node != "pb") ? "{\$a/preceding-sibling::*[1][name() = 'pb']}" : "";
 
-$query .= "
-  {\$contentnode}
-  </content>)
-return <TEI.2>
+$query .= "  
+  {\$contentnode}  
+  </content>
+return <TEI.2> 
   <doc>{\$doc}</doc>
   <teiHeader>
     {\$root//teiHeader//titleStmt}
     {\$root//sourceDesc}
     {\$root//rs[@type='collection']}
   </teiHeader>
-  <relative-toc>
-    {for \$d in (\$a/ancestor::TEI.2|\$a/ancestor::front|\$a/ancestor::titlePage|\$a/ancestor::body|\$a/ancestor::back|\$a/ancestor::text|\$a/ancestor::group|\$a/ancestor::div|\$a)
-     return <item name='{name(\$d)}'>{\$d/@*}{\$d/head}
-	{\$d/front/titlePage/docTitle/titlePart[@type='main']}
-        <parent>{\$d/../@id}{name(\$d/..)}</parent>
-      </item>}
-  </relative-toc>
-  <toc type='{\$a/@type}'>
-      {for \$i in \$a//(front|body|back|text|group|titlePage|div)[@id!='$id' and not(exists(ancestor::q))]
-      return <item name='{name(\$i)}'>{\$i/@*}{\$i/head}
-      <parent>{\$i/../@id}{name(\$i/..)}</parent>
-     </item>}
-  </toc>";
-
-if ($node == "pb") {
-  $query .=   "<nav>
-    {for \$s in \$a/preceding::pb[@entity][last()]
- 	return <first name='{name(\$s)}'>{\$s/@*}</first>}
-    {for \$s in \$a/preceding::pb[@entity][1]
- 	return <prev name='{name(\$s)}'>{\$s/@*}</prev>}
-    {for \$s in \$a/following::pb[@entity][1]
- 	return <next name='{name(\$s)}'>{\$s/@*}</next>}
-    {for \$s in \$a/following::pb[@entity][last()]
- 	return <last name='{name(\$s)}'>{\$s/@*}</last>}
-  </nav>";
-
-} else {
-
-  /* NOTE: as of Nov. 2006, there is a bug in the exist xquery sibling
-   axes-- it fails to find a named following-sibling when there are
-   nested nodes with the same name (as with nested divs in TEI)
-   Using following-sibling::* and filtering on local-name for now.
-  */
-   
-  $query .= "
-  <nav>
-    {for \$s in (\$a/preceding-sibling::*[local-name() = 'div'][last()]|\$a/preceding-sibling::titlePage[last()]|\$a/preceding-sibling::text[last()])[1]
- 	return <first name='{name(\$s)}'>{\$s/@*}
-	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
-	</first>}
-    {for \$s in (\$a/preceding-sibling::*[local-name() = 'div'][1]|\$a/preceding-sibling::titlePage[1]|\$a/preceding-sibling::text[1])[last()]
- 	return <prev name='{name(\$s)}'>{\$s/@*}
-	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
-	</prev>}
-    {for \$s in (\$a/following-sibling::*[local-name() = 'div'][1]|\$a/following-sibling::div[1]|\$a/following-sibling::titlePage[1]|\$a/following-sibling::text[1])[1]
- 	return <next name='{name(\$s)}'>{\$s/@*}
-	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
-	</next>}
-    {for \$s in (\$a/following-sibling::*[local-name() = 'div'][last()]|\$a/following-sibling::titlePage[last()]|\$a/following-sibling::text[last()])[1]
- 	return <last name='{name(\$s)}'>{\$s/@*}
-	  {\$s/front/titlePage/docTitle/titlePart[@type='main']}
-	</last>}
-  </nav>";
-}
-$query .= "
-  {\$content}
+  <relative-toc> {teixq:relative-toc(\$a)} </relative-toc>
+  <toc type='{\$a/@type}'> {teixq:toc(\$a)}  </toc>
+  {teixq:relative-nav(\$a)} 
+  {\$content} 
 </TEI.2>
 ";
 
