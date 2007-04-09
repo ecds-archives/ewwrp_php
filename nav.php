@@ -58,9 +58,9 @@ print "<div id=\"logo\">
 </div>
 
 <div class="menu">
-  <p id="m-browse">- <a href="browse.php">Browse</a> <?=$collname ?></p>
+  <p id="m-browse">- <a href="browse.php">Browse</a> <?=$abbrev ?></p>
 
-  <p id="m-search">- <a>Search</a> <?=$collname ?></p>
+  <p id="m-search">- <a>Search</a> <?=$abbrev ?></p>
 
   
 <form class="menu" action="search.php" method="get">

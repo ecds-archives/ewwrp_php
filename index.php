@@ -3,14 +3,14 @@
 include("config.php");
 
 global $title;
-global $collname;
+global $abbrev;
 global $collection;
 //$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 $page = "index";
 
 if ($title == '') {
   $title = "Emory Women Writers|Resource Project";
-  $collname = "EWWRP";
+  $abbrev = "EWWRP";
 }
 
 
@@ -21,7 +21,7 @@ $t = explode('|', $title);
 $title = str_replace("|", " ", $title);
 
 // if we are in a collection, add EWWRP to the beginning of the html title
-if ($collname != "EWWRP") 
+if ($abbrev != "EWWRP") 
   $htmltitle = "EWWRP : $title";
 else
    $htmltitle = $title;

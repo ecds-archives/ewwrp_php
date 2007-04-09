@@ -21,7 +21,7 @@
      <input type="text" size="40" name="subject" value="<?php print $subj ?>">
     </td></tr>
 <?php
-if ($collname == "EWWRP") {
+if ($abbrev == "EWWRP") {
   print '
 <tr>
   <th>Collection(s)</th>
