@@ -7,7 +7,7 @@ $connectionArray{"debug"} = false;
 $db = new xmlDbConnection($connectionArray);
 
 global $title;
-global $collname;
+global $abbrev;
 global $collection;
 
 //$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
@@ -21,7 +21,7 @@ $view = $_GET["view"];		// print, blackboard, ??
 
 if ($title == '') {
   $title = "Emory Women Writers Resource Project";
-  $collname = "EWWRP";
+  $abbrev = "EWWRP";
  }
 
 
@@ -82,7 +82,7 @@ switch ($node) {
 
 
 // if we are in a collection, add EWWRP to the beginning of the html title
-if ($collname != "EWWRP") 
+if ($abbrev != "EWWRP") 
   $htmltitle = "EWWRP : $title";
 else
    $htmltitle = $title;

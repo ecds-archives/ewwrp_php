@@ -2,7 +2,7 @@
 
 $collection = "Abolition, Freedom, and Rights";
 $title = "$collection Collection";
-$collname = $title;
+$abbrev = "Abolition & Rights";
 
 // add parent directory to path
 set_include_path(get_include_path() . ":..");
