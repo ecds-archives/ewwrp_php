@@ -238,7 +238,7 @@ $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter
 <?
 include("header.php");
 include("nav.php");
-validate_link();
+//validate_link();		// for testing only
 ?>
 
 <div class="content">

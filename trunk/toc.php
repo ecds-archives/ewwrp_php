@@ -75,7 +75,7 @@ $xdb->printResult();
 <?
 include("header.php");
 include("nav.php");
-validate_link();
+//validate_link();	// for testing only
 ?>
 
 <div class="content">
