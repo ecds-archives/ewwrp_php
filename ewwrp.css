@@ -89,12 +89,18 @@ div.lcontent {
   z-index:1;
 }
 
-div.content { 
+/* setting position to absolute & overflow to auto so that footnote &
+page links will not be hidden by top fixed EWWRP header */
+div.content {
   position:absolute;
   top:25px;
-  margin-left:300px;
-  margin-top:35px;
-  margin-right:25px;
+  right:0px;
+  left:300px;
+  bottom:0px;
+  /*margin-left:300px;*/
+  padding-top:35px;
+  padding-right:25px;
+  overflow:auto;
 /*  width:60%;*/	
 }
 
@@ -529,6 +535,7 @@ p.bibliography {
   margin-left:0.25in;
   text-indent:-0.25in;
 }
+
 
 div.kwic li { 
  list-style-type:none;
