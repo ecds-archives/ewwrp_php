@@ -32,7 +32,7 @@
     </xsl:apply-templates>
 
     <span class="match">
-      <xsl:apply-templates select="."/>
+      <xsl:apply-templates/>
     </span>
 
     <xsl:apply-templates select="following-sibling::w[1]" mode="kwic-next">

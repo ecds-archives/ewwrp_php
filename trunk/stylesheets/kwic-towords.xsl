@@ -45,6 +45,14 @@
     </match>
   </xsl:template>
 
+
+  <xsl:template match="context//p/orig" mode="split">
+    <w>
+      <xsl:apply-templates select="@reg"/>
+      <xsl:value-of select="."/>
+    </w>
+  </xsl:template>
+
   <!-- get rid of figures (not needed for kwic) -->
   <xsl:template match="context//p/figure" mode="split"/>
   <!-- get rid of pbs also  -->
@@ -55,11 +63,19 @@
   <xsl:template match="context//p/stage" mode="split"/>
   <xsl:template match="context//p/ln" mode="split"/>
 
+  <!-- ignore footnotes... ? -->
+  <xsl:template match="context//p/note" mode="split"/>
+  <xsl:template match="context//p/ref" mode="split"/>
+
   <!-- make sure to tokenize text in hi tags, too -->
   <xsl:template match="context//p/hi" mode="split">
       <xsl:apply-templates mode="split"/>	<!-- handle text nodes -->
   </xsl:template>
 
+  <!-- FIXME: how to carry through formatting? -->
+  <xsl:template match="context//p/title" mode="split">
+    <xsl:apply-templates mode="split"/>	<!-- handle text nodes -->
+  </xsl:template>
 
   <!-- for anything besides text, do default action -->
   <xsl:template match="context//p//*" mode="split" priority="-1">   
