@@ -6,6 +6,8 @@ div.header, div.menu, div.leftcol, div.content div.title {
 }
 div.content { 
   margin-left:0.5in; 
+  position:relative;	/* override absolute position */
+  left:0px;
   padding:0px; 
   width:90%;
 }
