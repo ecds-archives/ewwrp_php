@@ -99,6 +99,8 @@ return <item>{\$a/@id}";
 <title><?= $htmltitle ?> : Search Results</title>
     <link rel="stylesheet" type="text/css" href="ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
+    <script src='<?= $baseurl ?>/projax/js/prototype.js' type='text/javascript'></script>
+    <script src='<?= $baseurl ?>/projax/js/scriptaculous.js' type='text/javascript'></script>
 </head>
 <body>
 

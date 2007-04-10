@@ -103,15 +103,53 @@
     <xsl:apply-templates select="hits" mode="table"/>
       <td class="num"><xsl:value-of select="position() + $position - 1"/>.</td>
       <xsl:value-of select="$nl"/>
-      <xsl:apply-templates select="*[not(self::hits)]" mode="table"/>
+
+      <!--      <xsl:apply-templates select="*[not(self::hits)]" mode="table"/> -->
+
+      <!-- there should ALWAYS be a table cell for a field if any of
+      the records include that field (e.g., some texts that have no date) -->
+
+      <xsl:if test="//item/title">
+        <td><xsl:apply-templates select="title" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/author">
+        <td><xsl:apply-templates select="author" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/date">
+        <td><xsl:apply-templates select="date" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/ethnicity">
+        <td><xsl:apply-templates select="ethnicity" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/genre">
+        <td><xsl:apply-templates select="genre" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/geography">
+        <td><xsl:apply-templates select="geography" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/period">
+        <td><xsl:apply-templates select="period" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/publisher">
+        <td><xsl:apply-templates select="publisher" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/subject">
+        <td><xsl:apply-templates select="subject" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/editor">
+        <td><xsl:apply-templates select="editor" mode="table"/></td>
+      </xsl:if>
+      <xsl:if test="//item/collection">
+        <td><xsl:apply-templates select="collection" mode="table"/></td>
+      </xsl:if>
+
     </tr>
     <xsl:value-of select="$nl"/>
   </xsl:template>
 
   <xsl:template match="item/*" mode="table">
     <xsl:if test="name() != 'id'">
-      <td><xsl:apply-templates select="."/></td>
-      <xsl:value-of select="$nl"/>
+      <xsl:apply-templates select="."/>
     </xsl:if>
   </xsl:template>
 
@@ -130,42 +168,33 @@
 
   <!-- display multiple authors for a single text in one table cell -->
   <xsl:template match="item/author" mode="table">
-    <xsl:if test="count(preceding-sibling::author) = 0">
-      <td><xsl:apply-templates select="."/>
-      <xsl:apply-templates select="following-sibling::author" mode="addauth"/>
-      </td>
-      <xsl:value-of select="$nl"/>	<!-- newline (for html code readability) -->
+    <xsl:if test="count(preceding-sibling::author) > 0">
+      <br/>
     </xsl:if>
+    <xsl:apply-templates select="."/>
   </xsl:template>
 
-  <!-- additional author in table display: add a line break and display normally -->
-  <xsl:template match="item/author" mode="addauth">
-    <br/><xsl:apply-templates select="."/>
+  <!-- display multiple dates for a single text in one table cell -->
+  <xsl:template match="item/date" mode="table">
+    <xsl:if test="count(preceding-sibling::date) > 0">
+      <br/>
+    </xsl:if>
+    <xsl:apply-templates select="."/>
   </xsl:template>
+
+
+
 
   <!-- display multiple collections for a single text in one table cell -->
   <xsl:template match="item/collection" mode="table">
-    <xsl:if test="count(preceding-sibling::collection) = 0">
-      <td>
+    <xsl:if test="count(preceding-sibling::collection) > 0">
+      <br/>
+    </xsl:if>
         <span>
           <xsl:attribute name="class"><xsl:call-template name="collection-shorthand"/></xsl:attribute>
           <xsl:apply-templates select="."/>
         </span>
-      <xsl:apply-templates select="following-sibling::collection" mode="addcoll"/>
-      </td>
-      <xsl:value-of select="$nl"/>
-    </xsl:if>
   </xsl:template>
-
-  <!-- additional collection in table display: add a line break and display normally -->
-  <xsl:template match="item/collection" mode="addcoll">
-    <br/>
-    <span>
-      <xsl:attribute name="class"><xsl:call-template name="collection-shorthand"/></xsl:attribute>
-      <xsl:apply-templates select="."/>
-    </span>
-  </xsl:template>
-
 
   <!-- convert collection name into shorthand name (for css coloring, site urls) -->
   <xsl:template name="collection-shorthand">
@@ -200,20 +229,11 @@
 
 <!-- display multiple subjects for a single text in one table cell -->
 <xsl:template match="item/subject" mode="table">
-  <xsl:if test="count(preceding-sibling::subject) = 0">
-    <td>
-      <xsl:apply-templates select="."/>
-      <xsl:apply-templates select="following-sibling::subject" mode="addsubj"/>
-    </td>
-    <xsl:value-of select="$nl"/>
+  <xsl:if test="count(preceding-sibling::subject) > 0">
+    <br/>
   </xsl:if>
+      <xsl:apply-templates select="."/>
 </xsl:template>
-
-  <!-- additional author in table display: add a line break and display normally -->
-  <xsl:template match="item/subject" mode="addsubj">
-    <br/><xsl:apply-templates select="."/>
-  </xsl:template>
-
 
 <xsl:template match="title">
   <a>

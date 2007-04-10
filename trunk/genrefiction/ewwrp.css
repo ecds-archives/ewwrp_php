@@ -60,3 +60,32 @@ span.match {
 .footnotebg { 
   background-color:  #990000; 
 }
+
+
+
+
+/* descriptive paragraph */
+div.description { 
+  width:360px;
+  height: 185px;
+/*  margin-top:103px;*/
+  padding-left:10px;
+  margin-left:0px;
+  padding-right:10px;
+  margin-right:0px;
+  border:0px;
+}
+
+/* collection div on index page - extra space for center title bar */
+div.index {
+  margin-top:102px;
+}
+
+
+/* collection div on index page - extra space for center title bar */
+div.collections {
+  margin-top:0px;
+  padding-top:10px;
+  border:0px;
+  border-top:1px solid #990000;
+}

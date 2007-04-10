@@ -84,8 +84,15 @@ print "<div id=\"logo\">
 
 <?php //if ($page != "index")  print "<hr class='menu'/>"; ?>
 
+<?php
+if ($abbrev == "Genre Fiction" && $page == "index")  {
+//  print "<hr class='menu'/>";
+  include("description.xml");
+}
+?>
 
-<div class="collections <?= $page ?>">
+
+<div class="collections <? if ($abbrev != 'Genre Fiction') print $page ?>">
       <b><a class="ewwrp" href="<?= $baseurl ?>/">Emory Women Writers Resource Project</a> Collections:</b>
 <ul>
  <li>- <a class="genrefiction" href="<?= $baseurl ?>genrefiction/">Genre Fiction</a></li>
@@ -101,7 +108,7 @@ print "<div id=\"logo\">
 </div>
 
 <?php
-if ($page == "index")  {
+if ($abbrev != "Genre Fiction" && $page == "index")  {
 //  print "<hr class='menu'/>";
   include("description.xml");
 }

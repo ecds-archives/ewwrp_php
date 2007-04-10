@@ -95,11 +95,12 @@ div.content {
   position:absolute;
   top:25px;
   right:0px;
-  left:300px;
+  left:325px;
   bottom:0px;
   /*margin-left:300px;*/
   padding-top:35px;
   padding-right:25px;
+  padding-bottom:25px;
   overflow:auto;
 /*  width:60%;*/	
 }
@@ -301,7 +302,7 @@ div.tbar-right {
 /* title bar at top of content pages */
 div.content div.title a { 
   padding:10px 25px 10px 25px;
-  margin-left:50px;
+/*  margin-left:50px;*/ 
 /*  width:375px;*/
   white-space:nowrap;	/* keep title on one line, no matter the width */
   height:30px;
@@ -523,9 +524,18 @@ table.searchform th {
   font-weight:normal;
   vertical-align:top;
 }
+table.searchform td { 
+ position:relative;
+}
 table.searchform input { border:0px; outline:0px; }
+
+
 ul.searchopts { list-style-type:none; }
 
+
+ul.essays  { 
+  padding-top:15px;
+}
 ul.essays li { 
   margin-bottom:10px;
  }
@@ -553,3 +563,18 @@ p.info {
   font-style:italic;
   margin:3px;
 }
+
+div.autocomplete { 
+ position:relative;	/* must be explicit so auto_complete divs show up correctly */
+ }
+
+.auto_complete { 
+   z-index:3;
+ }
+
+.auto_complete span.count{ 
+  font-size:80%;
+  float:right;
+  color:#565656;
+  clear:right;
+}  
