@@ -45,7 +45,7 @@
       </p>
 
       <xsl:apply-templates select="context"/>
-      
+
       <xsl:if test="count(node) > 0">
         <ul>
           <xsl:apply-templates select="node"/>

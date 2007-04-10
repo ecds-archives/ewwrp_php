@@ -23,6 +23,8 @@ print "<html>
 <title>$htmltitle : About</title>
     <link rel='stylesheet' type='text/css' href='ewwrp.css'>
     <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'>
+    <script src='$baseurl/projax/js/prototype.js' type='text/javascript'></script>
+    <script src='$baseurl/projax/js/scriptaculous.js' type='text/javascript'></script>
 </head>
 <body>";
 

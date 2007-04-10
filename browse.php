@@ -175,6 +175,7 @@ if ($value) {
     $browse_qry = 'for $a in distinct-values(//sourceDesc/bibl/publisher' . $ancfilter . ')
 	' . $sort_pub . '
 	' . $pub_lfilter . '
+  	where $a != ""
 	order by $sort_pub
 	return <item><publisher>{$a}</publisher></item>';
         $alpha_qry = '<alphalist> {

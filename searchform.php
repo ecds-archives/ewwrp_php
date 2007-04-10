@@ -1,3 +1,15 @@
+<?php
+
+//php ajax/scriptaculous
+include("projax/projax.php");
+$script = new Scriptaculous();
+
+
+
+?>
+
+<div id="searchform">
+
 <form action="search.php" method="GET">
 <table class="searchform" border="0">
 <tr><th>Keyword</th>
@@ -6,11 +18,41 @@
    </td></tr>
 <tr><th>Title</th>
   <td class="input">
-    <input type="text" size="40" name="doctitle" value="<?php print $doctitle ?>">
+    <div class="autocomplete">
+  <?php
+if ($abbrev != 'EWWRP')
+  $coll = urlencode($collection);
+ else $coll = "";
+
+  $ajaxopts = array("url" => "/~rsutton/ewwrp/suggestor.php",
+		  "indicator" => "title-loading", "select" => "value",
+		  "with" => "'coll=$coll&field=title&str='+document.getElementById('doctitle').value" );
+
+$inputopts = array("size" => "40", "value" => $doctitle, "autocomplete" => "off");
+print $script->text_field_with_auto_complete('doctitle', $inputopts, $ajaxopts);
+?>
+</div>
+<td> <span id="title-loading" style="display:none;">Searching...</span>
+</td>
+
+<!--    <input type="text" size="40" name="doctitle" value="<?php print $doctitle ?>"> -->
   </td></tr>
 <tr><th>Author</th>
    <td class="input">
-      <input type="text" size="40" name="author" value="<?php print $author ?>">
+  <div class="autocomplete">
+  <?php
+$ajaxopts{"indicator"} = "auth-loading";
+$ajaxopts{"with"} = "'coll=$coll&field=author&str='+document.getElementById('author').value";
+
+$inputopts = array("size" => "40", "value" => $author, "autocomplete" => "off");
+print $script->text_field_with_auto_complete('author', $inputopts, $ajaxopts);
+
+?>
+</div>
+<td> <span id="auth-loading" style="display:none;">Searching...</span>
+</td>
+<!--   
+      <input type="text" size="40" name="author" value="<?php print $author ?>"> -->
    </td></tr>
 <tr><th>Date</th>
    <td class="input">
@@ -18,8 +60,18 @@
    </td></tr>
 <tr><th>Subject</th>
    <td class="input">
-     <input type="text" size="40" name="subject" value="<?php print $subj ?>">
-    </td></tr>
+    <div class="autocomplete">
+<?php
+$ajaxopts{"indicator"} = "subj-loading";
+$ajaxopts{"with"} = "'coll=$coll&field=subject&str='+document.getElementById('subject').value";
+$inputopts{"value"} = $subj;
+print $script->text_field_with_auto_complete('subject', $inputopts, $ajaxopts);
+?>
+<!--     <input type="text" size="04" name="subject" value="<?php print $subj ?>"> -->
+  </div>
+    </td>
+  <td> <span id="subj-loading" style="display:none;">Searching...</span> </td>
+</tr>
 <?php
 if ($abbrev == "EWWRP") {
   print '
@@ -50,12 +102,14 @@ if ($abbrev == "EWWRP") {
 </table>
 </form>
 
+</div>
+
 <div class="tips">
   <h2>Search tips</h2>
   <ul>
     <li>Multiple words: "bicycle wheel" finds only those documents that contains both words.</li>
     <li>Wild cards: "marri*" matches married, marriage, etc.</li>
-    <li>Character case is ignored</li>
+    <li>Character case is ignored.</li>
   </ul>
 </div>
 
