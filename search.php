@@ -49,7 +49,7 @@ if ($collection) {
 
 $options = array();
 if ($kw) 
-  array_push($options, ". &='$kw'");
+  array_push($options, ". &=\"$kw\"");
 if ($doctitle)
   array_push($options, ".//titleStmt/title &= '$doctitle'");
 if ($auth)
