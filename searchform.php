@@ -14,19 +14,30 @@ $script = new Scriptaculous();
 <table class="searchform" border="0">
 <tr><th>Keyword</th>
   <td class="input">
-    <input type="text" size="40" name="keyword" value="<?php print $kw ?>">
-   </td></tr>
+      <div class="autocomplete">
+  <?php
+  if ($abbrev != 'EWWRP')
+  $coll = urlencode($collection);
+ else $coll = "";
+  $ajaxopts = array("url" => "/~rsutton/ewwrp/suggestor.php",
+		  "indicator" => "kw-loading", "select" => "value",
+		  "with" => "'coll=$coll&field=keyword&str='+document.getElementById('keyword').value" );
+
+$inputopts = array("size" => "40", "value" => $kw, "autocomplete" => "off");
+print $script->text_field_with_auto_complete('keyword', $inputopts, $ajaxopts);
+
+?>
+</div>
+<td> <span id="kw-loading" style="display:none;">Searching...</span>
+</td>
+  <!--  <input type="text" size="40" name="keyword" value="<?php print $kw ?>"> -->
+ </tr>
 <tr><th>Title</th>
   <td class="input">
     <div class="autocomplete">
   <?php
-if ($abbrev != 'EWWRP')
-  $coll = urlencode($collection);
- else $coll = "";
-
-  $ajaxopts = array("url" => "/~rsutton/ewwrp/suggestor.php",
-		  "indicator" => "title-loading", "select" => "value",
-		  "with" => "'coll=$coll&field=title&str='+document.getElementById('doctitle').value" );
+$ajaxopts{"indicator"} = "title-loading";
+$ajaxopts{"with"} = "'coll=$coll&field=title&str='+document.getElementById('doctitle').value";
 
 $inputopts = array("size" => "40", "value" => $doctitle, "autocomplete" => "off");
 print $script->text_field_with_auto_complete('doctitle', $inputopts, $ajaxopts);
