@@ -203,10 +203,10 @@ if ($value) {
   case "author":
   default:
     // list of distinct authors
-    $browse_qry = 'for $a in distinct-values(//titleStmt/author' . $ancfilter . '/name/@reg)
+    $browse_qry = 'for $a in distinct-values(for $n in //titleStmt/author' . $ancfilter . '/name/@reg return normalize-space($n))
 	let $auth := //titleStmt/author/name[@reg=$a]
 	' . $lfilter . '
-	order by normalize-space($a) 
+	order by $a 
 	return <item><author reg="{$a}">
 		{for $n in distinct-values($auth) return <name>{$n}</name>}
 	       </author></item>';
