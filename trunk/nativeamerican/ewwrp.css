@@ -53,3 +53,8 @@ div.searchnav a:hover {
 span.match { 
   background-color:#003399; 
 } 
+
+/* set pop-up footnotes to match sub-site colors */
+.footnotebg { 
+  background-color:  #003399; 
+}

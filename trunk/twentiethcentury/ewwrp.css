@@ -54,3 +54,7 @@ span.match {
   background-color:#660099; 
 } 
  
+/* set pop-up footnotes to match sub-site colors */
+.footnotebg { 
+  background-color:  #660099; 
+}
