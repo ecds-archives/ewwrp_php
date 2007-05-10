@@ -416,9 +416,9 @@
 </xsl:template>
 
 <!-- if a hi tag occurs at the note level (not inside a p or l), explicitly call the normal mode hi template -->
-<xsl:template match="note/hi" mode="endnote">
+<!--<xsl:template match="note/hi" mode="endnote">
   <xsl:apply-templates select="."/>
-</xsl:template>
+</xsl:template> -->
 
 <!-- javascript modes: convert turn a ref inside a note into a link
      (note: space disappears before link; put one in.) -->
@@ -431,11 +431,19 @@
 </xsl:template>
 
 
-<xsl:template match="hi" mode="endnote">
+<xsl:template match="note/hi" mode="endnote">
  <span>
    <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
    <xsl:apply-templates/>
  </span>
+</xsl:template>
+
+<xsl:template match="title" mode="endnote">
+  <xsl:apply-templates select="."/>
+</xsl:template>
+
+<xsl:template match="title" mode="javascript">
+  <span class="title"><xsl:apply-templates mode="javascript"/></span>
 </xsl:template>
 
 
@@ -446,6 +454,12 @@
 
   <!-- escape any single quotes so it doesn't mess up the javascript string -->
   <xsl:template match="text()" mode="javascript">
+
+    <!-- preserve leading space -->
+    <xsl:if test="starts-with(., ' ')">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+
   <xsl:variable name="squote">&apos;</xsl:variable>
   <xsl:variable name="esc-squote"><xsl:text>\</xsl:text>&apos;</xsl:variable>
     <xsl:call-template name="replace-string">
@@ -453,6 +467,11 @@
       <xsl:with-param name="from" select="$squote"/>
       <xsl:with-param name="to" select="$esc-squote"/>
     </xsl:call-template>
+
+    <!-- preserve ending space -->
+    <xsl:if test="substring(., string-length(.), .)">
+      <xsl:text> </xsl:text>
+    </xsl:if>
   </xsl:template>
 
 <!-- note: for some reason, was losing spacing before & after text -->
