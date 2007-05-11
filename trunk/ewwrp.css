@@ -546,6 +546,15 @@ p.bibliography {
   text-indent:-0.25in;
 }
 
+div.content table td { vertical-align:top; }
+table caption { font-weight:bold; }
+table.borders, table.borders td {
+ border-collapse:collapse;
+ border:1px solid black; 
+ margin-left:1px;
+ margin-bottom:0.25in;
+}
+
 
 div.kwic li { 
  list-style-type:none;

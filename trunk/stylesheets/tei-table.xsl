@@ -4,8 +4,15 @@
 
   <xsl:template match="table">
     <table>
+      <xsl:apply-templates select="@rend"/>
       <xsl:apply-templates/>
     </table>
+  </xsl:template>
+
+  <xsl:template match="table/@rend">
+    <xsl:attribute name="class">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="table/head">
