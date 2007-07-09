@@ -43,7 +43,7 @@ if (strpos($str, ' ')) {
 
 if ($field == "keyword") {
   // use eXist's text index-terms search
-$query = "import module namespace suggest='http://example.org/suggest' at
+$query = "import module namespace suggest='http://www.library.emory.edu/xquery/suggest' at
 'xmldb:exist:///db/xquery-modules/suggest.xqm';
 <ul> {
 let \$terms := text:index-terms(collection('/db/ewwrp')/TEI.2". $rsfilter .", '" . $str . "',
@@ -51,7 +51,7 @@ let \$terms := text:index-terms(collection('/db/ewwrp')/TEI.2". $rsfilter .", '"
 for \$li in \$terms
 order by xs:int(\$li/count) descending
 return <li>
-  <span class='count'>({\$li/count} hit{if (\$li/count != 1) then s else ()})</span>
+  <span class='count'>({\$li/count} hit{if (\$li/count != 1) then 's' else ()})</span>
   <span class='value'>{\$li/term}</span>
  </li>
 }</ul>
