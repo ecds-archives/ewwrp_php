@@ -19,7 +19,7 @@ $connectionArray = array('host'   => $server,
 
 
 // shortcut to include common tei xqueries
-$teixq = 'import module namespace teixq="http://example.org/teixq" at
+$teixq = 'import module namespace teixq="http://www.library.emory.edu/xquery/teixq" at
 "xmldb:exist:///db/xquery-modules/tei.xqm"; '; 
 
 ?>
