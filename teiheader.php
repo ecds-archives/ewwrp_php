@@ -33,7 +33,8 @@ else
 $doctitle = $xdb->findnode("title");
 $doctitle = str_replace(", an electronic edition", "", $doctitle);
 
-print "<html>
+print "$doctype
+<html>
  <head>
     <title>$htmltitle : Metadata for $doctitle</title>
     <link rel=\"stylesheet\" type=\"text/css\" href=\"teiheader.css\">

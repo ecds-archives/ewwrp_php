@@ -59,7 +59,8 @@ $doctitle = $xdb->findnode("title");
 $doctitle = str_replace(", an electronic edition", "", $doctitle);
 
 
-print "<html>
+print "$doctype
+<html>
  <head>
     <title>$htmltitle : $doctitle : Keyword in Context</title>
     <link rel='stylesheet' type='text/css' href='ewwrp.css'>

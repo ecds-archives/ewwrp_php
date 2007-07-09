@@ -17,7 +17,8 @@ else
    $htmltitle = $title;
 
 
-print "<html>
+print "$doctype
+<html>
  <head>
 <title>$htmltitle : About</title>
     <link rel='stylesheet' type='text/css' href='ewwrp.css'>
