@@ -27,12 +27,13 @@ else
    $htmltitle = $title;
 
 
+print $doctype;
 ?>
 <html>
  <head>
     <title><?= $htmltitle ?></title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css">
-    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="ewwrp.css"/>
+    <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
 <body>
 
@@ -73,6 +74,7 @@ if ($imglist->length) {
   $odoc = new DOMDocument();
   $onode = $odoc->importNode($imglist->item($index), TRUE);
   $odoc->appendChild($onode);
+  $odoc->documentElement->removeAttribute("collection");	// so output will be valid xhtml
   print $odoc->saveXML();
  } else {
   print "<div class='image'>(no images yet for this collection)</div>";
@@ -85,7 +87,7 @@ if ($imglist->length) {
 
 <div class="copyright">
 <? include("funding.xml") ?>
-<hr class="menu">
+<hr class="menu"/>
     &copy;2006 Emory University | Contact: <a href="mailto:beckctr@emory.edu">The Beck Center</a>
 </div>
 
