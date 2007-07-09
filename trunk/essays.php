@@ -20,8 +20,9 @@ if ($abbrev != "EWWRP")
   $htmltitle = "EWWRP : $title";
 else
    $htmltitle = $title;
-?>
 
+print $doctype;
+?>
 <html>
  <head>
 <title><?= $htmltitle ?> : Essays <?= $field?></title>
