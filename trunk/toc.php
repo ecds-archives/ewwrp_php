@@ -48,8 +48,7 @@ if ($abbrev != "EWWRP")
 else
    $htmltitle = $title;
 
-print "
-$doctype  
+print "$doctype  
 <html>
  <head>
     <title>$htmltitle : $doctitle</title>";
