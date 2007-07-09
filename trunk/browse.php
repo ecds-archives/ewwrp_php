@@ -78,7 +78,8 @@ $sort_pub = 'let $sort_pub :=
 if ($letter) {
   $lfilter = "where starts-with(\$a, '$letter')";
   $title_lfilter = "where starts-with(\$sort_title, '$letter')";
-  $pub_lfilter = "where starts-with(\$sort_pub, '$letter')";
+  // publisher query has an additional where (to filter out blanks), so make this work with that
+  $pub_lfilter = "starts-with(\$sort_pub, '$letter') and";
  }
 
 
@@ -174,8 +175,8 @@ if ($value) {
     // list of distinct source publishers
     $browse_qry = 'for $a in distinct-values(//sourceDesc/bibl/publisher' . $ancfilter . ')
 	' . $sort_pub . '
-	' . $pub_lfilter . '
-  	where $a != ""
+	where ' . $pub_lfilter . '
+  	$a != ""
 	order by $sort_pub
 	return <item><publisher>{$a}</publisher></item>';
         $alpha_qry = '<alphalist> {
@@ -227,6 +228,7 @@ $query = "<result>{ $profile_qry } { $browse_qry } </result>";
 $xsl = "$baseurl/stylesheets/browse.xsl";
 $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter' => $letter);
 
+print $doctype;
 ?>
 <html>
  <head>
