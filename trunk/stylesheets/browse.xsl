@@ -335,7 +335,7 @@
       </xsl:variable>
 
       <xsl:variable name="last-start">
-        <xsl:value-of select="($total - $max)"/>
+        <xsl:value-of select="($total - $max + 1)"/>
       </xsl:variable>
 
       <xsl:choose>
