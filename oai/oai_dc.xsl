@@ -40,7 +40,7 @@
     <xsl:element name="header">            
       <xsl:element name="identifier">
         <!-- identifier prefix is passed in as a parameter; should be defined in config file -->
-        <xsl:value-of select="concat($prefix, @id)" /> 
+        <xsl:value-of select="concat($prefix, docname)" /> 
       </xsl:element>
 
       <xsl:element name="datestamp">
