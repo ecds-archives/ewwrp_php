@@ -154,7 +154,8 @@
 	       {$a/fileDesc}
 	       {$a/profileDesc}
                {$a/teiHeader}
-               <LastModified>{$oaitime}</LastModified>                       
+	       <docname>{substring-before(util:document-name($a), '.xml')}</docname>
+               <LastModified>{$oaitime}</LastModified>
 	     </TEI.2>
        ]]>                
      </return>
@@ -164,6 +165,7 @@
                {$a/@id}
                {$a/teiHeader/profileDesc/creation/rs}
                {$a/teiHeader/profileDesc/textClass}
+	       <docname>{substring-before(util:document-name($a), '.xml')}</docname>
                <LastModified>{$oaitime}</LastModified>
              </TEI.2>
       ]]>                
