@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+  Define xqueries to be used to retrieve xml data from database needed
+  to generate OAI.
+
+  The xquery is compiled from: declaration, for, let, where, and return
+
+  Alternate sections for each of these may be specified for particular
+  OAI verbs and metadata format using verb and metadata
+  attributes. (Note that the metadata attribute is meaningless without
+  a verb and will be ignored.)the
+
+  Validation against xquery.xsd is a bare minimum, but does not ensure
+  xqueries are declared correctly; to review your compiled queries,
+  enable xmldbOAI debug mode.
+
+
+
+-->
+<xquery>
+    <declare><![CDATA[
+      declare namespace xs = "http://www.w3.org/2001/XMLSchema";
+      ]]>
+    </declare>
+    <for><![CDATA[
+      for $a in /TEI.2                  
+      ]]>
+    </for>
+    <let><![CDATA[
+      let $time := xmldb:last-modified(util:collection-name($a), util:document-name($a))
+      let $oaitime := local:utcdatetime($time)
+      ]]>                
+    </let>
+
+    <where verb="GetRecord"><![CDATA[
+        $a/@id = "?"
+        ]]>
+    </where>
+    <where>
+ <!-- DEFAULT query is used when a set is not requested and should return all records -->
+      <set setSpec="DEFAULT" />                   
+      <set setSpec="novel"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='genre'] = 'Novel'
+         ]]>
+      </set>
+      <set setSpec="stories"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='genre'] = 'Short Stories'
+         ]]>                        
+      </set>
+      <set setSpec="criticaledition"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='form'] = 'Edited'
+         ]]>                        
+      </set>
+      <set setSpec="poetry"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='genre'] = 'Poetry'
+         ]]>                        
+      </set>
+      <set setSpec="prose"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='genre'] = 'Prose'
+         ]]>                        
+      </set>
+      <set setSpec="drama"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='genre'] = 'Drama'
+         ]]>                        
+      </set>
+      <set setSpec="fr"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='geography'] = 'France'
+         ]]>                        
+      </set>
+      <set setSpec="gb"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='geography'] = 'Great Britain'
+         ]]>                        
+      </set>
+      <set setSpec="us"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='geography'] = 'United States'
+         ]]>                        
+      </set>
+      <set setSpec="17c"><![CDATA[
+         $a/teiHeader/profileDesc/creation/date = '1600-1699'
+         ]]>                        
+      </set>
+      <set setSpec="18c"><![CDATA[
+         $a/teiHeader/profileDesc/creation/date = '1700-1799'
+         ]]>                        
+      </set>
+      <set setSpec="19c"><![CDATA[
+         $a/teiHeader/profileDesc/creation/date = '1800-1899'
+         ]]>                        
+      </set>
+      <set setSpec="20c"><![CDATA[
+         $a/teiHeader/profileDesc/creation/date = '1900-1999'
+         ]]>                        
+      </set>
+
+      <set setSpec="afam"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='ethnicity'] = 'African American'
+         ]]>                        
+      </set>
+      <set setSpec="cauc"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='ethnicity'] = 'Caucasian'
+         ]]>                        
+      </set>
+
+      <set setSpec="genrefiction"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Genre Fiction'
+         ]]>                        
+      </set>
+      <set setSpec="genrefiction:american"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Genre Fiction'
+         and $a/teiHeader/profileDesc/creation/rs[@type='geography'] = 'United States'
+         ]]>                        
+      </set>
+
+      <set setSpec="earlymodern"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Early Modern through the 18th Century'
+         ]]>                        
+      </set>
+      <set setSpec="earlytwentieth"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Early 20th Century Literature'
+         ]]>                        
+      </set>
+      <set setSpec="worldwarI"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'World War I Poetry'
+         ]]>                        
+      </set>
+      <set setSpec="nativeamerican"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Native American'
+         ]]>                        
+      </set>
+      <set setSpec="abolition"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = 'Abolition, Freedom, and Rights'
+         ]]>                        
+      </set>
+      <set setSpec="advocacy"><![CDATA[
+         $a/teiHeader/profileDesc/creation/rs[@type='collection'] = "Women's Advocacy"
+         ]]>                        
+      </set>
+
+
+      <from><![CDATA[
+         $time >= xs:dateTime("?")
+         ]]>
+      </from>
+      <until><![CDATA[
+         $time <= xs:dateTime("?")
+         ]]>
+      </until>                    
+    </where>
+<!-- default result : return for GetRecord or ListRecords -->
+    <return><![CDATA[
+      return <TEI.2>
+               {$a/@id}
+	       {$a/fileDesc}
+	       {$a/profileDesc}
+               {$a/teiHeader}
+               <LastModified>{$oaitime}</LastModified>                       
+	     </TEI.2>
+       ]]>                
+     </return>
+<!-- result to return for ListIdentifiers -->
+    <return verb="ListIdentifiers"><![CDATA[
+      return <TEI.2>
+               {$a/@id}
+               {$a/teiHeader/profileDesc/creation/rs}
+               {$a/teiHeader/profileDesc/textClass}
+               <LastModified>{$oaitime}</LastModified>
+             </TEI.2>
+      ]]>                
+    </return>
+  </xquery>
