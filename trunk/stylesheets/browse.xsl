@@ -28,7 +28,20 @@
   <xsl:template match="/">
     <xsl:apply-templates select="//profile"/>
     <xsl:apply-templates select="//alphalist"/>
-    <xsl:call-template name="itemlist"/>
+
+
+    <xsl:choose>
+      <xsl:when test="$field = 'bookshelf'">
+        <div class="bookshelf">
+          <p><xsl:value-of select="$total"/> books with spine images</p>
+          <xsl:apply-templates select="//item" mode="bookshelf"/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="itemlist"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
   </xsl:template>
 
   <xsl:template match="profile">
@@ -46,6 +59,7 @@
         <li><a href="browse.php?field=publisher">Source Publisher List</a></li>
         <li><a href="browse.php?field=author">Author List</a></li>
         <li><a href="browse.php?field=subject">Subject List</a></li>
+        <li><a href="browse.php?field=bookshelf">Bookshelf view</a></li>
       </ul>
     </div>
   </xsl:template>
@@ -467,6 +481,26 @@
     <xsl:value-of select="."/>
   </a>
   <xsl:text> </xsl:text>
+</xsl:template>
+
+
+
+<xsl:template match="item" mode="bookshelf">
+<!-- paths for images : included from content (modified - all spines in genrefic) -->
+<xsl:variable name="figure-prefix">http://bohr.library.emory.edu/ewwrp/images/tgfw/</xsl:variable>
+
+<xsl:variable name="thumbs-prefix"><xsl:value-of select="$figure-prefix"/>thumbs/</xsl:variable>
+<xsl:variable name="figure-suffix">.jpg</xsl:variable>
+  
+
+  <a>
+  <xsl:attribute name="href">toc.php?id=<xsl:value-of select="id"/></xsl:attribute>
+  <img>
+    <xsl:attribute name="src"><xsl:value-of select="concat($thumbs-prefix, figure/@entity, $figure-suffix)"/></xsl:attribute>
+    <xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
+    <xsl:attribute name="alt">book spine</xsl:attribute>
+  </img>
+</a>
 </xsl:template>
 
 </xsl:stylesheet>

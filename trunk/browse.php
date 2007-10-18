@@ -217,6 +217,18 @@ if ($value) {
 		  	return substring($a,1,1) )
 		  order by $l
 		  return <letter>{$l}</letter> } </alphalist>';
+
+    case "bookshelf":
+    $browse_qry = "for \$figure in //figure[. &= 'spine']
+	" . ($collection ? "$ancfilter" : "") . "
+	let \$doc := substring-before(util:document-name(\$figure), '.xml')
+	let \$root := root(\$figure)
+  	let \$a := \$root//titleStmt/title
+	$titlesort
+	return <item><id>{\$doc}</id>{\$a}{\$figure}</item>";
+    $max = 40;
+    break;
+
   }
 
 }
