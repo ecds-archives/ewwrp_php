@@ -88,7 +88,7 @@ return <item>{\$a/@id}";
 	return <collection>{string(\$coll)}</collection>}";
   $query .= "</item>";
 
-  $xsl = "$baseurl/stylesheets/browse.xsl";
+  $xsl = "xslt/browse.xsl";
   //$xsl_params = array('field' => $field, 'value' => $value, 'max' => $max);
   $xsl_params = array('mode' => "search", 'keyword' => $kw, 'max' => $max);
 }
@@ -97,7 +97,7 @@ return <item>{\$a/@id}";
 <html>
  <head>
 <title><?= $htmltitle ?> : Search Results</title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css">
+    <link rel="stylesheet" type="text/css" href="web/css/ewwrp.css">
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon">
     <script src='<?= $baseurl ?>/projax/js/prototype.js' type='text/javascript'></script>
     <script src='<?= $baseurl ?>/projax/js/scriptaculous.js' type='text/javascript'></script>

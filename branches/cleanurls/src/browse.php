@@ -238,7 +238,7 @@ if ($value) {
 
 $query = "<result>{ $profile_qry } { $browse_qry } </result>";
 
-$xsl = "$baseurl/stylesheets/browse.xsl";
+$xsl = "xslt/browse.xsl";
 $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter' => $letter);
 
 print $doctype;

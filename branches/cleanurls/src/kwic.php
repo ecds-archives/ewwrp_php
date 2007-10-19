@@ -63,7 +63,7 @@ print "$doctype
 <html>
  <head>
     <title>$htmltitle : $doctitle : Keyword in Context</title>
-    <link rel='stylesheet' type='text/css' href='ewwrp.css'>
+    <link rel='stylesheet' type='text/css' href='web/css/ewwrp.css'>
     <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'>";
 
 include("header.php");
@@ -74,8 +74,8 @@ print "<div class='content'>
 
 $xsl_params = array("url_suffix" => "keyword=$keyword");
 
-$xdb->xslBind("$baseurl/stylesheets/kwic-towords.xsl");
-$xdb->xslBind("$baseurl/stylesheets/kwic.xsl", $xsl_params);
+$xdb->xslBind("xslt/kwic-towords.xsl");
+$xdb->xslBind("xslt/kwic.xsl", $xsl_params);
 
 $xdb->transform();
 $xdb->printResult();

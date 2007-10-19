@@ -56,7 +56,7 @@ return <TEI.2>
 // add keyword parameter to url, if there is one defined
 $kwurl = ($keyword != '') ? "keyword=$keyword" : "";
 
-$xsl = "$baseurl/stylesheets/content.xsl";
+$xsl = "xslt/content.xsl";
 $xsl_params = array("url" => "content.php?level=$node&id=$id&$kwurl",	// FIXME: gets blank & if no keyword
 		    "url_suffix" => $kwurl,
 		    "node" => $node, "id" => $id);
@@ -97,9 +97,9 @@ $doctype
 switch ($view) {
  case "print": 
  case "blackboard":
-   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'/>";
+   print "<link rel='stylesheet' type='text/css' href='web/css/$view.css'/>";
    break;
- default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'/>"; 
+ default: print "<link rel='stylesheet' type='text/css' href='web/css/ewwrp.css'/>"; 
  }
 
 print "
