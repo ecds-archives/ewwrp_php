@@ -26,7 +26,7 @@ print "
 <!-- emory and EWWRP icons --> 
 <div id='emorylogo'>
   <a id='emory' href='http://www.emory.edu/'>
-<img  src='$baseurl/images/emory.png' alt='Emory University'/></a>
+<img  src='web/images/emory.png' alt='Emory University'/></a>
 </div>
 ";
 
@@ -41,7 +41,7 @@ print "
 else {*/
 print "<div id=\"logo\">
 <a id=\"ewwrp\" href=\"$baseurl\">
-  <img src=\"$baseurl/images/ewwrp.$imgtype\" alt=\"Emory Women Writers Resource Project\"
+  <img src=\"web/images/ewwrp.$imgtype\" alt=\"Emory Women Writers Resource Project\"
   height=\"74\" width=\"56\"/></a>
 </div>";
 // }
@@ -65,7 +65,7 @@ print "<div id=\"logo\">
   
 <form class="menu" action="search.php" method="get">
  <input name="keyword" size="20" value="" align="left" type="text"/>
-    <input onmouseover='src="<?= $baseurl ?>images/search-on.jpg"' onmouseout='src="<?= $baseurl ?>images/search-off.jpg"' src="<?= $baseurl ?>images/search-off.jpg" name="searchbutton" alt="search" type="image"/>
+    <input onmouseover='src="web/images/search-on.jpg"' onmouseout='src="web/images/search-off.jpg"' src="web/images/search-off.jpg" name="searchbutton" alt="search" type="image"/>
    <!-- to control search button with css and avoid search.x + search.y, use something like this -->
 <!-- <a><input id="search" type="submit" value="Search" alt="search"></a> -->
 
@@ -87,7 +87,7 @@ print "<div id=\"logo\">
 <?php
 if ($abbrev == "Genre Fiction" && $page == "index")  {
 //  print "<hr class='menu'/>";
-  include("description.xml");
+  include("web/xml/description.xml");
 }
 ?>
 
@@ -110,14 +110,14 @@ if ($abbrev == "Genre Fiction" && $page == "index")  {
 <?php
 if ($abbrev != "Genre Fiction" && $page == "index")  {
 //  print "<hr class='menu'/>";
-  include("description.xml");
+  include("web/xml/description.xml");
 }
 ?>
 
 <? if ($page != "index") {
 //  print "<hr class='menu'/>\n<div class='copyright'>";
   print "<div class='copyright'>";
-  include("funding.xml");
+  include("web/xml/funding.xml");
   print "<p>&copy;2005 Emory University<br/> Contact: <a
       href='mailto:beckctr@emory.edu'>The Beck Center</a></p>
 </div>";
