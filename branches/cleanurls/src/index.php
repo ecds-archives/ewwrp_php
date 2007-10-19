@@ -32,7 +32,7 @@ print $doctype;
 <html>
  <head>
     <title><?= $htmltitle ?></title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css"/>
+    <link rel="stylesheet" type="text/css" href="web/css/ewwrp.css"/>
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
 <body>
@@ -58,7 +58,8 @@ print $doctype;
 <?
  // read in xml file of front page images & associated metadata
 $imgdoc = new DOMDocument();
-$imgdoc->load("$baseurl/frontpageimages.xml");
+//$imgdoc->load("$baseurl/frontpageimages.xml");
+$imgdoc->load("web/xml/frontpageimages.xml");
 $xpath = new domxpath($imgdoc);
 // filter on collection if there is one defined
 if ($collection) {
@@ -86,7 +87,7 @@ if ($imglist->length) {
 
 
 <div class="copyright">
-<? include("funding.xml") ?>
+<? include("web/xml/funding.xml") ?>
 <hr class="menu"/>
     &copy;2006 Emory University | Contact: <a href="mailto:beckctr@emory.edu">The Beck Center</a>
 </div>
