@@ -217,6 +217,7 @@ if ($value) {
 		  	return substring($a,1,1) )
 		  order by $l
 		  return <letter>{$l}</letter> } </alphalist>';
+    break;
 
     case "bookshelf":
     $browse_qry = "for \$figure in //figure[. &= 'spine']
