@@ -10,7 +10,7 @@ $docname = $_GET["id"];
 
 $query = "document('/db/$db/$docname.xml')/TEI.2/teiHeader";
 
-$xsl = "$baseurl/stylesheets/teiheader.xsl";
+$xsl = "xslt/teiheader.xsl";
 
 $xdb->xquery($query);
 $xdb->xslBind($xsl);
@@ -37,7 +37,7 @@ print "$doctype
 <html>
  <head>
     <title>$htmltitle : Metadata for $doctitle</title>
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"teiheader.css\">
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"web/css/teiheader.css\">
     <link rel=\"shortcut icon\" href=\"ewwrp.ico\" type=\"image/x-icon\">
 </head>
 <body>

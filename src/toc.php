@@ -30,7 +30,7 @@ return  <TEI.2>
   </TEI.2>
 ';
 
-$xsl = "$baseurl/stylesheets/toc.xsl";
+$xsl = "xslt/toc.xsl";
   $xsl_params = array("id" => $docname,
 		      "url" => "toc.php?id=$docname");
 if ($keyword)
@@ -56,15 +56,15 @@ print "$doctype
 switch ($view) {
  case "print": 
  case "blackboard":
-   print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'/>";
+   print "<link rel='stylesheet' type='text/css' href='web/css/$view.css'/>";
    break;
- default: print "<link rel='stylesheet' type='text/css' href='ewwrp.css'/>"; 
+ default: print "<link rel='stylesheet' type='text/css' href='web/css/ewwrp.css'/>"; 
  }
 print '
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>';
 
-$xdb->xslBind("$baseurl/stylesheets/teiheader-dc.xsl");
-$xdb->xslBind("$baseurl/stylesheets/dc-htmldc.xsl");
+$xdb->xslBind("xslt/teiheader-dc.xsl");
+$xdb->xslBind("xslt/dc-htmldc.xsl");
 $xdb->transform();
 $xdb->printResult();
 ?>

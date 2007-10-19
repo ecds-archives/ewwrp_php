@@ -65,7 +65,7 @@ return <div>
 {$rs}
 </div>';
 
-$xsl = "$baseurl/stylesheets/essays.xsl";
+$xsl = "xslt/essays.xsl";
 $db->xquery($query);
 $db->xslTransform($xsl);
 $db->printResult();
