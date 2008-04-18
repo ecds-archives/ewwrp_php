@@ -2,7 +2,7 @@
 include_once("config.php");
 include_once("lib/xmlDbConnection.class.php");
 
-$connectionArray{"debug"} = false;
+$connectionArray{"debug"} = true;
 
 $db = new xmlDbConnection($connectionArray);
 
