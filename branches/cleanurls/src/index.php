@@ -29,13 +29,13 @@ else
 
 print $doctype;
 ?>
-<html>
+<!--<html>
  <head>
     <title><?= $htmltitle ?></title>
     <link rel="stylesheet" type="text/css" href="web/css/ewwrp.css"/>
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
-<body>
+<body> -->
 
 
 <? include("header.php") ?>

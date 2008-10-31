@@ -1,0 +1,38 @@
+Options -MultiViews
+
+RewriteEngine on
+RewriteBase /~rsutton/ewwrp-svn/src
+
+# special case - do redirect the index
+RewriteRule ^$		 controller.php?url=index
+
+# don't redirect existing files or directories
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteRule ^(.*)$		 controller.php?url=$1
+
+
+
+## FIXME: might be better of redirecting to a php script that parses all of this...
+
+#RewriteRule ^(genrefiction|twentiethcentury)?/?(about|essays|advancedsearch)$  	$2.php?collection=$1
+#RewriteRule ^essays\/(.+)$  			content.php?level=div&id=$1
+
+# browse - by field, with optional paging 
+#RewriteRule ^browse/([^/]+)/?(([0-9]+){,3}-([0-9]+){,3})?$	browse.php?field=$1&position=$3&max=$4
+ # note: limiting paging #s to 3 digits so time periods will be correctly recognized as field + value
+ 	## FIXME: adjust code so url will be 134-154, not 134-20 (start-end, not start-max)
+# 	 - by field + first letter
+#RewriteRule ^browse/([^/]+)/([A-Z])$			browse.php?field=$1&letter=$2 
+# 	 - by field + value, with optional paging
+#RewriteRule ^browse/([^/]+)/([^/]+)/?(([0-9]+)-([0-9]+))?$ browse.php?field=$1&value=$2&position=$4&max=$5
+
+
+#RewriteRule ^view/([^/]+)	toc.php?id=$1
+
+
+
+#RewriteRule ^learning/search   http://wilson.library.emory.edu/~rsutton/hdot/search.php [P,L,QSA]
+
+#RewriteRule ^(denial|trial|struggle|learning)(.*) http://wilson.library.emory.edu/~rsutton/hdot/hdot.php?sec=$1&path=$2 [P,L,QSA]
+

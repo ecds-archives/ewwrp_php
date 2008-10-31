@@ -11,6 +11,9 @@ global $title;
 global $abbrev;
 global $collection;
 
+// FIXME: need to use better variable names - this is the one used in the query; override for now
+$collection = "";
+
 if ($title == '') {
   $title = "Emory Women Writers Resource Project";
   $abbrev = "EWWRP";
@@ -25,9 +28,12 @@ else
 
 //$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
-$field = $_GET["field"];
-$value = $_GET["value"];
-$letter = $_GET["letter"];
+//$field = $_GET["field"];
+//$value = $_GET["value"];
+//$value = urldecode($value); // needed?
+
+//$letter = $_GET["letter"];
+
 if (!($field)) $field = "author";	// default list
 
 // publishers must be enclosed in "" to pass &; remove quotes & convert ampersand for xquery
@@ -35,8 +41,15 @@ $value = preg_replace('/^\"(.*)\"$/', '$1', stripslashes($value));	// remove sla
 $value = preg_replace('/&/', '&amp;', $value);
 $value = addslashes($value);	// add slashes back in so searches with ' will work
 
-$pos = $_GET["position"];
-$max = $_GET["max"];
+//$pos = $_GET["position"];
+//$end = $_GET["end"];
+//$max = $_GET["max"];
+
+if ($end && !$max) {
+  $max = $end - $pos;
+}
+
+print "DEBUG: field is $field, value is $value, letter is $letter, position is $pos, max is $max<br>\n";
 
 if ($pos == '') $pos = 1;
 if ($max == '') $max = 20;
@@ -241,25 +254,25 @@ $query = "<result>{ $profile_qry } { $browse_qry } </result>";
 $xsl = "xslt/browse.xsl";
 $xsl_params = array('field' => $field, 'value' => $value, 'max' => $max, 'letter' => $letter);
 
-print $doctype;
-?>
+/*print $doctype;
 <html>
  <head>
 <title><?= $htmltitle ?> : Browse <?= $field?></title>
     <link rel="stylesheet" type="text/css" href="web/css/ewwrp.css"/>
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
-<body>
-
-<?
-include("header.php");
-include("nav.php");
-//validate_link();		// for testing only
+<body>*/
 ?>
 
-<div class="content">
+<?
+ //include("header.php");
+ //include("nav.php");
+//validate_link();		// for testing only
 
-<div class="title"><a href="index.php"><?= $title ?></a></div>
+
+//<div class="content">
+?>
+<!--<div class="title"><a href="index.php"><?= $title ?></a></div> -->
 
 <? 
 $db->xquery($profile_qry);
@@ -278,9 +291,11 @@ $db->xquery($browse_qry, $pos, $max);
 $db->xslTransform($xsl, $xsl_params);
 $db->printResult();
 
-?>
 
 
+/*
 </div>	
 
-</body></html>
+</body></html>*/
+
+?>

@@ -18,7 +18,7 @@
   <xsl:param name="max"/>
   <xsl:variable name="total"><xsl:value-of select="//@exist:hits"/></xsl:variable>
 
-  <!--  <xsl:include href="utils.xsl"/> -->
+  <!--  <xsl:include href="utils.xsl"/>  -->
   <xsl:include href="common.xsl"/>
 
   <xsl:variable name="nl"><xsl:text> 
@@ -48,25 +48,31 @@
     <div class="browse">
       <h1>Select a browse category:</h1>
       <ul class="browse">
-        <li><a href="browse.php?field=title">All Titles</a></li>
+        <li><a href="browse/title">All Titles</a></li>
         <xsl:if test="./form = 'Edited'">
-          <li><a href="browse.php?field=criticaledition">Critical Editions</a></li>
+          <li><a href="browse/criticaledition">Critical Editions</a></li>
         </xsl:if>
         <li>Ethnicity: <xsl:apply-templates select="ethnicity"/></li>
         <li>Genre: <xsl:apply-templates select="genre"/></li>
         <li>Geography: <xsl:apply-templates select="geography"/></li>
         <li>Period: <xsl:apply-templates select="period"/></li>
-        <li><a href="browse.php?field=publisher">Source Publisher List</a></li>
-        <li><a href="browse.php?field=author">Author List</a></li>
-        <li><a href="browse.php?field=subject">Subject List</a></li>
-        <li><a href="browse.php?field=bookshelf">Bookshelf view</a></li>
+        <li><a href="browse/publisher">Source Publisher List</a></li>
+        <li><a href="browse/author">Author List</a></li>
+        <li><a href="browse/subject">Subject List</a></li>
+        <li><a href="browse/bookshelf">Bookshelf view</a></li>
       </ul>
     </div>
   </xsl:template>
 
   <xsl:template match="profile/ethnicity|profile/genre|profile/geography|profile/period">
+    <xsl:variable name="urlvalue">
+      <xsl:call-template name="urlencode">
+        <xsl:with-param name="string" select="."/>
+      </xsl:call-template>
+    </xsl:variable>
+
     <a>
-      <xsl:attribute name="href">browse.php?field=<xsl:value-of select="name()"/>&amp;value=<xsl:value-of select="."/></xsl:attribute>
+      <xsl:attribute name="href">browse/<xsl:value-of select="name()"/>/<xsl:value-of select="$urlvalue"/></xsl:attribute>
       <xsl:value-of select="."/>
     </a>
     <xsl:if test="position() != last()">
@@ -251,7 +257,7 @@
 
 <xsl:template match="title">
   <a>
-    <xsl:attribute name="href">toc.php?id=<xsl:value-of select="../id"/></xsl:attribute>
+    <xsl:attribute name="href">view/<xsl:value-of select="../id"/></xsl:attribute>
     <b><xsl:apply-templates/></b>
   </a>
 </xsl:template>
@@ -264,10 +270,17 @@
     <xsl:value-of select="@reg"/>  
     <xsl:value-of select="name/@reg"/>
   </xsl:variable>
+
+  <xsl:variable name="urlreg">
+    <xsl:call-template name="urlencode">
+      <xsl:with-param name="string" select="$reg"/>
+    </xsl:call-template>
+  </xsl:variable>
   <a>
-    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space($reg)"/></xsl:attribute>
+    <xsl:attribute name="href">browse/author/<xsl:value-of select="$urlreg"/></xsl:attribute>
     <xsl:value-of select="$reg"/>
   </a>
+
   <xsl:if test="$reg != name">	<!-- (only display if different) -->
     [<xsl:apply-templates select="name"/>] <!-- title page version(s) of author name -->
   </xsl:if>
@@ -275,8 +288,15 @@
 
 <!-- possibly multiple names in authorlist mode -->
 <xsl:template match="author/name">
+
+  <xsl:variable name="urlname">
+    <xsl:call-template name="urlencode">
+      <xsl:with-param name="string" select="."/>
+    </xsl:call-template>
+  </xsl:variable>
+
   <a>
-    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(.)"/></xsl:attribute>
+    <xsl:attribute name="href">browse/author/<xsl:value-of select="$urlname"/></xsl:attribute>
     <xsl:apply-templates/>
   </a>
   <xsl:if test="position() != last()">
@@ -295,7 +315,7 @@
 
     <xsl:variable name="url">
       <xsl:choose>
-        <xsl:when test="$mode = 'browse'">browse.php?field=<xsl:value-of select="$field"/><xsl:if test="$value">&amp;value=<xsl:value-of select="$value"/></xsl:if><xsl:if test="$letter">&amp;letter=<xsl:value-of select="$letter"/></xsl:if>
+        <xsl:when test="$mode = 'browse'">browse/<xsl:value-of select="$field"/><xsl:if test="$value">/<xsl:value-of select="$value"/></xsl:if><xsl:if test="$letter">/<xsl:value-of select="$letter"/></xsl:if>
       </xsl:when>
       <xsl:when test="$mode = 'search'">search.php?keyword=<xsl:value-of select="$keyword"/></xsl:when>
     </xsl:choose>
@@ -321,7 +341,7 @@
             <xsl:if test="$newpos != 1">
               <a>
                 <xsl:attribute name="href"><xsl:value-of 
-                select="concat($url, '&amp;position=1&amp;max=', $max)"/></xsl:attribute>
+                select="concat($url, '/1-', $max)"/></xsl:attribute>
                 &lt;&lt; First
               </a>
             </xsl:if>
@@ -331,7 +351,7 @@
         <td>
           <a>
             <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=', $newpos, '&amp;max=', $max)"/></xsl:attribute>
+            select="concat($url, '/', $newpos, '-', $max)"/></xsl:attribute>
             &lt;Previous
           </a>          
         </td>
@@ -357,7 +377,7 @@
           <td>
             <a>
             <xsl:attribute name="href"><xsl:value-of 
-            select="concat($url, '&amp;position=', $next-start, '&amp;max=', $max)"/></xsl:attribute>
+            select="concat($url, '/', $next-start, '-', $max)"/></xsl:attribute>
             Next&gt;
           </a>          
         </td>
@@ -367,7 +387,7 @@
           <xsl:if test="$next-start != $last-start">
             <a>
               <xsl:attribute name="href"><xsl:value-of 
-              select="concat($url, '&amp;position=', $last-start, '&amp;max=', $max)"/></xsl:attribute>
+              select="concat($url, '/', $last-start, '-', $max)"/></xsl:attribute>
               Last&gt;&gt;
             </a>          
           </xsl:if>
@@ -467,7 +487,7 @@
   <p class="alphalist">
     Browse by first letter:
     <a>
-      <xsl:attribute name="href">browse.php?field=<xsl:value-of select="$field"/></xsl:attribute>
+      <xsl:attribute name="href">browse/<xsl:value-of select="$field"/></xsl:attribute>
       ALL
     </a>
     <xsl:apply-templates/>
@@ -477,7 +497,7 @@
 <xsl:template match="alphalist/letter">
   <xsl:text> </xsl:text>
   <a>
-    <xsl:attribute name="href">browse.php?field=<xsl:value-of select="$field"/>&amp;letter=<xsl:value-of select="."/></xsl:attribute>
+    <xsl:attribute name="href">browse/<xsl:value-of select="$field"/>/<xsl:value-of select="."/></xsl:attribute>
     <xsl:value-of select="."/>
   </a>
   <xsl:text> </xsl:text>
@@ -494,7 +514,7 @@
   
 
   <a>
-  <xsl:attribute name="href">toc.php?id=<xsl:value-of select="id"/></xsl:attribute>
+    <xsl:attribute name="href">view/<xsl:value-of select="id"/></xsl:attribute>
   <img>
     <xsl:attribute name="src"><xsl:value-of select="concat($thumbs-prefix, figure/@entity, $figure-suffix)"/></xsl:attribute>
     <xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
