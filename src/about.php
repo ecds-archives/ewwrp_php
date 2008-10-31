@@ -21,7 +21,7 @@ print "$doctype
 <html>
  <head>
 <title>$htmltitle : About</title>
-    <link rel='stylesheet' type='text/css' href='ewwrp.css'>
+    <link rel='stylesheet' type='text/css' href='web/css/ewwrp.css'>
     <link rel='shortcut icon' href='ewwrp.ico' type='image/x-icon'>
 </head>
 <body>";
@@ -33,7 +33,7 @@ print "<div class='content'>
 
 <div class='title'><a href='index.php'>$title</a></div>";
 
-include("about.xml");
+include("web/xml/about.xml");
 
 print "</div></body></html>";
 

@@ -141,6 +141,41 @@
   </xsl:template>
 
 
+  <!-- encode strings for urls; currently only does:
+ 	  * normalize string (remove extra whitespaces)
+          * replace spaces with +
+          * replace & with %26
+	-->
+  <xsl:template name="urlencode">
+    <xsl:param name="string"/>
+
+    <xsl:variable name="normalized">
+      <xsl:value-of select="normalize-space($string)"/>
+    </xsl:variable>
+
+    <xsl:variable name="spaces">
+      <xsl:call-template name="replace-string">
+        <xsl:with-param name="string" select="$normalized"/>
+        <xsl:with-param name="from" select="' '"/>
+        <xsl:with-param name="to" select="'+'"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="ampersands">
+      <xsl:call-template name="replace-string">
+        <xsl:with-param name="string" select="$spaces"/>
+        <xsl:with-param name="from">&amp;</xsl:with-param>
+        <xsl:with-param name="to">%26</xsl:with-param>
+      </xsl:call-template>
+    </xsl:variable> 
+
+    <!-- return after last transform -->
+    <!--    <xsl:value-of select="$ampersands"/>  -->
+    <xsl:value-of select="$spaces"/> 
+  </xsl:template>
+
+
+
 <!-- return the smaller of two numbers -->
 <xsl:template name="min">
   <xsl:param name="num1"/>

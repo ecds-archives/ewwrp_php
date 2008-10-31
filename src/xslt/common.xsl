@@ -79,15 +79,27 @@
 </xsl:template>
 
 <xsl:template match="author/name">
+  <xsl:variable name="urlname">
+    <xsl:call-template name="urlencode">
+      <xsl:with-param name="string" select="."/>
+    </xsl:call-template>
+  </xsl:variable>
+
   <a>
-    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(.)"/></xsl:attribute>
+    <xsl:attribute name="href">browse/author/<xsl:value-of select="$urlname"/></xsl:attribute>
     <xsl:apply-templates/>
   </a>
+
+  <xsl:variable name="urlreg">
+    <xsl:call-template name="urlencode">
+      <xsl:with-param name="string" select="@reg"/>
+    </xsl:call-template>
+  </xsl:variable>
 
   <!-- if the regularized version of author name is different, display it -->
   <xsl:if test="@reg != .">
   [<a>
-    <xsl:attribute name="href">browse.php?field=author&amp;value=<xsl:value-of select="normalize-space(@reg)"/></xsl:attribute>
+    <xsl:attribute name="href">browse/author/<xsl:value-of select="$urlreg"/></xsl:attribute>
     <xsl:value-of select="@reg"/>
   </a>]
   </xsl:if>
@@ -121,14 +133,12 @@
   </xsl:if>
   <!-- convert special characters to url format -->
   <xsl:variable name="urlval">
-    <xsl:call-template name="replace-string">
-      <xsl:with-param name="string"><xsl:value-of select="normalize-space(.)"/></xsl:with-param>
-      <xsl:with-param name="from">&amp;</xsl:with-param>
-      <xsl:with-param name="to">%26</xsl:with-param>
+    <xsl:call-template name="urlencode">
+      <xsl:with-param name="string" select="normalize-space(.)"/>
     </xsl:call-template>
   </xsl:variable>
   <a>
-    <xsl:attribute name="href">browse.php?field=<xsl:value-of select="name()"/>&amp;value="<xsl:value-of select="$urlval"/>"</xsl:attribute>
+    <xsl:attribute name="href">browse/<xsl:value-of select="name()"/>/<xsl:value-of select="$urlval"/></xsl:attribute>
     <xsl:apply-templates/>
   </a>
 </xsl:template>

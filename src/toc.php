@@ -11,7 +11,7 @@ global $title;
 global $abbrev;
 global $collection;
 
-$docname = $_GET["id"];
+//$docname = $_GET["id"];
 $keyword = $_GET["keyword"];
 $view = $_GET["view"];		// print, blackboard, ??
 // need a filter if we are in a collection?
@@ -72,24 +72,27 @@ $xdb->printResult();
 <body>
 
 <?
-include("header.php");
-include("nav.php");
+  //include("header.php");
+  //include("nav.php");
 //validate_link();	// for testing only
+
+  /*<div class="content">*/
+
 ?>
 
-<div class="content">
 
 <div class="title"><a href="index.php"><?= $title ?></a></div>
 
 <?
 $xdb->xslTransform($xsl, $xsl_params);
 $xdb->printResult();
-?>
 
 
+/*
 </div>	
 
 
 
 
-</body></html>
+</body></html>*/
+?>

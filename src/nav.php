@@ -72,13 +72,13 @@ print "<div id=\"logo\">
   </form>
     
 <div class="advsearch">
-(<a href="advancedsearch.php">Advanced Search</a>)
+(<a href="advancedsearch">Advanced Search</a>)
 </div>
             
 
-<p id="m-essay">- <a href="essays.php">Essays</a></p>
+<p id="m-essay">- <a href="essays">Essays</a></p>
 
-<p id="m-about">- <a href="about.php">About</a> the Project</p>
+<p id="m-about">- <a href="about">About</a> the Project</p>
 
 </div>
 

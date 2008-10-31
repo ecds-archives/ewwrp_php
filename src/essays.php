@@ -5,6 +5,7 @@ include_once("lib/xmlDbConnection.class.php");
 $connectionArray{"debug"} = false;
 
 $db = new xmlDbConnection($connectionArray);
+print "DEBUG: collection is " . $_GET["collection"] . "\n";
 
 global $title;
 global $abbrev;
@@ -21,16 +22,19 @@ if ($abbrev != "EWWRP")
 else
    $htmltitle = $title;
 
-print $doctype;
-?>
+//print $doctype;
+
+$htmltitle .= " : Essays";
+// field? collection?
+/*
 <html>
  <head>
 <title><?= $htmltitle ?> : Essays <?= $field?></title>
-    <link rel="stylesheet" type="text/css" href="ewwrp.css"/>
+    <link rel="stylesheet" type="text/css" href="web/css/ewwrp.css"/>
     <link rel="shortcut icon" href="ewwrp.ico" type="image/x-icon"/>
 </head>
-<body>
-
+<body>*/
+?>
 <? include("header.php") ?>
 <? include("nav.php") ?>
 
