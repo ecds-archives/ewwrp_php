@@ -94,6 +94,7 @@
   
 </xsl:template>
 
+
 <xsl:template match="rs[@type='collection']">
   <!-- texts may belong to more than one collection -->
   <xsl:choose>

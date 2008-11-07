@@ -251,7 +251,7 @@
 
 <xsl:template match="title">
   <a>
-    <xsl:attribute name="href">toc.php?id=<xsl:value-of select="../id"/></xsl:attribute>
+    <xsl:attribute name="href">toc.php?id=<xsl:value-of select="../id"/><xsl:if test="$keyword != ''">&amp;keyword=<xsl:value-of select="$keyword"/></xsl:if></xsl:attribute>
     <b><xsl:apply-templates/></b>
   </a>
 </xsl:template>
