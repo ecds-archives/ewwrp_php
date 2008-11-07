@@ -5,7 +5,7 @@ include("config.php");
 global $title;
 global $abbrev;
 global $collection;
-//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
+	
 $page = "index";
 
 if ($title == '') {

@@ -46,8 +46,8 @@
     <xsl:choose>
       <!-- special behavior for critical essays (no teiheader) -->
       <xsl:when test="//div[@type='critical essay']">
-        <h1><xsl:apply-templates select="//div/head"/></h1>
-        <xsl:apply-templates select="//relative-toc"/>
+        <xsl:apply-templates select="//div/head"/>
+       <xsl:apply-templates select="//relative-toc"/>
         <p>by <xsl:apply-templates select="//div/docAuthor"/></p>
         <p>
           <xsl:if test="//div/docDate">
@@ -101,6 +101,7 @@
 
 
   <xsl:template name="breadcrumb-toc">
+    <xsl:if test="//div[@type!='critical essay']">
     <p>
       <a>
         <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
@@ -112,6 +113,7 @@
       <xsl:apply-templates select="//relative-toc/node[@name='TEI.2']" mode="breadcrumb"/>
       <xsl:apply-templates select="//relative-toc/node[@type='critical essay']"  mode="breadcrumb"/>
     </p>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="node" mode="breadcrumb">
@@ -366,7 +368,13 @@
   </xsl:choose>
 </xsl:template>
 
-
+<!-- some essays have html-style urls -->
+<xsl:template match="a">
+  <xsl:element name="a">
+    <xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute>
+    <xsl:value-of select="."/>
+  </xsl:element>
+</xsl:template>
 <xsl:template match="lb">
   <br/>
 </xsl:template>

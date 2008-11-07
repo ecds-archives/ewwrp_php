@@ -21,7 +21,7 @@
   <xsl:template match="div">
     <li>
       <a>
-        <xsl:attribute name="href">content.php?level=div&amp;id=<xsl:apply-templates select="@id"/></xsl:attribute>
+        <xsl:attribute name="href">essay.php?level=div&amp;id=<xsl:apply-templates select="@id"/></xsl:attribute>
       <xsl:apply-templates select="head"/>
     </a>
       <br/>

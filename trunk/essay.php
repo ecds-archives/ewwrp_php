@@ -10,9 +10,7 @@ global $title;
 global $abbrev;
 global $collection;
 
-//$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
-
-$id = $_GET["id"];
+$id = $_REQUEST["id"];
 $node = $_GET["level"];
 $runninghdr = $_GET["running-header"];
 $keyword = $_GET["keyword"];
@@ -24,8 +22,8 @@ if ($title == '') {
   $abbrev = "EWWRP";
  }
 
-if (($node == 'pb') && isset($id)) {
-$query = $teixq . "let \$a := //${node}[@id='$id']
+
+$query = "for \$a in (//div[@id='$id'][@type='critical essay'], //div[@id='$id'][@type='critical introduction'])
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
 return <TEI.2> 
@@ -33,45 +31,11 @@ return <TEI.2>
   <teiHeader>
     {\$root//teiHeader//titleStmt}
     {\$root//sourceDesc}
-    {\$root//rs[@type='collection']}
   </teiHeader>
-  {teixq:relative-nav(\$a)} 
-<content>
-{\$a}{\$a/@id}
-</content>
+<content>{\$a}</content>
 </TEI.2>
 ";
- }
 
- else {
-$query = $teixq . "let \$a := //${node}[@id='$id']
-let \$doc := substring-before(util:document-name(\$a), '.xml')
-let \$root := root(\$a)
-let \$contentnode := teixq:contentnode(\$a, '$keyword') 
-let \$content :=  <content>";
-
- // return the immediately preceding pb (for relevant page #s not inside the section)
-// don't return preceding pb if main item is itself a pb
-// FIXME: this is a workaround for a bug in the sibling axis in eXist; should be fixed in future
-$query .=   ($node != "pb") ? "{\$a/preceding-sibling::*[1][name() = 'pb']}" : "";
-
-$query .= "  
-  {\$contentnode}  
-  </content>
-return <TEI.2> 
-  <doc>{\$doc}</doc>
-  <teiHeader>
-    {\$root//teiHeader//titleStmt}
-    {\$root//sourceDesc}
-    {\$root//rs[@type='collection']}
-  </teiHeader>
-  <relative-toc> {teixq:relative-toc(\$a)} </relative-toc>
-  <toc type='{\$a/@type}'> {teixq:toc(\$a)}  </toc>
-  {teixq:relative-nav(\$a)} 
-  {\$content} 
-</TEI.2>
-";
- }
 // add keyword parameter to url, if there is one defined
 $kwurl = ($keyword != '') ? "keyword=$keyword" : "";
 
@@ -98,7 +62,6 @@ switch ($node) {
  case "pb": $content_title = $db->findnode("content/pb/@pages");
    if (!(strstr($content_title, "page"))) $content_title = "Page $content_title";
  }
-
 
 // if we are in a collection, add EWWRP to the beginning of the html title
 if ($abbrev != "EWWRP") 
