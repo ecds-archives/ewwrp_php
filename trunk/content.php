@@ -6,17 +6,20 @@ $connectionArray{"debug"} = false;
 
 $db = new xmlDbConnection($connectionArray);
 
+$dbname = $connectionArray["db"];
+
 global $title;
 global $abbrev;
 global $collection;
 
 //$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
-$id = $_GET["id"];
-$node = $_GET["level"];
-$runninghdr = $_GET["running-header"];
-$keyword = $_GET["keyword"];
-$view = $_GET["view"];		// print, blackboard, ??
+$id = $_REQUEST["id"];
+$node = $_REQUEST["level"];
+$runninghdr = $_REQUEST["running-header"];
+$keyword = $_REQUEST["keyword"];
+$view = $_REQUEST["view"];		// print, blackboard, ??
+$filename = $_REQUEST["document"];
 // need a filter if we are in a collection ?
 
 if ($title == '') {
@@ -24,27 +27,9 @@ if ($title == '') {
   $abbrev = "EWWRP";
  }
 
-if (($node == 'pb') && isset($id)) {
-$query = $teixq . "let \$a := //${node}[@id='$id']
-let \$doc := substring-before(util:document-name(\$a), '.xml')
-let \$root := root(\$a)
-return <TEI.2> 
-  <doc>{\$doc}</doc>
-  <teiHeader>
-    {\$root//teiHeader//titleStmt}
-    {\$root//sourceDesc}
-    {\$root//rs[@type='collection']}
-  </teiHeader>
-  {teixq:relative-nav(\$a)} 
-<content>
-{\$a}{\$a/@id}
-</content>
-</TEI.2>
-";
- }
+$filename .= ".xml";
 
- else {
-$query = $teixq . "let \$a := //${node}[@id='$id']
+$query = $teixq . "for \$a in  doc('/db/$dbname/$filename')/TEI.2//${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
 let \$contentnode := teixq:contentnode(\$a, '$keyword') 
@@ -71,7 +56,7 @@ return <TEI.2>
   {\$content} 
 </TEI.2>
 ";
- }
+// }
 // add keyword parameter to url, if there is one defined
 $kwurl = ($keyword != '') ? "keyword=$keyword" : "";
 

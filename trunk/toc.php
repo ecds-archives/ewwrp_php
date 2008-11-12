@@ -11,9 +11,9 @@ global $title;
 global $abbrev;
 global $collection;
 
-$docname = $_GET["id"];
-$keyword = $_GET["keyword"];
-$view = $_GET["view"];		// print, blackboard, ??
+$docname = $_REQUEST["id"];
+$keyword = $_REQUEST["keyword"];
+$view = $_REQUEST["view"];		// print, blackboard, ??
 // need a filter if we are in a collection?
 
 if ($title == '') {
@@ -23,7 +23,9 @@ if ($title == '') {
 
 
 $query = $teixq . 'let $doc := document("/db/' . $db . '/' . $docname . '.xml")/TEI.2
+let $filename := substring-before(util:document-name($doc), ".xml")
 return  <TEI.2>
+<doc>{$filename}</doc>
   {$doc/@id}
   {$doc/teiHeader}
   <toc>{teixq:toc($doc)}</toc>

@@ -66,7 +66,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a>
-            <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+            <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/></xsl:attribute>
             <b><xsl:apply-templates/></b>
           </a>
         </xsl:otherwise>
@@ -184,7 +184,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a>
-            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+            <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/>&amp;document=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
             <xsl:value-of select="$label"/>
           </a>
         </xsl:otherwise>

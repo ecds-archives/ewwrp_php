@@ -12,6 +12,7 @@
 <xsl:param name="url"/>
 <xsl:param name="url_suffix"/>
 
+
 <!-- node and id that were requested -->
 <xsl:param name="node"/>
 <xsl:param name="id"/>
@@ -101,10 +102,10 @@
 
 
   <xsl:template name="breadcrumb-toc">
-    <xsl:if test="//div[@type!='critical essay']">
+    <xsl:if test="//div[@type!='critical essay']|//pb">
     <p>
       <a>
-        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+        <xsl:attribute name="href">toc.php?id=<xsl:value-of select="//doc"/></xsl:attribute>
         Table of Contents
       </a>
     </p>
@@ -149,7 +150,7 @@
     </xsl:when>
     <xsl:otherwise>
       <a>
-        <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
+        <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/>&amp;document=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
         <xsl:value-of select="$label"/>
       </a>
     </xsl:otherwise>
@@ -208,7 +209,7 @@
                   not(name() = 'last' and @id = ../next/@id)">
     <a>
       <xsl:attribute name="rel"><xsl:value-of select="name()"/></xsl:attribute>
-      <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+      <xsl:attribute name="href">content.php?level=<xsl:value-of select="@name"/>&amp;id=<xsl:value-of select="@id"/>&amp;document=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
 
       <!-- arrows to help user understand relation -->
       <xsl:choose>
@@ -297,35 +298,35 @@
     </li>
 </xsl:template>
 
-
-<xsl:template match="div1/head|head">
-   <h1>
+<!-- divs are now unnumbered -->
+<xsl:template match="div/div/div/div/div/head">
+    <h5>
         <xsl:apply-templates/>
-   </h1>
+    </h5>
 </xsl:template>
 
-<xsl:template match="div2/head">
-    <h2>
-        <xsl:apply-templates/>
-    </h2>
-</xsl:template>
-
-<xsl:template match="div3/head">
-    <h3>
-        <xsl:apply-templates/>
-    </h3>
-</xsl:template>
-
-<xsl:template match="div4/head">
+<xsl:template match="div/div/div/div/head">
     <h4>
         <xsl:apply-templates/>
     </h4>
 </xsl:template>
 
-<xsl:template match="div5/head">
-    <h5>
+<xsl:template match="div/div/div/head">
+    <h3>
         <xsl:apply-templates/>
-    </h5>
+    </h3>
+</xsl:template>
+
+<xsl:template match="div/div/head">
+    <h2>
+        <xsl:apply-templates/>
+    </h2>
+</xsl:template>
+
+<xsl:template match="div/head|head">
+   <h1>
+        <xsl:apply-templates/>
+   </h1>
 </xsl:template>
 
 <xsl:template match="p">
@@ -472,7 +473,7 @@
   <xsl:if test="@entity">
     <xsl:element name="a">		<!-- link to full size page image -->
       <xsl:attribute name="class">pageimage</xsl:attribute>
-      <xsl:attribute name="href">content.php?level=pb&amp;id=<xsl:value-of select="@id"/></xsl:attribute>
+      <xsl:attribute name="href">content.php?level=pb&amp;id=<xsl:value-of select="@id"/>&amp;document=<xsl:value-of select="//doc"/><xsl:value-of select="$myurlsuffix"/></xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src"><xsl:value-of select="concat($thumbs-prefix, @entity, $figure-suffix)"/></xsl:attribute>
         <!-- only display colon & number if there is an n attribute -->
