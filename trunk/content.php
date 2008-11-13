@@ -26,7 +26,7 @@ if ($title == '') {
   $title = "Emory Women Writers Resource Project";
   $abbrev = "EWWRP";
  }
-
+$document = $filename;
 $filename .= ".xml";
 
 $query = $teixq . "for \$a in  doc('/db/$dbname/$filename')/TEI.2//${node}[@id='$id']
@@ -61,9 +61,9 @@ return <TEI.2>
 $kwurl = ($keyword != '') ? "keyword=$keyword" : "";
 
 $xsl = "$baseurl/stylesheets/content.xsl";
-$xsl_params = array("url" => "content.php?level=$node&id=$id&$kwurl",	// FIXME: gets blank & if no keyword
+$xsl_params = array("url" => "content.php?level=$node&id=$id&document=$document&$kwurl",	// FIXME: gets blank & if no keyword
 		    "url_suffix" => $kwurl,
-		    "node" => $node, "id" => $id);
+		    "node" => $node, "id" => $id, "document" => $document);
 if($runninghdr) $xsl_params{"running-header"} = $runninghdr;
 
 $db->xquery($query);
