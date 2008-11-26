@@ -81,6 +81,14 @@
     <xsl:apply-templates/>
   </xsl:template> 
 
+
+  <xsl:template match="idno[@type='ark']">
+    <xsl:element name="dc:identifier">
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+
   <xsl:template match="encodingDesc/projectDesc">
     <xsl:element name="dc:description">
       <xsl:apply-templates/>
