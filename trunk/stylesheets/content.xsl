@@ -21,7 +21,7 @@
   <!-- on/off : show or hide running header in page breaks -->
 
 <!-- paths for images -->
-<xsl:variable name="imgserver">http://bohr.library.emory.edu/ewwrp/images/</xsl:variable>
+<xsl:variable name="imgserver">http://bohr.library.emory.edu/ewwrp/image-content/</xsl:variable>
 <xsl:variable name="genrefiction">tgfw/</xsl:variable>
 <xsl:variable name="figure-prefix">
 <xsl:choose>
