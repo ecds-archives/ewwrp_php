@@ -323,7 +323,7 @@
     </h2>
 </xsl:template>
 
-<xsl:template match="div/head|head">
+<xsl:template match="div/head">
    <h1>
         <xsl:apply-templates/>
    </h1>
@@ -339,6 +339,8 @@
 <xsl:template match="quote|q">
   <div class="quote">
     <xsl:apply-templates/>
+    <!-- display any following footnotes *with* the block quote -->
+    <xsl:call-template name="next-note"/>
   </div>
 </xsl:template>
 

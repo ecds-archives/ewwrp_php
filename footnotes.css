@@ -1,7 +1,7 @@
 /* skeleton styles for footnotes; used in conjunction with footnotes.xsl */
 
 /* footnote link in text */
-a.footnote { font-size: 75% /* 65% */; vertical-align: text-top; text-decoration: none; padding-left: 1px; padding-right: 5px; font-weight: normal;}
+a.footnote { font-size: 75% /* 65% */; vertical-align: text-top; text-decoration: none; padding-left: 1px; padding-right: 5px; font-weight: normal; display: inline;}
 a.footnote:visited { }
 
 /* all footnotes at end of text */
