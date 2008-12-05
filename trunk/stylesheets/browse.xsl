@@ -487,7 +487,7 @@
 
 <xsl:template match="item" mode="bookshelf">
 <!-- paths for images : included from content (modified - all spines in genrefic) -->
-<xsl:variable name="figure-prefix">http://bohr.library.emory.edu/ewwrp/images/tgfw/</xsl:variable>
+<xsl:variable name="figure-prefix">http://bohr.library.emory.edu/ewwrp/image-content/tgfw/</xsl:variable>
 
 <xsl:variable name="thumbs-prefix"><xsl:value-of select="$figure-prefix"/>thumbs/</xsl:variable>
 <xsl:variable name="figure-suffix">.jpg</xsl:variable>

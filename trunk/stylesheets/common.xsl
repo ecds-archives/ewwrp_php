@@ -38,6 +38,11 @@
             more information about this document
           </a>
         </p>
+	<p>
+	  Permanent Link: <a>
+	  <xsl:attribute name="href"><xsl:apply-templates select="//publicationStmt/idno[@type='ark']"/></xsl:attribute><xsl:apply-templates select="//publicationStmt/idno[@type='ark']"/></a>
+	</p>
+	    
       </xsl:if>
 
       <xsl:call-template name="printview"/>
@@ -232,7 +237,7 @@
       </xsl:when>
       <xsl:when test="@name = 'div'">
         <!-- only display type if it is not duplicated in the head (e.g., chapter) -->
-        <xsl:if test="not(contains(
+        <xsl:if test="not(starts-with(
                       translate(head,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),
                       translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')))">
           <xsl:value-of select="@type"/>

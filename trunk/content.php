@@ -100,6 +100,7 @@ $doctype
 ";
 switch ($view) {
  case "print": 
+   print "<meta name='ROBOTS' content='NOINDEX,NOFOLLOW'>";
  case "blackboard":
    print "<link rel='stylesheet' type='text/css' href='$baseurl/$view.css'/>";
    break;

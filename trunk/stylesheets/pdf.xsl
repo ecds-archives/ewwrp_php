@@ -7,7 +7,7 @@
 
   <!--  <xsl:include href="common.xsl"/> -->
 
-  <xsl:param name="imgpath">http://bohr.library.emory.edu/ewwrp/images/tgfw/</xsl:param>
+  <xsl:param name="imgpath">http://bohr.library.emory.edu/ewwrp/image-content/tgfw/</xsl:param>
 
   <xsl:template match="/">
 
