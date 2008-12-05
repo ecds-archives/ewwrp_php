@@ -323,9 +323,10 @@
     </h2>
 </xsl:template>
 
-<xsl:template match="div/head">
+<xsl:template match="div/head|head">
    <h1>
         <xsl:apply-templates/>
+    <xsl:call-template name="next-note"/>
    </h1>
 </xsl:template>
 
@@ -335,6 +336,7 @@
     </p>
     <xsl:value-of select="$newline"/>
 </xsl:template>
+
 
 <xsl:template match="quote|q">
   <div class="quote">
@@ -349,16 +351,30 @@
   <xsl:apply-templates/>
 </xsl:template>
 
-
+<!-- don't want p for lg inside q; it makes the footnotes move to the next line -->
 <xsl:template match="lg">
-  <p class="lg"><xsl:apply-templates/></p>
+<xsl:choose>
+<xsl:when test="parent::q">
+  <xsl:apply-templates/>
+</xsl:when>
+<xsl:otherwise>
+<p class="lg"><xsl:apply-templates/></p>
+</xsl:otherwise>
+</xsl:choose>
 </xsl:template>
+
 
 <xsl:template match="l">
-    <xsl:apply-templates/>
-    <br/>
+  <xsl:choose>
+    <xsl:when test="position() != last()">
+      <xsl:apply-templates/>
+      <br/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:apply-templates/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
-
 
 <xsl:template match="xref">
   <xsl:choose>

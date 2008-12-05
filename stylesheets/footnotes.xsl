@@ -45,7 +45,7 @@
     Note: use | to delimit node names, so partial node names will not match. 
 -->
 <!-- <xsl:param name="next-note-list">|caption|head|</xsl:param> -->
-<xsl:param name="next-note-list">|caption|head|quote|q|list|</xsl:param>
+<xsl:param name="next-note-list">|caption|head|lg|quote|q|list|</xsl:param>
 
 
 <!-- use overLib.js to display footnotes as pop-ups (in addition to
