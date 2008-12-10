@@ -40,6 +40,10 @@
 <xsl:variable name="newline"><xsl:text>
 </xsl:text></xsl:variable>
 
+<xsl:variable name="eebolink">
+http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;rft_id=xri:eebo:image:</xsl:variable>
+
+
 
   <xsl:template match="/">
     <xsl:call-template name="footnote-init"/>
@@ -376,6 +380,7 @@
   </xsl:choose>
 </xsl:template>
 
+<!-- match urls in document -->
 <xsl:template match="xref">
   <xsl:choose>
     <xsl:when test="@type='url'">
@@ -402,12 +407,23 @@
 <xsl:template match="content/pb[@id = $id]">
   <div class="figure">
      <p><xsl:value-of select="@pages"/></p>
-
-    <xsl:element name="img">
-      <xsl:attribute name="src"><xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/></xsl:attribute>
+<!-- special handling for mirrour links to eebo pages -->
+     <xsl:choose>
+       <xsl:when test="contains(@id, mirrour)">
+	 <xsl:element name="img">
+      <xsl:attribute name="src"><xsl:value-of select="concat($eebolink, @entity)"/></xsl:attribute>
       <!-- only display colon & number if there is an n attribute -->
       <xsl:attribute name="alt">page image<xsl:if test="@n != ''"> : <xsl:value-of select="@n"/></xsl:if></xsl:attribute>
     </xsl:element>  <!-- img -->
+       </xsl:when>
+       <xsl:otherwise>
+	 <xsl:element name="img">
+	   <xsl:attribute name="src"><xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/></xsl:attribute>
+	   <!-- only display colon & number if there is an n attribute -->
+	   <xsl:attribute name="alt">page image<xsl:if test="@n != ''"> : <xsl:value-of select="@n"/></xsl:if></xsl:attribute>
+	 </xsl:element>  <!-- img -->
+       </xsl:otherwise>
+     </xsl:choose>
   </div>
 </xsl:template>
 
@@ -499,8 +515,12 @@
       </xsl:element>  <!-- img -->
     </xsl:element>  <!-- a -->
   </xsl:if>
-
 </xsl:template>
+
+
+<!-- handle milestones used in Mirrour; ignore for now -->
+<xsl:template match="milestone[@ed='1579']"/>
+
 
 <!-- handle catch words  -->
 <xsl:template match="seg[@type='catch']|ab[@type='catch']">
