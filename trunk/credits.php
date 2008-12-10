@@ -10,6 +10,12 @@ if ($title == '') {
   $abbrev = "EWWRP";
  }
 
+// if we are in a collection, add EWWRP to the beginning of the html title
+if ($abbrev != "EWWRP") 
+  $htmltitle = "EWWRP : $title";
+else
+   $htmltitle = $title;
+
 print "$doctype
 <html>
  <head>
