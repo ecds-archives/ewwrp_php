@@ -383,6 +383,11 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
 <!-- match urls in document -->
 <xsl:template match="xref">
   <xsl:choose>
+    <xsl:when test="@url">
+      <xsl:element name="a">
+      <xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+      <xsl:value-of select="."/></xsl:element>
+    </xsl:when>
     <xsl:when test="@type='url'">
        <a>
  	<xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
@@ -390,6 +395,14 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
        </a>
     </xsl:when>
   </xsl:choose>
+</xsl:template>
+
+<!-- xptr is handled this way -->
+<xsl:template match="xptr">
+  <a>
+    <xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+    <xsl:value-of select="@url"/>
+  </a>
 </xsl:template>
 
 <!-- some essays have html-style urls -->
