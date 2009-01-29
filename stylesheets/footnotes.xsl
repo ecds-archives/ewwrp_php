@@ -446,6 +446,40 @@
   <span class="title"><xsl:apply-templates mode="javascript"/></span>
 </xsl:template>
 
+<!-- match urls in notes -->
+<xsl:template match="note/xref" mode="endnote">
+<xsl:apply-templates select="."/>
+</xsl:template>
+
+<xsl:template match="note/xref" mode="javascript">
+  <xsl:text> </xsl:text>
+  <xsl:choose>
+    <xsl:when test="@url">
+      <xsl:element name="a">
+      <xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+      <xsl:value-of select="."/></xsl:element>
+    </xsl:when>
+    <xsl:when test="@type='url'">
+       <a>
+ 	<xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+	<xsl:value-of select="."/>
+       </a>
+    </xsl:when>
+  </xsl:choose>
+</xsl:template>
+
+<!-- xptr is handled this way in notes-->
+
+<xsl:template match="note/xptr" mode="endnote">
+<xsl:apply-templates select="."/>
+</xsl:template>
+
+<xsl:template match="xptr" mode="javascript">
+  <a>
+    <xsl:attribute name="href"><xsl:value-of select="@url"/></xsl:attribute>
+    <xsl:value-of select="@url"/>
+  </a>
+</xsl:template>
 
   <!-- enclose text in a javascript variable -->
   <xsl:template match="note" mode="javascript">
