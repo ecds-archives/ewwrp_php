@@ -30,7 +30,6 @@ $value = $_REQUEST["value"];
 $letter = $_REQUEST["letter"];
 if (!($field)) $field = "author";	// default list
 
-print "DEBUG: value = $value";
 
 // publishers must be enclosed in "" to pass &; remove quotes & convert ampersand for xquery
 $value = preg_replace('/^\"(.*)\"$/', '$1', stripslashes($value));	// remove slashes to simplify removing quotes
