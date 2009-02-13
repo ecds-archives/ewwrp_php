@@ -10,6 +10,7 @@
 
   <xsl:include href="xmldbOAI/xsl/response.xsl"/>
   <xsl:include href="sets.xsl"/>
+ 
 
   <!-- note: this variable MUST be set in order to use the setSpec template -->
   <xsl:variable name="config" select="document('./config.xml')" />	 
@@ -88,6 +89,12 @@
   <xsl:template match="date">
     <xsl:element name="dc:date">
       <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="idno[@type='ark']">
+    <xsl:element name="dc:identifier">
+      <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
 
