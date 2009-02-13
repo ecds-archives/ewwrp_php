@@ -25,11 +25,10 @@ else
 
 //$baseurl = "http://biliku.library.emory.edu/rebecca/ewwrp/";	
 
-$field = $_REQUEST["field"];
-$value = $_REQUEST["value"];
-$letter = $_REQUEST["letter"];
+$field = $_GET["field"];
+$value = $_GET["value"];
+$letter = $_GET["letter"];
 if (!($field)) $field = "author";	// default list
-
 
 // publishers must be enclosed in "" to pass &; remove quotes & convert ampersand for xquery
 $value = preg_replace('/^\"(.*)\"$/', '$1', stripslashes($value));	// remove slashes to simplify removing quotes
@@ -278,7 +277,6 @@ if ($alpha_qry) {
 $db->xquery($browse_qry, $pos, $max);
 $db->xslTransform($xsl, $xsl_params);
 $db->printResult();
-
 
 ?>
 
