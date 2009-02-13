@@ -421,24 +421,26 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
   <div class="figure">
      <p><xsl:value-of select="@pages"/></p>
 <!-- special handling for mirrour links to eebo pages -->
+   <xsl:variable name="imgsrc">
      <xsl:choose>
-       <xsl:when test="contains(@id, mirrour)">
-	 <xsl:element name="img">
-      <xsl:attribute name="src"><xsl:value-of select="concat($eebolink, @entity)"/></xsl:attribute>
+       <xsl:when test="contains(@id, 'mirrour')">
+	 <xsl:value-of select="concat($eebolink, @entity)"/>
+       </xsl:when>
+       <xsl:otherwise>
+	 <xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/>
+       </xsl:otherwise>
+     </xsl:choose>
+   </xsl:variable>
+  <xsl:element name="img">
+      <xsl:attribute name="src"><xsl:value-of select="$imgsrc"/></xsl:attribute>
       <!-- only display colon & number if there is an n attribute -->
       <xsl:attribute name="alt">page image<xsl:if test="@n != ''"> : <xsl:value-of select="@n"/></xsl:if></xsl:attribute>
     </xsl:element>  <!-- img -->
-       </xsl:when>
-       <xsl:otherwise>
-	 <xsl:element name="img">
-	   <xsl:attribute name="src"><xsl:value-of select="concat($figure-prefix, @entity, $figure-suffix)"/></xsl:attribute>
-	   <!-- only display colon & number if there is an n attribute -->
-	   <xsl:attribute name="alt">page image<xsl:if test="@n != ''"> : <xsl:value-of select="@n"/></xsl:if></xsl:attribute>
-	 </xsl:element>  <!-- img -->
-       </xsl:otherwise>
-     </xsl:choose>
   </div>
 </xsl:template>
+
+
+
 
 <xsl:template match="pb" name="pb">
   <xsl:variable name="pagenum">
@@ -517,6 +519,18 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
   </xsl:choose>
 
   <!-- display page image thumbnail, if there is one -->
+<xsl:variable name="doccheck"><xsl:value-of select="//doc"/></xsl:variable>
+<!-- <xsl:text>DEBUG: document name is </xsl:text> <xsl:value-of select="$doccheck"/> -->
+<xsl:choose>
+  <xsl:when test="$doccheck = 'mirrour'">
+    <xsl:if test="@entity">
+      <xsl:element name="a">     <!-- link to eebo image -->
+	<xsl:attribute name="class">pageimage</xsl:attribute>
+	<xsl:attribute name="href"><xsl:value-of select="$eebolink"/><xsl:value-of select="@entity"/></xsl:attribute>EEBO page image<xsl:text>: </xsl:text><xsl:value-of select="@entity"/>
+      </xsl:element>
+    </xsl:if>
+  </xsl:when>
+  <xsl:otherwise>
   <xsl:if test="@entity">
     <xsl:element name="a">		<!-- link to full size page image -->
       <xsl:attribute name="class">pageimage</xsl:attribute>
@@ -528,6 +542,8 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
       </xsl:element>  <!-- img -->
     </xsl:element>  <!-- a -->
   </xsl:if>
+  </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 
@@ -706,5 +722,12 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
  </span>
 </xsl:template>
 
+<!-- names in Mirrour are in a roman font in the black letter text. We are showing them as bold -->
+<xsl:template match="name[@rend='roman']">
+  <span>
+    <xsl:attribute name="class">name</xsl:attribute>
+    <xsl:apply-templates/>
+  </span>
+</xsl:template>
 
 </xsl:stylesheet>
