@@ -35,7 +35,9 @@ else
 // basically TOC query with context added
 // note: using |= instead of &= because we want context for any of the
 // keyword terms, whether they appear together or not
-$xquery = $teixq . "let \$doc := document('/db/$db/$docname.xml')/TEI.2
+
+$xquery = "declare option exist:serialize 'highlight-matches=all';";
+$xquery .= $teixq . "let \$doc := document('/db/$db/$docname.xml')/TEI.2
 return <TEI.2>
 {\$doc/@id}
 <doc>$docname</doc>

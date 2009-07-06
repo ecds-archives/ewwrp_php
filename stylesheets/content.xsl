@@ -445,6 +445,17 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
 <xsl:template match="pb" name="pb">
   <xsl:variable name="pagenum">
     <xsl:choose>
+      <xsl:when test="following-sibling::milestone[@ed]"><!-- for ibrahim and mirrour -->
+	<xsl:value-of select="@n"/><xsl:text>/</xsl:text>
+	<xsl:choose>
+	  <xsl:when test="contains(following-sibling::milestone/@n, ' ')">
+	    <xsl:value-of select="substring-before(following-sibling::milestone/@n, ' ')"/>
+          </xsl:when>
+          <xsl:otherwise>
+	     <xsl:value-of select="following-sibling::milestone/@n"/>
+          </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
       <xsl:when test="contains(@n, ' ')">
         <xsl:value-of select="substring-before(@n, ' ')"/>	<!-- format: ## running header -->
       </xsl:when>
@@ -526,7 +537,10 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
     <xsl:if test="@entity">
       <xsl:element name="a">     <!-- link to eebo image -->
 	<xsl:attribute name="class">pageimage</xsl:attribute>
-	<xsl:attribute name="href"><xsl:value-of select="$eebolink"/><xsl:value-of select="@entity"/></xsl:attribute>EEBO page image<xsl:text>: </xsl:text><xsl:value-of select="@entity"/>
+	<xsl:attribute name="href"><xsl:value-of select="$eebolink"/><xsl:value-of select="@entity"/></xsl:attribute>
+	<xsl:element name="img">
+	  <xsl:attribute name="src"/><xsl:attribute name="alt">EEBO page image<xsl:text>: </xsl:text><xsl:value-of select="@entity"/></xsl:attribute>
+	</xsl:element>
       </xsl:element>
     </xsl:if>
   </xsl:when>
@@ -548,7 +562,7 @@ http://gateway.proquest.com/openurl?ctx_ver=Z39.88-2003&amp;res_id=xri:eebo&amp;
 
 
 <!-- handle milestones used in Mirrour; ignore for now -->
-<xsl:template match="milestone[@ed='1579']"/>
+<xsl:template match="milestone[@ed]"/>
 
 
 <!-- handle catch words  -->

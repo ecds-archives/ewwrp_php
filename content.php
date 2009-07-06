@@ -29,7 +29,8 @@ if ($title == '') {
 $document = $filename;
 $filename .= ".xml";
 
-$query = $teixq . "for \$a in  doc('/db/$dbname/$filename')/TEI.2//${node}[@id='$id']
+$query = "declare option exist:serialize 'highlight-matches=all';";
+$query .= $teixq . "for \$a in  doc('/db/$dbname/$filename')/TEI.2//${node}[@id='$id']
 let \$doc := substring-before(util:document-name(\$a), '.xml')
 let \$root := root(\$a)
 let \$contentnode := teixq:contentnode(\$a, '$keyword') 
