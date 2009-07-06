@@ -25,8 +25,8 @@ if ($title == '') {
 $query = $teixq . 'let $doc := document("/db/' . $db . '/' . $docname . '.xml")/TEI.2
 let $filename := substring-before(util:document-name($doc), ".xml")
 return  <TEI.2>
-<doc>{$filename}</doc>
   {$doc/@id}
+<doc>{$filename}</doc>
   {$doc/teiHeader}
   <toc>{teixq:toc($doc)}</toc>
   </TEI.2>
