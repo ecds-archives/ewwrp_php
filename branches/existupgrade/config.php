@@ -6,7 +6,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 /*$baseurl = "http://wilson.library.emory.edu/~rsutton/ewwrp/";*/	
 if ($in_production) {
   $server = "bohr.library.emory.edu";
-  $baseurl = "http://womenwriters.library.emory.edu";
+  $baseurl = "http://womenwriters.library.emory.edu/";
  } else {
   $server = "wilson.library.emory.edu";
  $baseurl = "http://wilson.library.emory.edu/~ahickco/ewwrp/";
