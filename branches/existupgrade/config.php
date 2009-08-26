@@ -1,5 +1,5 @@
 <?php
-$in_production = false;
+$in_production = true;
 
 error_reporting(E_ALL ^ E_NOTICE);
 
