@@ -1,16 +1,22 @@
 <?php
+$in_production = false;
 
 error_reporting(E_ALL ^ E_NOTICE);
 
 /*$baseurl = "http://wilson.library.emory.edu/~rsutton/ewwrp/";*/	
-
-$baseurl = "http://wilson.library.emory.edu/~ahickco/ewwrp/";
+if ($in_production) {
+  $server = "bohr.library.emory.edu";
+  $baseurl = "http://womenwriters.library.emory.edu";
+ } else {
+  $server = "wilson.library.emory.edu";
+ $baseurl = "http://wilson.library.emory.edu/~ahickco/ewwrp/";
+ }
 
 $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 
 /* exist settings  */
-$server = "wilson.library.emory.edu";
+
 $port = "8080";
 $db = "ewwrp";
 
