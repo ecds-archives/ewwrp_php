@@ -4,7 +4,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=owheart">
-   <img src="$baseurlimages/genrefiction/owheartfc.jpg" 
+   <img src="images/genrefiction/owheartfc.jpg" 
      alt="Cover image of The Heart of Hyacinth" height="550" width="380"/></a> 
    <div class="info">
    <p>1903: <i>The Heart of Hyacinth</i> - Onota Watanna, NY: Harper &amp; Brothers<br/>
@@ -14,7 +14,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=llunder">
-   <img src="$baseurlimages/genrefiction/llunderfc.jpg" 
+   <img src="images/genrefiction/llunderfc.jpg" 
      alt="Cover image of Under Fate's Wheel" height="550" width="380"/></a> 
    <div class="info">
    <p>1900: <i>Under Fate's Wheel</i> - Lawrence L. Lynch, London: Ward, Lock<br/>
@@ -24,7 +24,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=dfaith">
-   <img src="$baseurlimages/genrefiction/dfaithfc.jpg" 
+   <img src="images/genrefiction/dfaithfc.jpg" 
      alt="Cover image of Faith and Unfaith" height="550" width="380"/></a> 
    <div class="info">
    <p>1883: <i>Faith and Unfaith</i> - The Duchess, NY: John W. Lovell Co.<br/>
@@ -34,7 +34,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=maconfe">
-   <img src="$baseurlimages/genrefiction/maconfefc.jpg" 
+   <img src="images/genrefiction/maconfefc.jpg" 
      alt="Cover image of Confessions of a Wife" height="550" width="380"/></a> 
    <div class="info">
    <p>1902: <i>Confessions of a Wife</i> - Mary Adams, NY: The Century Co.<br/>
@@ -46,7 +46,7 @@
 
 <div class="image" collection="Native American">
  <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
-   <img src="$baseurlimages/nativeamerican/Angel-gratitude.jpg" 
+   <img src="images/nativeamerican/Angel-gratitude.jpg" 
      alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
@@ -57,7 +57,7 @@
 
 <div class="image" collection="Native American">
 <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
-   <img src="$baseurlimages/nativeamerican/Angel-muskrat.jpg" 
+   <img src="images/nativeamerican/Angel-muskrat.jpg" 
      alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
@@ -70,7 +70,7 @@
 
 <div class="image" collection="Native American">
 <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
-   <img src="$baseurlimages/nativeamerican/Angel-skilledhunter.jpg" 
+   <img src="images/nativeamerican/Angel-skilledhunter.jpg" 
      alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
@@ -82,7 +82,7 @@
 
 <div class="image" collection="Native American">
 <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
-   <img src="$baseurlimages/nativeamerican/Angel-proudchieftain.jpg" 
+   <img src="images/nativeamerican/Angel-proudchieftain.jpg" 
      alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
@@ -95,7 +95,7 @@
 
 <div class="image" collection="Native American">
 <a href="browse.php?field=author&amp;value=De+Cora,+Angel">
-   <img src="$baseurlimages/nativeamerican/Angel-baby.jpg" 
+   <img src="images/nativeamerican/Angel-baby.jpg" 
      alt="illustration by Angel De Cora" height="550" width="380"/></a>
 
    <div class="info">
@@ -110,7 +110,7 @@
 
 <div class="image" collection="Abolition, Freedom, and Rights">
 <a href="browse.php?field=author&amp;value=Harper,+Frances+Ellen+Watkins,+1825-1911">
-   <img src="$baseurlimages/abolition/FrancesHarper.jpg" 
+   <img src="images/abolition/FrancesHarper.jpg" 
      alt="photo of Frances Ellen Watkins Harper" height="550" width="380"/></a>
 
    <div class="info">
@@ -124,7 +124,7 @@
 <div class="image" collection="Abolition, Freedom, and Rights">
 <a
 href="browse.php?field=author&amp;value=Child,+Lydia+Maria+Francis,+1802-1880">
-   <img src="$baseurlimages/abolition/LydiaChild.jpg" 
+   <img src="images/abolition/LydiaChild.jpg" 
      alt="Lydia Maria Child" height="550" width="380"/></a>
 
    <div class="info">
@@ -137,7 +137,7 @@ href="browse.php?field=author&amp;value=Child,+Lydia+Maria+Francis,+1802-1880">
 <div class="image" collection="Abolition, Freedom, and Rights">
 <a
 href="search.php?doctitle=Sojourner+Truth">
-   <img src="$baseurlimages/abolition/SojournerTruth.jpg" 
+   <img src="images/abolition/SojournerTruth.jpg" 
      alt="Sojourner Truth. From a photograph taken a short time before her death" 
      height="550" width="380"/></a>
 
@@ -151,7 +151,7 @@ href="search.php?doctitle=Sojourner+Truth">
 <div class="image" collection="Abolition, Freedom, and Rights">
 <a
 href="search.php?doctitle=Sojourner+Truth">
-   <img src="$baseurlimages/abolition/SojournerTruth2.jpg" 
+   <img src="images/abolition/SojournerTruth2.jpg" 
      	alt="Sojourner Truth. A picture taken in the days of her physical strenght" 
      	height="550" width="380"/></a>
 
@@ -168,7 +168,7 @@ href="search.php?doctitle=Sojourner+Truth">
 <div class="image" collection="Women's Advocacy">
 <a
 href="search.php?keyword=lucy+stone">
-   <img src="$baseurlimages/advocacy/LucyStone.jpg" 
+   <img src="images/advocacy/LucyStone.jpg" 
      alt="Lucy Stone, pioneer of women's rights" height="550" width="380"/></a>
 
    <div class="info">
@@ -181,7 +181,7 @@ href="search.php?keyword=lucy+stone">
 <div class="image" collection="Women's Advocacy">
 <a
 href="search.php?keyword=susan+b+anthony">
-   <img src="$baseurlimages/advocacy/SusanBAnthony.jpg" 
+   <img src="images/advocacy/SusanBAnthony.jpg" 
      alt="portrait of Susan B. Anthony" height="550" width="380"/></a>
 
    <div class="info">
@@ -194,7 +194,7 @@ href="search.php?keyword=susan+b+anthony">
 <div class="image" collection="Women's Advocacy">
 <a
 href="browse.php?field=author&amp;value=Stanton,+Elizabeth+Cady,+1815-1902">
-   <img src="$baseurlimages/advocacy/Stanton-and-son.jpg" 
+   <img src="images/advocacy/Stanton-and-son.jpg" 
      alt="Mrs. Stanton and her son" height="550" width="380"/></a>
 
    <div class="info">
@@ -207,7 +207,7 @@ href="browse.php?field=author&amp;value=Stanton,+Elizabeth+Cady,+1815-1902">
 <div class="image" collection="Women's Advocacy">
 <a
 href="browse.php?field=subject&amp;value=Suffrage.">
-   <img src="$baseurlimages/advocacy/suffrageheadquarters.jpg" 
+   <img src="images/advocacy/suffrageheadquarters.jpg" 
      alt="National Woman Suffrage Headquarters. In the County Court
      House at Warren, O." height="550" width="380"/></a>
 
@@ -224,7 +224,7 @@ href="browse.php?field=subject&amp;value=Suffrage.">
 <div class="image" collection="Early Modern through the 18th Century">
 <a
 href="browse.php?field=author&amp;value=Hannah+Woolley">
-   <img src="$baseurlimages/earlymodern/Woolley.jpg" 
+   <img src="images/earlymodern/Woolley.jpg" 
      alt="portrait of Hannah Woolley" height="550" width="380"/></a>
 
    <div class="info">
@@ -237,7 +237,7 @@ href="browse.php?field=author&amp;value=Hannah+Woolley">
 <div class="image" collection="Early Modern through the 18th Century">
 <a
 href="toc.php?id=egerton">
-   <img src="$baseurlimages/earlymodern/femaleadvocate.jpg" 
+   <img src="images/earlymodern/femaleadvocate.jpg" 
      alt="title page of the Female Advocate" height="550" width="380"/></a>
 
    <div class="info">
@@ -250,7 +250,7 @@ href="toc.php?id=egerton">
 <div class="image" collection="Early Modern through the 18th Century">
 <a
 href="toc.php?id=egerton">
-   <img src="$baseurlimages/earlymodern/daughter-of-sion.jpg" 
+   <img src="images/earlymodern/daughter-of-sion.jpg" 
      alt="title page of the Daughter of Sion" height="550" width="380"/></a>
 
    <div class="info">
@@ -263,7 +263,7 @@ href="toc.php?id=egerton">
 <div class="image" collection="Early Modern through the 18th Century">
 <a
 href="browse.php?field=author&amp;value=Behn,+Aphra,+1640-1689">
-   <img src="$baseurlimages/earlymodern/Behn.jpg" 
+   <img src="images/earlymodern/Behn.jpg" 
      alt="Portrait of Aphra Behn" height="550" width="380"/></a>
 
    <div class="info">
@@ -278,7 +278,7 @@ href="browse.php?field=author&amp;value=Behn,+Aphra,+1640-1689">
 <div class="image" collection="World War I">
 <a
 href="">
-   <img src="$baseurlimages/worldwar1/sincere_wishes.jpg" 
+   <img src="images/worldwar1/sincere_wishes.jpg" 
      alt="World War I Postcard : 'Sincere Wishes'" height="550" width="380"/></a>
 
    <div class="info">
@@ -292,7 +292,7 @@ href="">
 <div class="image" collection="World War I">
 <a
 href="">
-   <img src="$baseurlimages/worldwar1/worth_while_fighting.jpg" 
+   <img src="images/worldwar1/worth_while_fighting.jpg" 
      alt="World War I Postcard - 'Worth while fighting for, to make the world safe for you'"
  height="550" width="380"/></a>
 
@@ -307,7 +307,7 @@ href="">
 <div class="image" collection="World War I">
 <a
 href="">
-   <img src="$baseurlimages/worldwar1/come_home.jpg" 
+   <img src="images/worldwar1/come_home.jpg" 
      alt="World War I Postcard - 'When you come home'"
  height="550" width="380"/></a>
 
@@ -322,7 +322,7 @@ href="">
 <div class="image" collection="World War I">
 <a
 href="">
-   <img src="$baseurlimages/worldwar1/though_skies.jpg" 
+   <img src="images/worldwar1/though_skies.jpg" 
      alt="World War I Postcard - 'Though skies awhile be overcast'"
  height="550" width="380"/></a>
 
@@ -337,7 +337,7 @@ href="">
 <!-- Early 20th Century -->
 <div class="image" collection="Early 20th Century Literature">
 <a href=""><img
-	       src="$baseurlimages/early20thcentury/calendar.jpg"
+	       src="images/early20thcentury/calendar.jpg"
 	       alt="Title page from A Calendar of War Verse"
 	       height="550" width="380"/></a>
 <div class="info">
@@ -351,7 +351,7 @@ href="http://beck.library.emory.edu/greatwar/">The Great War
 
 <div class="image" collection="Early 20th Century Literature">
 <a href="toc.php?id=fiery"><img
-	       src="$baseurlimages/early20thcentury/fiery.jpg"
+	       src="images/early20thcentury/fiery.jpg"
 	       alt="Cover image of The Fiery Cross"
 	       height="550" width="380"/></a>
 <div class="info">
@@ -364,7 +364,7 @@ href="http://beck.library.emory.edu/greatwar/">The Great War
 
 <div class="image" collection="Early 20th Century Literature">
 <a href="toc.php?id=lest"><img
-	       src="$baseurlimages/early20thcentury/lest.jpg"
+	       src="images/early20thcentury/lest.jpg"
 	       alt="Title page image from Lest We Forget"
 	       height="550" width="380"/></a>
 <div class="info">
