@@ -4,7 +4,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=owheart">
-   <img src="images/genrefiction/owheartfc.jpg" 
+   <img src="$baseurl/images/genrefiction/owheartfc.jpg" 
      alt="Cover image of The Heart of Hyacinth" height="550" width="380"/></a> 
    <div class="info">
    <p>1903: <i>The Heart of Hyacinth</i> - Onota Watanna, NY: Harper &amp; Brothers<br/>
@@ -14,7 +14,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=llunder">
-   <img src="images/genrefiction/llunderfc.jpg" 
+   <img src="$baseurl/images/genrefiction/llunderfc.jpg" 
      alt="Cover image of Under Fate's Wheel" height="550" width="380"/></a> 
    <div class="info">
    <p>1900: <i>Under Fate's Wheel</i> - Lawrence L. Lynch, London: Ward, Lock<br/>
@@ -24,7 +24,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=dfaith">
-   <img src="images/genrefiction/dfaithfc.jpg" 
+   <img src="$baseurl/images/genrefiction/dfaithfc.jpg" 
      alt="Cover image of Faith and Unfaith" height="550" width="380"/></a> 
    <div class="info">
    <p>1883: <i>Faith and Unfaith</i> - The Duchess, NY: John W. Lovell Co.<br/>
@@ -34,7 +34,7 @@
 
 <div class="image" collection="Genre Fiction">
   <a  href="toc.php?id=maconfe">
-   <img src="images/genrefiction/maconfefc.jpg" 
+   <img src="$baseurl/images/genrefiction/maconfefc.jpg" 
      alt="Cover image of Confessions of a Wife" height="550" width="380"/></a> 
    <div class="info">
    <p>1902: <i>Confessions of a Wife</i> - Mary Adams, NY: The Century Co.<br/>
