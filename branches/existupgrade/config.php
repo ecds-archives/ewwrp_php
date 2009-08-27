@@ -17,7 +17,11 @@ $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 /* exist settings  */
 
-$port = "8080";
+if($in_production) {
+  $port = "7080";
+ } else {
+  $port = "8080";
+ }
 $db = "ewwrp";
 
 $connectionArray = array('host'   => $server,
