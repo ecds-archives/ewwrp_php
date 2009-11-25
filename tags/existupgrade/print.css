@@ -1,0 +1,17 @@
+@import "ewwrp.css";
+@import "blackboard.css";
+
+/* print view is very similar to blackboard view, with a few more
+   things hidden & links colored black.
+*/
+
+
+/* hide elements which are unnecessary for print view */
+table.searchnav, p.pagebreak-toggle, div.doclinks { 
+  display:none; 
+}
+
+a { color:#000000; }
+
+
+
