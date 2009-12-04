@@ -90,7 +90,8 @@ if ($imglist->length) {
 <hr class="menu"/>
     &copy;2006 Emory University | Contact: <a href="mailto:beckctr@emory.edu">The Beck Center</a>
 </div>
-
+	    <div style="text-align: right;"><?php include("tei-badge.xml") ?></div>
 </div>		<!-- end right column -->
-
+	    <?php include("google-track.xml") ?>
+</div>
 </body></html>
