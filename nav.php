@@ -119,8 +119,10 @@ if ($abbrev != "Genre Fiction" && $page == "index")  {
   print "<div class='copyright'>";
   include("funding.xml");
   print "<p>&copy;2005 Emory University<br/> Contact: <a
-      href='mailto:beckctr@emory.edu'>The Beck Center</a></p>
-</div>";
+      href='mailto:beckctr@emory.edu'>The Beck Center</a></p>";
+ include('tei-badge.xml');
+ include('google-track.xml');
+  print "</div>";
 }
 ?>
 

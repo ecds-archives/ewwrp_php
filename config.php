@@ -1,12 +1,12 @@
 <?php
-$in_production = false;
+$in_production = true;
 
 error_reporting(E_ALL ^ E_NOTICE);
 
 /*$baseurl = "http://wilson.library.emory.edu/~rsutton/ewwrp/";*/	
 if ($in_production) {
   $server = "bohr.library.emory.edu";
-  $baseurl = "http://womenwriters.library.emory.edu";
+  $baseurl = "http://womenwriters.library.emory.edu/";
  } else {
   $server = "wilson.library.emory.edu";
  $baseurl = "http://wilson.library.emory.edu/~ahickco/ewwrp/";
@@ -17,7 +17,11 @@ $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 /* exist settings  */
 
-$port = "8080";
+if($in_production) {
+  $port = "7080";
+ } else {
+  $port = "8080";
+ }
 $db = "ewwrp";
 
 $connectionArray = array('host'   => $server,
