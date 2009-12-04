@@ -1,0 +1,62 @@
+@import "../ewwrp.css";
+
+/*#advocacy        { color: #339900; } */
+/* links */
+a {
+  color:#339900; 
+}
+
+/* highlight current collection */
+.advocacy { 
+  background-color:#339900; 
+  color:#FFFFFF; 
+}
+
+div.header { 
+  background-color: #339900;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#339900;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #339900;
+}
+div.tbar-left { 
+  background-color:#99CD7F;
+}
+div.content div.title a { 
+  background-color:#99CD7F;
+}
+
+hr.menu { 
+  background-color: #339900;
+  color: #339900;
+}
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #339900;
+}
+
+
+div.searchnav, table.searchnav {
+  background:#339900; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+span.match { 
+  background-color:#339900; 
+} 
+ 
+/* set pop-up footnotes to match sub-site colors */
+.footnotebg { 
+  background-color:  #339900; 
+}

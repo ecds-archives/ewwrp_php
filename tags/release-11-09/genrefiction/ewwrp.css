@@ -1,0 +1,91 @@
+@import "../ewwrp.css";
+
+/* links */
+a {
+  color:#990000; 
+}
+
+/* highlight current collection */
+.genrefiction { 
+  background-color:#990000; 
+  color:#FFFFFF; 
+}
+
+div.header { 
+  background-color: #990000;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#990000;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #990000;
+}
+div.tbar-left { 
+  background-color:#CD7F7F;
+}
+div.content div.title a { 
+  background-color:#CD7F7F;
+}
+
+hr.menu { 
+  background-color: #990000;
+  color: #990000;
+}
+
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #990000;
+}
+
+div.searchnav, table.searchnav {
+  background:#990000; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+span.match { 
+  background-color:#990000; 
+} 
+ 
+
+/* pop-up footnotes should match sub-site colors also */
+.footnotebg { 
+  background-color:  #990000; 
+}
+
+
+
+
+/* descriptive paragraph */
+div.description { 
+  width:360px;
+  height: 185px;
+/*  margin-top:103px;*/
+  padding-left:10px;
+  margin-left:0px;
+  padding-right:10px;
+  margin-right:0px;
+  border:0px;
+}
+
+/* collection div on index page - extra space for center title bar */
+div.index {
+  margin-top:102px;
+}
+
+
+/* collection div on index page - extra space for center title bar */
+div.collections {
+  margin-top:0px;
+  padding-top:10px;
+  border:0px;
+  border-top:1px solid #990000;
+}

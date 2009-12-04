@@ -1,0 +1,60 @@
+@import "../ewwrp.css";
+
+/* links */
+a {
+  color:#003399; 
+}
+/* highlight current collection */
+.nativeamerican { 
+  background-color:#003399; 
+  color:#FFFFFF; 
+}
+
+div.header { 
+  background-color: #003399;
+}
+
+div.header a:hover {color:#FF9933;}
+
+div#logo img { 
+  background-color:#003399;
+}
+div#logo a:hover img { 
+  background-color:#FF9933; 
+}
+div.image div.info { 
+  color: #003399;
+}
+div.tbar-left { 
+  background-color:#7F99CD;
+}
+div.content div.title a { 
+  background-color:#7F99CD;
+}
+
+hr.menu { 
+  background-color: #003399;
+  color: #003399;
+}
+/* collection list on index page */
+div.index { 
+  border-bottom:1px solid #003399;
+}
+
+
+div.searchnav, table.searchnav {
+  background:#003399; 
+}
+
+div.searchnav a:hover {
+  color: #FF9933;
+}
+
+span.match { 
+  background-color:#003399; 
+} 
+
+/* set pop-up footnotes to match sub-site colors */
+.footnotebg { 
+  background-color:  #003399; 
+}
