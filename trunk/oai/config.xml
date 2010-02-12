@@ -46,7 +46,7 @@
     </xmldb>          -->
    <xmldb type="exist">
       <host>bohr.library.emory.edu</host>
-      <port>8080</port>
+      <port>7080</port>
       <database>ewwrp</database>
       <debug>false</debug>
     </xmldb>
