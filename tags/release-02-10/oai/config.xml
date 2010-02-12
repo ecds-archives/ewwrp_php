@@ -1,0 +1,171 @@
+<repository>
+  <name>Emory Women Writers Resource Project @Emory University</name>
+  <adminEmail>beckctr@emory.edu</adminEmail>
+  <protocolVersion>2.0</protocolVersion>
+  <granularity>seconds</granularity>
+  <earliestDatestamp>1970-01-01T00:00:00Z</earliestDatestamp>
+
+  <validateOutput>true</validateOutput>
+
+  <identifier>
+    <delimiter>:</delimiter>
+    <localdelimiter>/</localdelimiter>	
+<!-- non : delimiter between collection and local identifier 
+     use if you wish to prepend collection to identifier to ensure uniqueness
+-->
+
+    <recordprefix></recordprefix>
+    <repositoryIdentifier>
+<!-- note: this uri is also used for request script location  -->
+       <uri>oai.library.emory.edu</uri>
+       <collection>ewwrp</collection>
+<!-- note: setting this to true will use collection name for the 
+     request script location instead of the actual script name and path -->
+       <useCollectionAsScriptName>false</useCollectionAsScriptName>
+    </repositoryIdentifier>
+<!-- Note: identifiers are constructed from these components in this format:
+   oai:oai.library.emory.edu:ewwrp/prefixrecordid  -->
+  </identifier>
+
+  <resumption>
+<!-- Note: this OAI provider does not support resumption tokens for ListSets -->
+    <maxRecords>50</maxRecords>
+    <maxIdentifiers>200</maxIdentifiers>
+    <expiration>24 hours</expiration>
+  </resumption>
+
+  <xqueryFile>xquery.xml</xqueryFile>
+
+  <!-- connection settings for xml database -->
+  <connectionParameters>
+<!--    <xmldb type="tamino">
+      <host>vip.library.emory.edu</host>
+      <database>TGFW</database> 
+      <collection>novels</collection> 
+      <qry_lang>xquery</qry_lang>
+    </xmldb>          -->
+   <xmldb type="exist">
+      <host>bohr.library.emory.edu</host>
+      <port>7080</port>
+      <database>ewwrp</database>
+      <debug>false</debug>
+    </xmldb>
+  </connectionParameters>
+
+  <sets>
+    <!--all sets must be listed here and also defined in xquery document -->
+
+<!--    <set name="Critical Editions" setSpec="critical"> -->
+    <set name="Critical Editions" setSpec="criticaledition">
+      <description>Critical editions of texts, with annotations and critical introductions.</description>
+    </set>
+<!--    <set name="Unedited" setSpec="uned">
+      <description>Unedited texts.</description>
+    </set>             -->
+
+    <!-- genres -->
+    <set name="Poetry" setSpec="poetry">
+      <description>Poetry texts.</description>
+    </set>
+    <set name="Prose" setSpec="prose">
+      <description>Prose texts.</description>
+    </set>            
+    <set name="Drama" setSpec="drama">
+      <description>Dramatic texts.</description>
+    </set>            
+    <set name="Novel" setSpec="novel">
+      <description>Novels from the Women's Genre Fiction Project</description>
+    </set>            
+    <set name="Short Stories" setSpec="stories">
+      <description>Short Stories from the Women's Genre Fiction Project</description>
+    </set>                        
+
+    <!-- geographic region -->
+    <set name="France" setSpec="fr">
+      <description>French texts.</description>
+    </set>
+    <set name="Great Britain" setSpec="gb">
+      <description>British Texts.</description>
+    </set>
+    <set name="United States" setSpec="us">
+      <description>Texts from the United States.</description>
+    </set>
+
+    <!-- time periods -->
+    <set name="1600-1699" setSpec="17c">
+      <description>Texts from the 17th century.</description>
+    </set>
+    <set name="1700-1799" setSpec="18c">
+      <description>Texts from the 18th century.</description>
+    </set>
+    <set name="1800-1899" setSpec="19c">
+      <description>Texts from the 19th century.</description>
+    </set>
+    <set name="1900-1999" setSpec="20c">
+      <description>Texts from the 20th century.</description>
+    </set>
+
+    <!-- ethnicity -->
+    <set name="African American" setSpec="afam">
+      <description>Texts written by African Americans.</description>
+    </set>
+    <set name="Caucasian" setSpec="cauc">
+      <description>Texts written by Caucasians.</description>
+    </set>
+    <!--    (is also a collection)
+<set name="Native American" setSpec="natam">
+      <description>Texts written by Native Americans.</description>
+    </set> -->
+
+    <!-- collections -->
+    <set name="Genre Fiction" setSpec="genrefiction">
+      <description></description>
+    </set>
+     <!-- subset of TGFW: American Literature only (for Aquifer) -->
+    <set name="Genre Fiction - American Literature" setSpec="genrefiction:american">
+      <description></description>
+    </set>
+
+    <set name="Early Modern through the 18th Century" setSpec="earlymodern">
+      <description></description>
+    </set>
+    <set name="Early 20th Century Literature" setSpec="earlytwentieth">
+      <description></description>
+    </set>
+    <set name="World War I Poetry" setSpec="worldwarI">
+      <description></description>
+    </set>
+    <set name="Native American" setSpec="nativeamerican">
+      <description></description>
+    </set>
+    <set name="Abolition, Freedom, and Rights" setSpec="abolition">
+      <description></description>
+    </set>
+    <set name="Women's Advocacy" setSpec="advocacy">
+      <description></description>
+    </set>
+
+  </sets>
+
+
+  <metadataFormats>
+    <!-- Add additional metadataFormat entries for each supported metadata format.
+	 At minimum oai_dc must be supported.
+    -->
+    <metadataFormat name="oai_dc">
+      <schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+      <metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace>
+      <record_prefix>dc</record_prefix>
+      <recordNamespace>http://purl.org/dc/elements/1.1</recordNamespace>
+      <xslt>oai_dc.xsl</xslt>
+    </metadataFormat>                       
+    <metadataFormat name="oai_mods">
+      <schema>http://www.loc.gov/standards/mods/v3/mods-3-0.xsd</schema>
+      <metadataNamespace>http://www.loc.gov/mods/v3</metadataNamespace>
+      <record_prefix>mods</record_prefix>
+      <recordNamespace></recordNamespace>
+      <xslt>oai_mods.xsl</xslt>
+    </metadataFormat>            
+  </metadataFormats>
+
+</repository>
