@@ -21,7 +21,7 @@
        <collection>ewwrp</collection>
 <!-- note: setting this to true will use collection name for the 
      request script location instead of the actual script name and path -->
-       <useCollectionAsScriptName>false</useCollectionAsScriptName>
+       <useCollectionAsScriptName>true</useCollectionAsScriptName>
     </repositoryIdentifier>
 <!-- Note: identifiers are constructed from these components in this format:
    oai:oai.library.emory.edu:ewwrp/prefixrecordid  -->
