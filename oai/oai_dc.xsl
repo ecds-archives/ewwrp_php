@@ -6,7 +6,7 @@
   version="1.0">
 
   <xsl:output method="xml" omit-xml-declaration="yes"/>
-  <xsl:param name="prefix"/>
+  <!-- <xsl:param name="prefix"/> -->
 
   <xsl:include href="xmldbOAI/xsl/response.xsl"/>
   <xsl:include href="sets.xsl"/>
@@ -22,7 +22,7 @@
   </xsl:template>
 
   <!-- get or list records : full information (header & metadata) -->
-  <xsl:template match="TEI.2">
+  <xsl:template match="TEI.2">    
     <record>
     <xsl:call-template name="header"/>
     <metadata>
@@ -40,8 +40,11 @@
   <xsl:template name="header">
     <xsl:element name="header">            
       <xsl:element name="identifier">
+	<xsl:variable name="ark" select="//idno[@type='ark']"/>
+	<xsl:variable name="ark-id" select="substring-after($ark, 'edu/')"/>
         <!-- identifier prefix is passed in as a parameter; should be defined in config file -->
-        <xsl:value-of select="concat($prefix, docname)" /> 
+        <!-- <xsl:value-of select="concat($prefix, docname)" />  -->
+	<xsl:text>oai:</xsl:text><xsl:value-of select="$ark-id"/>
       </xsl:element>
 
       <xsl:element name="datestamp">
