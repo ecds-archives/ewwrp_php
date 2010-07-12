@@ -6,7 +6,7 @@
   version="1.0">
 
   <xsl:output method="xml" omit-xml-declaration="yes"/>
-  <!-- <xsl:param name="prefix"/> -->
+  <xsl:param name="prefix"/>
 
   <xsl:include href="xmldbOAI/xsl/response.xsl"/>
   <xsl:include href="sets.xsl"/>
@@ -40,11 +40,11 @@
   <xsl:template name="header">
     <xsl:element name="header">            
       <xsl:element name="identifier">
-	<xsl:variable name="ark" select="//idno[@type='ark']"/>
-	<xsl:variable name="ark-id" select="substring-after($ark, 'edu/')"/>
+	<xsl:variable name="ark" select="teiHeader/fileDesc/publicationStmt/idno[@type='ark']"/>
+	<xsl:variable name="ark-id" select="substring-after($ark, 'ark:/')"/>
         <!-- identifier prefix is passed in as a parameter; should be defined in config file -->
-        <!-- <xsl:value-of select="concat($prefix, docname)" />  -->
-	<xsl:text>oai:</xsl:text><xsl:value-of select="$ark-id"/>
+        <!-- <xsl:value-of select="concat($prefix, docname)" /> changed to ark suffix per Laura Akerman -->
+	<xsl:value-of select="concat($prefix, $ark-id)" />
       </xsl:element>
 
       <xsl:element name="datestamp">

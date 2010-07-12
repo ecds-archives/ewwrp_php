@@ -35,7 +35,7 @@
 
 <!-- testing the idno as what to match. Started with $a/@id = "?" -->
     <where verb="GetRecord"><![CDATA[
-        $a//idno[@type="ark"] = "?" 
+        $a//idno[@type="ark"][ends-with(.,'?')]
         ]]>
     </where>
     <where>
