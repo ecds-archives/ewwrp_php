@@ -17,8 +17,9 @@
     <recordprefix></recordprefix>
     <repositoryIdentifier>
 <!-- note: this uri is also used for request script location  -->
- <!-- by agreement with LA, RSK to match LSDI and ETD identifiers -->
+ <!-- by agreement with LA, RSK use ark to match LSDI and ETD identifiers; use altUri to set script location -->
        <uri>ark</uri>
+       <altUri>oai.library.emory.edu</altUri>
        <collection>ewwrp</collection>
 <!-- note: setting this to true will use collection name for the 
      request script location instead of the actual script name and path -->
